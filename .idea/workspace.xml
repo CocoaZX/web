@@ -2,9 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ae44ea7e-ee76-4140-90e5-021c1a026c96" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/web.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/web.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/static/html/temp.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/static/html/temp.html" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -14,124 +13,115 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="CoverageDataManager">
-    <SUITE FILE_PATH="coverage/web$__init__.coverage" NAME="__init__ Coverage Results" MODIFIED="1548125735750" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/app" />
+    <SUITE FILE_PATH="coverage/web$__init__.coverage" NAME="__init__ Coverage Results" MODIFIED="1548136708037" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/app" />
   </component>
   <component name="FileColors">
     <fileColor scope="All" color="000000" />
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="__init__.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/app/__init__.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="416">
-              <caret line="24" lean-forward="true" selection-start-line="24" selection-end-line="24" />
-              <folding>
-                <element signature="e#0#69#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="templating.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../pythonInterpreter/lib/python3.7/site-packages/flask/templating.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="954">
-              <caret line="57" selection-start-line="57" selection-end-line="57" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="404.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/templates/404.html">
-          <provider selected="true" editor-type-id="text-editor" />
-        </entry>
-      </file>
-      <file leaf-file-name="docker.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/static/html/docker/docker.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="342">
-              <caret line="19" column="57" selection-start-line="19" selection-start-column="57" selection-end-line="19" selection-end-column="57" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="temp.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/static/html/temp.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="372">
-              <caret line="735" column="7" lean-forward="true" selection-start-line="735" selection-start-column="7" selection-end-line="735" selection-end-column="7" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="objective-c-runtime-1.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/static/html/Objective-C/objective-c-runtime-1.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="216">
-              <caret line="12" column="70" selection-start-line="12" selection-start-column="70" selection-end-line="12" selection-end-column="70" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="objective-c-runtime-2.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/static/html/Objective-C/objective-c-runtime-2.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="234">
-              <caret line="13" selection-start-line="13" selection-end-line="13" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="typeDocker.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/static/html/Categories/typeDocker.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="234">
-              <caret line="13" column="43" selection-start-line="13" selection-start-column="43" selection-end-line="13" selection-end-column="43" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="typeGithub.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/static/html/Categories/typeGithub.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="180">
-              <caret line="10" column="59" selection-start-line="10" selection-start-column="59" selection-end-line="10" selection-end-column="59" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="typeOC.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/static/html/Categories/typeOC.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="124">
-              <caret line="30" column="61" selection-start-line="30" selection-start-column="61" selection-end-line="30" selection-end-column="61" />
-              <folding>
-                <element signature="e#13991#13997#0#HTML" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <splitter split-orientation="horizontal" split-proportion="0.15912762">
+      <split-first>
+        <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+          <file leaf-file-name="__init__.py" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/app/__init__.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="256">
+                  <caret line="72" selection-start-line="72" selection-end-line="72" />
+                  <folding>
+                    <element signature="e#0#69#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="typeSwift.html" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/app/static/html/Categories/typeSwift.html">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="298">
+                  <caret line="225" column="41" selection-start-line="225" selection-start-column="41" selection-end-line="225" selection-end-column="41" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="temp.html" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/app/static/html/temp.html">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="341">
+                  <caret line="246" lean-forward="true" selection-start-line="246" selection-end-line="246" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="swift-7.html" pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/app/static/html/swift/swift-7.html">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="159">
+                  <caret line="737" column="24" selection-start-line="737" selection-start-column="24" selection-end-line="737" selection-end-column="46" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+        </leaf>
+      </split-first>
+      <split-second>
+        <leaf>
+          <file leaf-file-name="swift-8.html" pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/app/static/html/swift/swift-8.html">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="-1100">
+                  <caret line="201" column="51" lean-forward="true" selection-start-line="201" selection-start-column="51" selection-end-line="201" selection-end-column="51" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+        </leaf>
+      </split-second>
+    </splitter>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="HTML File" />
+      </list>
+    </option>
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>js</find>
-      <find>../../../static</find>
-      <find>../../../static/js</find>
-      <find>../../../static/</find>
-      <find>src/utils.js</find>
-      <find>../static</find>
-      <find>//</find>
-      <find>../static/</find>
-      <find>css</find>
-      <find>timedelta</find>
-      <find>main.cs</find>
+      <find>运行时</find>
+      <find>swift-</find>
+      <find>ve-C Runtime 运行时</find>
+      <find>&lt;footer class=&quot;post-footer&quot;&gt;</find>
+      <find>闭包的基础概念</find>
+      <find>h1 class=&quot;post-tit</find>
+      <find>&lt;h1 class=&quot;post-title</find>
+      <find>&lt;div class=&quot;post-toc-conte</find>
+      <find>body</find>
+      <find>Swift属性Propert</find>
+      <find>&lt;h1 class=&quot;post-title&quot;</find>
+      <find>&lt;div class=&quot;post-toc-cont</find>
+      <find>swift-c</find>
+      <find>&lt;div class=&quot;post-toc-content&quot;&gt;</find>
+      <find>&lt;div class=&quot;post-body&quot; itemprop=&quot;articleB</find>
+      <find>=&quot;post-body&quot;</find>
+      <find>class=&quot;post-nav-next po</find>
+      <find>Swift中C指针的基本使用方法</find>
+      <find>swift-7</find>
+      <find>v class=&quot;post-body&quot; itemp</find>
+      <find>iv class=&quot;po</find>
+      <find>发表于</find>
+      <find>&lt;div class=&quot;post-body&quot;</find>
+      <find>发表</find>
+      <find>&lt;div class=&quot;post-body&quot; it</find>
+      <find>&lt;li class=&quot;nav</find>
+      <find>h1</find>
+      <find>&lt;div class=&quot;post-toc&quot;&gt;</find>
+      <find>&lt;/div&gt;</find>
+      <find>下图</find>
     </findStrings>
     <replaceStrings>
       <replace>../../js</replace>
       <replace>../../</replace>
+      <replace>2017-4-26</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -146,7 +136,19 @@
         <option value="$PROJECT_DIR$/app/static/html/Objective-C/objective-c-runtime-2.html" />
         <option value="$PROJECT_DIR$/app/static/html/Objective-C/objective-c-runtime-1.html" />
         <option value="$PROJECT_DIR$/app/static/html/Categories/typeOC.html" />
+        <option value="$PROJECT_DIR$/app/static/html/swift/swift_0.html" />
         <option value="$PROJECT_DIR$/app/__init__.py" />
+        <option value="$PROJECT_DIR$/app/static/html/Categories/typeSwift.html" />
+        <option value="$PROJECT_DIR$/app/static/html/swift/swift-1.html" />
+        <option value="$PROJECT_DIR$/app/static/html/swift/swift-2.html" />
+        <option value="$PROJECT_DIR$/app/static/html/swift/swift-3.html" />
+        <option value="$PROJECT_DIR$/app/static/html/swift/swift-4.html" />
+        <option value="$PROJECT_DIR$/app/static/html/swift/swift-5.html" />
+        <option value="$PROJECT_DIR$/app/static/html/swift/swift-7.html" />
+        <option value="$PROJECT_DIR$/app/static/html/swift/swift-6.html" />
+        <option value="$PROJECT_DIR$/app/static/html/temp.html" />
+        <option value="$PROJECT_DIR$/app/static/html/swift/swift-9.html" />
+        <option value="$PROJECT_DIR$/app/static/html/swift/swift-8.html" />
       </list>
     </option>
   </component>
@@ -229,23 +231,15 @@
               <item name="app" type="462c0819:PsiDirectoryNode" />
               <item name="static" type="462c0819:PsiDirectoryNode" />
               <item name="html" type="462c0819:PsiDirectoryNode" />
-              <item name="Categories" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="web" type="b2602c69:ProjectViewProjectNode" />
-              <item name="web" type="462c0819:PsiDirectoryNode" />
-              <item name="app" type="462c0819:PsiDirectoryNode" />
-              <item name="static" type="462c0819:PsiDirectoryNode" />
-              <item name="html" type="462c0819:PsiDirectoryNode" />
-              <item name="docker" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="web" type="b2602c69:ProjectViewProjectNode" />
-              <item name="web" type="462c0819:PsiDirectoryNode" />
-              <item name="app" type="462c0819:PsiDirectoryNode" />
-              <item name="static" type="462c0819:PsiDirectoryNode" />
-              <item name="html" type="462c0819:PsiDirectoryNode" />
               <item name="Objective-C" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="web" type="b2602c69:ProjectViewProjectNode" />
+              <item name="web" type="462c0819:PsiDirectoryNode" />
+              <item name="app" type="462c0819:PsiDirectoryNode" />
+              <item name="static" type="462c0819:PsiDirectoryNode" />
+              <item name="html" type="462c0819:PsiDirectoryNode" />
+              <item name="swift" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -254,6 +248,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
+    <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
@@ -320,17 +315,19 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1280" height="728" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.50080776" side_tool="true" weight="0.44078946" />
       <window_info anchor="bottom" id="Database Changes" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="7" />
       <window_info anchor="bottom" id="Python Console" order="7" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49919224" visible="true" weight="0.10361842" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49919224" weight="0.15789473" />
       <window_info anchor="bottom" id="Terminal" order="7" weight="0.32786885" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.21082391" />
+      <window_info content_ui="combo" id="Project" order="0" weight="0.15912762" />
       <window_info anchor="bottom" id="Docker" order="7" />
       <window_info anchor="right" id="Database" order="3" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32894737" />
       <window_info anchor="right" id="SciView" order="3" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
@@ -341,8 +338,30 @@
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
-      <window_info anchor="bottom" id="Find" order="1" />
     </layout>
+    <layout-to-restore>
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="bottom" id="Docker" order="7" />
+      <window_info anchor="bottom" id="Version Control" order="8" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.15912762" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info anchor="right" id="Commander" order="0" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="Database Changes" order="9" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49919224" weight="0.15789473" />
+      <window_info anchor="bottom" id="Python Console" order="10" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32894737" />
+      <window_info anchor="right" id="Database" order="3" />
+      <window_info anchor="bottom" id="Terminal" order="11" weight="0.32786885" />
+      <window_info anchor="bottom" id="Event Log" order="12" sideWeight="0.50080776" side_tool="true" weight="0.44078946" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="right" id="SciView" order="4" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.23355263" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info id="Favorites" order="2" side_tool="true" />
+    </layout-to-restore>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
@@ -473,13 +492,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/static/html/Objective-C/objective-c-runtime-2.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="234">
-          <caret line="13" selection-start-line="13" selection-end-line="13" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../pythonInterpreter/lib/python3.7/site-packages/flask/templating.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="954">
@@ -487,23 +499,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/templates/404.html">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/static/html/Objective-C/objective-c-runtime-1.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="216">
           <caret line="12" column="70" selection-start-line="12" selection-start-column="70" selection-end-line="12" selection-end-column="70" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/static/html/Categories/typeOC.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="124">
-          <caret line="30" column="61" selection-start-line="30" selection-start-column="61" selection-end-line="30" selection-end-column="61" />
-          <folding>
-            <element signature="e#13991#13997#0#HTML" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -514,20 +513,178 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/static/html/temp.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="372">
-          <caret line="735" column="7" lean-forward="true" selection-start-line="735" selection-start-column="7" selection-end-line="735" selection-end-column="7" />
-        </state>
-      </provider>
+    <entry file="file://$PROJECT_DIR$/app/templates/404.html">
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/app/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="416">
-          <caret line="24" lean-forward="true" selection-start-line="24" selection-end-line="24" />
+        <state relative-caret-position="256">
+          <caret line="72" selection-start-line="72" selection-end-line="72" />
           <folding>
             <element signature="e#0#69#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/static/html/swift/swift-1.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="178">
+          <caret line="187" column="73" selection-start-line="187" selection-start-column="73" selection-end-line="187" selection-end-column="73" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/static/html/swift/swift-2.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="178">
+          <caret line="187" column="73" selection-start-line="187" selection-start-column="73" selection-end-line="187" selection-end-column="73" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/static/html/swift/swift-3.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="178">
+          <caret line="187" column="73" selection-start-line="187" selection-start-column="73" selection-end-line="187" selection-end-column="73" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/static/html/swift/swift-5.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="196">
+          <caret line="188" column="46" lean-forward="true" selection-start-line="188" selection-start-column="46" selection-end-line="188" selection-end-column="46" />
+          <folding>
+            <element signature="n#div#0;n#article#0;n#div#0;n#div#0;n#div#0;n#div#0;n#main#0;n#div#0;n#body#0;n#html#0;n#!!top" />
+            <element signature="e#21554#21558#0#HTML" expanded="true" />
+            <element signature="e#23301#23305#0#HTML" expanded="true" />
+            <element signature="e#28048#28052#0#HTML" expanded="true" />
+            <element signature="e#34391#34395#0#HTML" expanded="true" />
+            <element signature="e#35158#35162#0#HTML" expanded="true" />
+            <element signature="e#37809#37813#0#HTML" expanded="true" />
+            <element signature="e#38733#38737#0#HTML" expanded="true" />
+            <element signature="e#42242#42246#1#HTML" expanded="true" />
+            <element signature="e#42385#42389#1#HTML" expanded="true" />
+            <element signature="e#42644#42648#0#HTML" expanded="true" />
+            <element signature="e#42648#42652#0#HTML" expanded="true" />
+            <element signature="e#42690#42694#0#HTML" expanded="true" />
+            <element signature="e#42694#42698#0#HTML" expanded="true" />
+            <element signature="e#46776#46780#0#HTML" expanded="true" />
+            <element signature="e#46786#46790#0#HTML" expanded="true" />
+            <element signature="n#ol#0;n#div#0;n#div#0;n#section#1;n#div#0;n#aside#0;n#div#0;n#main#0;n#div#0;n#body#0;n#html#0;n#!!top" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/static/html/swift/swift-4.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="214">
+          <caret line="485" column="49" lean-forward="true" selection-start-line="485" selection-start-column="49" selection-end-line="485" selection-end-column="49" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/static/html/Objective-C/objective-c-runtime-2.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="162">
+          <caret line="21" column="32" selection-start-line="21" selection-start-column="32" selection-end-line="21" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/static/html/Categories/typeOC.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="196">
+          <caret line="34" column="26" lean-forward="true" selection-end-line="398" />
+          <folding>
+            <element signature="e#13991#13997#0#HTML" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/static/html/swift/swift-7.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="906">
+          <caret line="638" column="34" selection-start-line="638" selection-start-column="34" selection-end-line="638" selection-end-column="34" />
+          <folding>
+            <element signature="n#div#0;n#article#0;n#div#0;n#div#0;n#div#0;n#div#0;n#main#0;n#div#0;n#body#0;n#html#0;n#!!top" />
+            <element signature="e#29488#29492#0#HTML" expanded="true" />
+            <element signature="e#33902#33906#0#HTML" expanded="true" />
+            <element signature="e#34153#34157#0#HTML" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/static/html/swift/swift-6.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="194">
+          <caret line="559" column="66" selection-start-line="559" selection-start-column="66" selection-end-line="559" selection-end-column="66" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$APPLICATION_HOME_DIR$/lib/pycharm.jar!/resources/html5-schema/html5/microdata.rnc">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="194">
+          <caret line="18" column="18" selection-start-line="18" selection-start-column="18" selection-end-line="18" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/static/html/Categories/typeSwift.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="298">
+          <caret line="225" column="41" selection-start-line="225" selection-start-column="41" selection-end-line="225" selection-end-column="41" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/static/html/temp.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="341">
+          <caret line="246" lean-forward="true" selection-start-line="246" selection-end-line="246" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/static/html/swift/swift-7.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="159">
+          <caret line="737" column="24" selection-start-line="737" selection-start-column="24" selection-end-line="737" selection-end-column="46" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/static/html/swift/swift-9.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="210">
+          <caret line="829" column="39" lean-forward="true" selection-start-line="829" selection-start-column="39" selection-end-line="829" selection-end-column="39" />
+          <folding>
+            <element signature="e#13021#13027#0#HTML" expanded="true" />
+            <element signature="e#13035#13041#0#HTML" expanded="true" />
+            <element signature="e#14462#14466#0#HTML" expanded="true" />
+            <element signature="e#14473#14477#0#HTML" expanded="true" />
+            <element signature="e#15009#15015#0#HTML" expanded="true" />
+            <element signature="e#15069#15075#0#HTML" expanded="true" />
+            <element signature="e#28340#28344#0#HTML" expanded="true" />
+            <element signature="e#29319#29323#0#HTML" expanded="true" />
+            <element signature="e#30372#30376#0#HTML" expanded="true" />
+            <element signature="e#32442#32446#0#HTML" expanded="true" />
+            <element signature="e#32695#32700#0#HTML" expanded="true" />
+            <element signature="e#41708#41712#0#HTML" expanded="true" />
+            <element signature="e#42659#42663#0#HTML" expanded="true" />
+            <element signature="e#42682#42686#0#HTML" expanded="true" />
+            <element signature="e#42804#42808#0#HTML" expanded="true" />
+            <element signature="e#42827#42831#0#HTML" expanded="true" />
+            <element signature="e#42949#42953#0#HTML" expanded="true" />
+            <element signature="e#42972#42976#0#HTML" expanded="true" />
+            <element signature="e#52631#52635#1#HTML" expanded="true" />
+            <element signature="e#52669#52673#0#HTML" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/static/css/main.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="212">
+          <caret line="1615" column="10" selection-start-line="1615" selection-start-column="2" selection-end-line="1615" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/static/html/swift/swift-8.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1100">
+          <caret line="201" column="51" lean-forward="true" selection-start-line="201" selection-start-column="51" selection-end-line="201" selection-end-column="51" />
         </state>
       </provider>
     </entry>

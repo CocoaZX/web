@@ -23,6 +23,12 @@ def typeDocker_mehtod():
 def typeGithub_mehtod():
     return send_file("static/html/Categories/typeGithub.html")
 
+@app.route('/categories/swift')
+def typeSwift_mehtod():
+    return send_file("static/html/Categories/typeSwift.html")
+
+
+
 
 @app.route('/base')
 def base_mehtod():
@@ -59,6 +65,48 @@ def oc_runtime_5():
 @app.route('/objective-c-runtime-6')
 def oc_runtime_6():
     return send_file("static/html/Objective-C/objective-c-runtime-6.html")
+
+#Swift
+@app.route('/swift-1')
+def swift_1():
+    return send_file("static/html/swift/swift-1.html")
+
+@app.route('/swift-2')
+def swift_2():
+    return send_file("static/html/swift/swift-2.html")
+
+@app.route('/swift-3')
+def swift_3():
+    return send_file("static/html/swift/swift-3.html")
+
+@app.route('/swift-4')
+def swift_4():
+    return send_file("static/html/swift/swift-4.html")
+
+@app.route('/swift-5')
+def swift_5():
+    return send_file("static/html/swift/swift-5.html")
+
+@app.route('/swift-6')
+def swift_6():
+    return send_file("static/html/swift/swift-6.html")
+
+@app.route('/swift-7')
+def swift_7():
+    return send_file("static/html/swift/swift-7.html")
+
+@app.route('/swift-8')
+def swift_8():
+    return send_file("static/html/swift/swift-7.html")
+
+@app.route('/swift-9')
+def swift_9():
+    return send_file("static/html/swift/swift-8.html")
+
+#docker
+@app.route('/docker')
+def docker():
+    return send_file("static/html/docker/docker.html")
 
 
 
