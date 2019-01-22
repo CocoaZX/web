@@ -1,17 +1,13 @@
-from flask import Flask,send_from_directory,render_template,send_file
-from flask_bootstrap import Bootstrap
-from datetime import  timedelta
+from flask import Flask,render_template,send_file
+from datetime import timedelta
 
-app = Flask(__name__,static_folder = "/users/zhangxin/desktop/docker-/app/static")
-app.config['SEND_FILE_MAX_AGE_DEFAULT'] = timedelta(seconds = 2)
-bootstrap = Bootstrap(app)#模板
-
-
+app = Flask(__name__,static_folder="static")
+app.config['SEND_FILE_MAX_AGE_DEFAULT'] = timedelta(seconds=2)
 
 # type
 @app.route('/categories/oc')
 def typeOc_mehtod():
-    return send_file("static/html/categories/typeOC.html")
+    return send_file("static/html/Categories/typeOC.html")
 
 @app.route('/categories/temp')
 def temp_mehtod():
@@ -20,12 +16,12 @@ def temp_mehtod():
 
 @app.route('/categories/docker')
 def typeDocker_mehtod():
-    return send_file("static/html/categories/typeDocker.html")
+    return send_file("static/html/Categories/typeDocker.html")
 
 
 @app.route('/categories/github')
 def typeGithub_mehtod():
-    return send_file("static/html/categories/typeGithub.html")
+    return send_file("static/html/Categories/typeGithub.html")
 
 
 @app.route('/base')
@@ -74,6 +70,6 @@ def page_not_found(e):
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8080)
+    app.run(host='0.0.0.0', port=80)
 
 
