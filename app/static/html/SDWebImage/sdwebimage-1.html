@@ -1,0 +1,1079 @@
+<!doctype html>
+
+<html class="theme-next pisces use-motion">
+
+<head>
+
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+    <meta http-equiv="Cache-Control" content="no-transform"/>
+    <meta http-equiv="Cache-Control" content="no-siteapp"/>
+    <link href="/static/vendors/fancybox/source/jquery.fancybox.css" rel="stylesheet" type="text/css"/>
+    <link href="/static/css/main.css" rel="stylesheet" type="text/css"/>
+
+    <meta name="keywords" content="Hexo, NexT"/>
+    <link rel="shortcut icon" type="image/x-icon" href="/static/images/favicon.ico"/>
+
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Crow的技术博客">
+    <meta property="og:site_name" content="Crow的技术博客">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Crow的技术博客">
+
+
+    <script type="text/javascript" id="hexo.configuration">
+        var NexT = window.NexT = {}; //
+        var CONFIG = {
+            scheme: 'Pisces',
+            sidebar: {"position": "left", "display": "post"},
+            fancybox: true,
+            motion: true,
+            duoshuo: {
+                userId: 0,
+                author: '博主'
+            }
+        };
+    </script>
+
+
+    <link rel="canonical" href="47.106.99.78:8080/objective-c-runtime-1"/>
+    <title> 分类: Objective-C Runtime | Crow 的技术博客</title>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+<script type="text/javascript">
+    if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+        window.Promise = null;
+    }
+</script>
+
+
+<script type="text/javascript" src="../../../static/vendors/jqurey/index.js"></script>
+<script type="text/javascript" src="../../../static/vendors/fastclick/lib/fastclick.min.js"></script>
+<script type="text/javascript" src="../../../static/vendors/jquery_lazyload/jquery.lazyload.js"></script>
+<script type="text/javascript" src="../../../static/vendors/velocity/velocity.min.js"></script>
+<script type="text/javascript" src="../../../static/vendors/velocity/velocity.ui.min.js"></script>
+<script type="text/javascript" src="../../../static/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+<script type="text/javascript" src="../../../static/js/src/utils.js"></script>
+<script type="text/javascript" src="../../../static/js/src/motion.js"></script>
+<script type="text/javascript" src="../../../static/js/src/affix.js"></script>
+<script type="text/javascript" src="../../../static/js/src/schemes/pisces.js"></script>
+<script type="text/javascript" src="../../../static/js/src/bootstrap.js"></script>
+<script type="text/javascript" src="../../../static/js/src/post-details.js"></script>
+<script type="text/javascript" src="../../../static/js/src/scrollspy.js"></script>
+
+
+<div class="container one-collumn sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+        <div class="header-inner">
+            <div class="site-meta">
+                <div class="custom-logo-site-title">
+                    <a href="/" class="brand" rel="start">
+                        <span class="logo-line-before"><i></i></span>
+                        <span class="site-title">Crow的技术博客</span>
+                        <span class="logo-line-after"><i></i></span>
+                    </a>
+                </div>
+                <p class="site-subtitle">攀登，一步一个脚印，方能知其乐</p>
+            </div>
+
+            <div class="site-nav-toggle">
+                <button>
+                    <span class="btn-bar"></span>
+                    <span class="btn-bar"></span>
+                    <span class="btn-bar"></span>
+                </button>
+            </div>
+
+
+            <nav class="site-nav">
+                <ul id="menu" class="menu">
+                    <li class="menu-item menu-item-home">
+                        <a href="/" rel="section">
+                            <i class="menu-item-icon fa fa-fw fa-home"></i>
+                            首页
+                        </a>
+                    </li>
+
+                    <li class="menu-item menu-item-objectivec">
+                        <a href="/categories/oc" rel="section">
+                            <i class="menu-item-icon fa fa-fw fa-taxi"></i> <br/>
+                            Objective-C
+                        </a>
+                    </li>
+
+
+                    <li class="menu-item menu-item-swift">
+                        <a href="/categories/swift" rel="section">
+                            <i class="menu-item-icon fa fa-fw fa-space-shuttle"></i> <br/>
+                            Swift
+                        </a>
+                    </li>
+
+                    <li class="menu-item menu-item-cocoa">
+                        <a href="/categories/github" rel="section">
+                            <i class="menu-item-icon fa fa-fw fa-subway"></i> <br/>
+                            Github
+                        </a>
+                    </li>
+
+
+                    <li class="menu-item menu-item-home">
+                        <a href="/categories/docker" rel="section">
+                            <i class="menu-item-icon fa fa-fw fa-home"></i>
+                            Docker
+                        </a>
+                    </li>
+
+                    <li class="menu-item menu-item-cocoa">
+                        <a href="/categories/cocoa" rel="section">
+                            <i class="menu-item-icon fa fa-fw fa-subway"></i> <br/>
+                            Cocoa
+                        </a>
+                    </li>
+
+
+                    <li class="menu-item menu-item-sourcecode">
+                        <a href="/categories/sourcecode" rel="section">
+                            <i class="menu-item-icon fa fa-fw fa-train"></i> <br/>
+                            源码分析
+                        </a>
+                    </li>
+
+
+                    <li class="menu-item menu-item-something">
+                        <a href="/categories/something" rel="section">
+                            <i class="menu-item-icon fa fa-fw fa-bicycle"></i> <br/>
+                            杂项
+                        </a>
+                    </li>
+
+                </ul>
+            </nav>
+
+        </div>
+    </header>
+
+    <main id="main" class="main">
+        <div class="main-inner">
+            <div class="content-wrap">
+                <div id="content" class="content">
+                    <div id="posts" class="posts-expand">
+                        <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+                            <header class="post-header">
+                                <h1 class="post-title" itemprop="name headline">
+                                    SDWebImage分析
+                                </h1>
+                                <div class="post-meta">
+                                    <span class="post-time">
+                                        <span class="post-meta-item-icon">
+                                          <i class="fa fa-calendar-o"></i>
+                                        </span>
+                                        <span class="post-meta-item-text">发表于</span>
+                                        <time itemprop="dateCreated" datetime="2016-11-26T21:00:05+08:00"
+                                              content="2016-11-26">
+                                          2016-11-26
+                                        </time>
+                                    </span>
+                                    <span class="post-category">
+                                        <span class="post-meta-item-icon">
+                                            <i class="fa fa-folder-o"></i>
+                                        </span>
+                                    <span class="post-meta-item-text">分类于</span>
+                                    <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                                        <a href="/categories/sourcecode" itemprop="url" rel="index">
+                                            <span itemprop="name">Objective-C</span>
+                                        </a>
+                                    </span>
+                                    </span>
+                                </div>
+                            </header>
+
+                            <div class="post-body" itemprop="articleBody">
+                                <p>
+                                    相信对于广大的iOS开发者，对SDWebImage并不会陌生，这个框架通过给UIImageView和UIButton添加分类，实现一个异步下载图片并且支持缓存的功能。整个框架的接口非常简洁，每个类的分工都很明确，是很值得大家学习的
+                                </p>
+                                <p>
+                                    在使用这个框架的时候，只需要提供一个下载的url和占位图就可以在回调里拿到下载后的图片：
+                                </p>
+                                <pre><code class="hljs objc copyable" lang="objc">[imageview sd_setImageWithURL:[<span
+                                        class="hljs-built_in">NSURL</span> URLWithString:<span class="hljs-string">@"pic.jpg"</span>] placeholderImage:[<span
+                                        class="hljs-built_in">UIImage</span> imageNamed:<span class="hljs-string">@"placeholder"</span>] completed:^(<span
+                                        class="hljs-built_in">UIImage</span> * _Nullable image, <span
+                                        class="hljs-built_in">NSError</span> * _Nullable error, SDImageCacheType cacheType, <span
+                                        class="hljs-built_in">NSURL</span> * _Nullable imageURL) {
+                                        imageview.image = image;
+                                    <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@"图片加载完成"</span>);
+                                    }];
+                                </code>
+                                </pre>
+
+                                <p>这个框架的核心类是SDWebImageManger，在外部有UIImageView+WebCache 和 UIButton+WebCache
+                                    为下载图片的操作提供接口。内部有SDWebImageManger负责处理和协调 SDWebImageDownloader 和
+                                    SDWebImageCache：SDWebImageDownloader负责具体的下载任务，SDWebImageCache负责关于缓存的工作：添加，删除，查询缓存。
+                                </p>
+                                <p>框架的调用流程图：</p>
+                                <p><img src="../../../static/images/sdFlow.jpg" alt="classImage"></p>
+                                <p>从这个流程图里可以大致看出，该框架分为两个层：UIKit层（负责接收下载参数）和工具层（负责下载操作和缓存）。</p>
+
+
+                                <h2 id="UIKit层"><a href="#UIKit层" class="headerlink" title="UIKit层"></a>UIKit层</h2>
+
+
+                                <p>该框架最外层的类是UIImageView +WebCache，我们将图片的URL，占位图片直接给这个类。下面是这个类的公共接口：</p>
+
+                                <pre><code class="hljs objc copyable" lang="objc"> <span class="hljs-comment">// ==============  UIImageView + WebCache.h ============== //</span>
+- (<span class="hljs-keyword">void</span>)sd_setImageWithURL:(<span class="hljs-keyword">nullable</span> <span
+                                            class="hljs-built_in">NSURL</span> *)url;
+
+- (<span class="hljs-keyword">void</span>)sd_setImageWithURL:(<span class="hljs-keyword">nullable</span> <span
+                                            class="hljs-built_in">NSURL</span> *)url
+          placeholderImage:(<span class="hljs-keyword">nullable</span> <span class="hljs-built_in">UIImage</span> *)placeholder;
+
+- (<span class="hljs-keyword">void</span>)sd_setImageWithURL:(<span class="hljs-keyword">nullable</span> <span
+                                            class="hljs-built_in">NSURL</span> *)url
+          placeholderImage:(<span class="hljs-keyword">nullable</span> <span class="hljs-built_in">UIImage</span> *)placeholder
+                   options:(SDWebImageOptions)options;
+
+- (<span class="hljs-keyword">void</span>)sd_setImageWithURL:(<span class="hljs-keyword">nullable</span> <span
+                                            class="hljs-built_in">NSURL</span> *)url
+                 completed:(<span class="hljs-keyword">nullable</span> SDExternalCompletionBlock)completedBlock;
+
+- (<span class="hljs-keyword">void</span>)sd_setImageWithURL:(<span class="hljs-keyword">nullable</span> <span
+                                            class="hljs-built_in">NSURL</span> *)url
+          placeholderImage:(<span class="hljs-keyword">nullable</span> <span class="hljs-built_in">UIImage</span> *)placeholder
+                 completed:(<span class="hljs-keyword">nullable</span> SDExternalCompletionBlock)completedBlock;
+
+- (<span class="hljs-keyword">void</span>)sd_setImageWithURL:(<span class="hljs-keyword">nullable</span> <span
+                                            class="hljs-built_in">NSURL</span> *)url
+          placeholderImage:(<span class="hljs-keyword">nullable</span> <span class="hljs-built_in">UIImage</span> *)placeholder
+                   options:(SDWebImageOptions)options
+                 completed:(<span class="hljs-keyword">nullable</span> SDExternalCompletionBlock)completedBlock;
+
+- (<span class="hljs-keyword">void</span>)sd_setImageWithURL:(<span class="hljs-keyword">nullable</span> <span
+                                            class="hljs-built_in">NSURL</span> *)url
+          placeholderImage:(<span class="hljs-keyword">nullable</span> <span class="hljs-built_in">UIImage</span> *)placeholder
+                   options:(SDWebImageOptions)options
+                  progress:(<span class="hljs-keyword">nullable</span> SDWebImageDownloaderProgressBlock)progressBlock
+                 completed:(<span class="hljs-keyword">nullable</span> SDExternalCompletionBlock)completedBlock;
+                                </code></pre>
+
+
+                                <p>这些方法到最后都会走到：</p>
+                                <pre>
+                                    <code class="hljs objc copyable" lang="objc"><span class="hljs-comment">// ==============  UIView+ WebCache.m ============== //</span>
+- (<span class="hljs-keyword">void</span>)sd_setImageWithURL:(<span class="hljs-keyword">nullable</span> <span
+                                                class="hljs-built_in">NSURL</span> *)url
+          placeholderImage:(<span class="hljs-keyword">nullable</span> <span class="hljs-built_in">UIImage</span> *)placeholder
+                   options:(SDWebImageOptions)options
+                  progress:(<span class="hljs-keyword">nullable</span> SDWebImageDownloaderProgressBlock)progressBlock
+                 completed:(<span class="hljs-keyword">nullable</span> SDExternalCompletionBlock)completedBlock;
+                                </code>
+                                </pre>
+                                <p>而这个方法里面，调用的是<code>UIView+WebCache</code>分类的：</p>
+                                <pre><code class="hljs objc copyable" lang="objc"><span class="hljs-comment">// ==============  UIView+ WebCache.m ============== //</span>
+- (<span class="hljs-keyword">void</span>)sd_internalSetImageWithURL:(<span class="hljs-keyword">nullable</span> <span
+                                            class="hljs-built_in">NSURL</span> *)url
+                  placeholderImage:(<span class="hljs-keyword">nullable</span> <span
+                                            class="hljs-built_in">UIImage</span> *)placeholder
+                           options:(SDWebImageOptions)options
+                      operationKey:(<span class="hljs-keyword">nullable</span> <span
+                                            class="hljs-built_in">NSString</span> *)operationKey
+                     setImageBlock:(<span class="hljs-keyword">nullable</span> SDSetImageBlock)setImageBlock
+                          progress:(<span class="hljs-keyword">nullable</span> SDWebImageDownloaderProgressBlock)progressBlock
+                         completed:(<span class="hljs-keyword">nullable</span> SDExternalCompletionBlock)completedBlock;
+                                </code></pre>
+                                <p>为什么不是UIImageView+WebCache而要上一层到UIView的分类里呢？
+                                    因为SDWebImage框架也支持UIButton的下载图片等方法，所以需要在它们的父类：UIView里面统一一个下载方法。</p>
+                                <p>简单看一下这个方法的实现：</p>
+                                <pre><code class="hljs objc copyable" lang="objc"> <span class="hljs-comment">// ==============  UIView+ WebCache.m ============== //</span>
+
+    <span class="hljs-comment">//valid key：UIImageView || UIButton</span>
+    <span class="hljs-built_in">NSString</span> *validOperationKey = operationKey ?: <span class="hljs-built_in">NSStringFromClass</span>([<span
+                                            class="hljs-keyword">self</span> <span class="hljs-keyword">class</span>]);
+    <span class="hljs-comment">//UIView+WebCacheOperation 的 operationDictionary</span>
+    <span class="hljs-comment">//下面这行代码是保证没有当前正在进行的异步下载操作, 使它不会与即将进行的操作发生冲突</span>
+    [<span class="hljs-keyword">self</span> sd_cancelImageLoadOperationWithKey:validOperationKey];
+
+
+    <span class="hljs-comment">//添加临时的占位图（在不延迟添加占位图的option下）</span>
+    <span class="hljs-keyword">if</span> (!(options &amp; SDWebImageDelayPlaceholder)) {
+        dispatch_main_async_safe(^{
+            [<span class="hljs-keyword">self</span> sd_setImage:placeholder imageData:<span
+                                            class="hljs-literal">nil</span> basedOnClassOrViaCustomSetImageBlock:setImageBlock];
+        });
+    }
+
+    <span class="hljs-comment">//如果url存在</span>
+    <span class="hljs-keyword">if</span> (url) {
+
+       ...
+        __<span class="hljs-keyword">weak</span> __<span class="hljs-keyword">typeof</span>(<span class="hljs-keyword">self</span>)wself = <span
+                                            class="hljs-keyword">self</span>;
+
+       <span class="hljs-comment">//SDWebImageManager下载图片</span>
+        <span class="hljs-keyword">id</span> &lt;SDWebImageOperation&gt; operation = [SDWebImageManager.sharedManager loadImageWithURL:url options:options progress:progressBlock completed:^(<span
+                                            class="hljs-built_in">UIImage</span> *image, <span class="hljs-built_in">NSData</span> *data, <span
+                                            class="hljs-built_in">NSError</span> *error, SDImageCacheType cacheType, <span
+                                            class="hljs-built_in">BOOL</span> finished, <span class="hljs-built_in">NSURL</span> *imageURL) {
+
+            ...
+            <span class="hljs-comment">//dispatch_main_sync_safe : 保证block能在主线程进行</span>
+            dispatch_main_async_safe(^{
+
+                <span class="hljs-keyword">if</span> (!sself) {
+                    <span class="hljs-keyword">return</span>;
+                }
+
+                <span class="hljs-keyword">if</span> (image &amp;&amp; (options &amp; SDWebImageAvoidAutoSetImage) &amp;&amp; completedBlock) {
+                     <span class="hljs-comment">//image，而且不自动替换 placeholder image</span>
+                    completedBlock(image, error, cacheType, url);
+                    <span class="hljs-keyword">return</span>;
+
+                } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (image) {
+                    <span class="hljs-comment">//存在image，需要马上替换 placeholder image</span>
+                    [sself sd_setImage:image imageData:data basedOnClassOrViaCustomSetImageBlock:setImageBlock];
+                    [sself sd_setNeedsLayout];
+
+                } <span class="hljs-keyword">else</span> {
+                    <span class="hljs-comment">//没有image，在图片下载完之后显示 placeholder image</span>
+                    <span class="hljs-keyword">if</span> ((options &amp; SDWebImageDelayPlaceholder)) {
+                        [sself sd_setImage:placeholder imageData:<span class="hljs-literal">nil</span> basedOnClassOrViaCustomSetImageBlock:setImageBlock];
+                        [sself sd_setNeedsLayout];
+                    }
+                }
+
+                <span class="hljs-keyword">if</span> (completedBlock &amp;&amp; finished) {
+                    completedBlock(image, error, cacheType, url);
+                }
+            });
+        }];
+
+        <span class="hljs-comment">//在操作缓存字典（operationDictionary）里添加operation，表示当前的操作正在进行</span>
+        [<span class="hljs-keyword">self</span> sd_setImageLoadOperation:operation forKey:validOperationKey];
+
+    } <span class="hljs-keyword">else</span> {
+        <span class="hljs-comment">//如果url不存在，就在completedBlock里传入error（url为空）</span>
+        dispatch_main_async_safe(^{
+            [<span class="hljs-keyword">self</span> sd_removeActivityIndicator];
+            <span class="hljs-keyword">if</span> (completedBlock) {
+                <span class="hljs-built_in">NSError</span> *error = [<span class="hljs-built_in">NSError</span> errorWithDomain:SDWebImageErrorDomain code:<span
+                                            class="hljs-number">-1</span> userInfo:@{<span class="hljs-built_in">NSLocalizedDescriptionKey</span> : <span
+                                            class="hljs-string">@"Trying to load a nil url"</span>}];
+                completedBlock(<span class="hljs-literal">nil</span>, error, SDImageCacheTypeNone, url);
+            }
+        });
+    }
+     </code></pre>
+                                值得一提的是，在这一层，使用一个字典``operationDictionary``专门用作存储操作的缓存，随时添加，删除操作任务。
+                                而这个字典是``<span class="hljs-built_in">UIView</span>+WebCacheOperation``分类的关联对象，它的存取方法使用运行时来操作：
+
+                                <pre><code class="hljs objc copyable" lang="objc"> <span class="hljs-comment">// ==============  UIView+WebCacheOperation.m ============== //</span>
+  <span class="hljs-comment">//获取关联对象：operations（用来存放操作的字典）</span>
+    - (SDOperationsDictionary *)operationDictionary {
+       SDOperationsDictionary *operations = objc_getAssociatedObject(<span
+                                            class="hljs-keyword">self</span>, &amp;loadOperationKey);
+  <span class="hljs-comment">//存放操作的字典</span>
+         <span class="hljs-keyword">if</span> (operations) {
+             <span class="hljs-keyword">return</span> operations;
+         }
+  <span class="hljs-comment">//如果没有，就新建一个</span>
+        operations = [<span class="hljs-built_in">NSMutableDictionary</span> dictionary];
+        objc_setAssociatedObject(<span class="hljs-keyword">self</span>, &amp;loadOperationKey,
+        operations, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+        <span class="hljs-keyword">return</span> operations;
+  </code></pre>
+
+
+                                <h2 id="工具层"><a href="#工具层" class="headerlink" title="工具层"></a>工具层</h2>
+                                <p>上文提到过，<code>SDWebImageManager</code>同时管理<code>SDImageCache</code>和<code>SDWebImageDownloader</code>两个类，它是这一层的<strong>老大哥</strong>。在下载任务开始的时候，<code>SDWebImageManager</code>首先访问<code>SDImageCache</code>来查询是否存在缓存，如果有缓存，直接返回缓存的图片。如果没有缓存，就命令<code>SDWebImageDownloader</code>来下载图片，下载成功后，存入缓存，显示图片。以上是<code>SDWebImageManager</code>大致的工作流程。
+                                </p>
+                                <p>在详细讲解<code>SDWebImageManager</code>是如何下载图片之前，我们先看一下这个类的几个重要的属性：</p>
+                                <pre><code class="hljs objc copyable" lang="objc"> <span class="hljs-comment">// ==============  SDWebImageManager.h ============== //</span>
+<span class="hljs-keyword">@property</span> (<span class="hljs-keyword">strong</span>, <span class="hljs-keyword">nonatomic</span>, <span
+                                            class="hljs-keyword">readwrite</span>, <span
+                                            class="hljs-keyword">nonnull</span>) SDImageCache *imageCache;<span
+                                            class="hljs-comment">//管理缓存</span>
+<span class="hljs-keyword">@property</span> (<span class="hljs-keyword">strong</span>, <span class="hljs-keyword">nonatomic</span>, <span
+                                            class="hljs-keyword">readwrite</span>, <span
+                                            class="hljs-keyword">nonnull</span>) SDWebImageDownloader <span
+                                            class="hljs-comment">//下载器*imageDownloader;</span>
+<span class="hljs-keyword">@property</span> (<span class="hljs-keyword">strong</span>, <span class="hljs-keyword">nonatomic</span>, <span
+                                            class="hljs-keyword">nonnull</span>) <span class="hljs-built_in">NSMutableSet</span>&lt;<span
+                                            class="hljs-built_in">NSURL</span> *&gt; *failedURLs;<span
+                                            class="hljs-comment">//记录失效url的名单</span>
+<span class="hljs-keyword">@property</span> (<span class="hljs-keyword">strong</span>, <span class="hljs-keyword">nonatomic</span>, <span
+                                            class="hljs-keyword">nonnull</span>) <span class="hljs-built_in">NSMutableArray</span>&lt;SDWebImageCombinedOperation *&gt; *runningOperations;<span
+                                            class="hljs-comment">//记录当前正在执行的操作</span>
+                                    </code></pre>
+
+
+                                <p><code>SDWebImageManager</code>下载图片的方法只有一个：</p>
+
+
+                                <pre><code class="hljs objc copyable" lang="objc">[SDWebImageManager.sharedManager loadImageWithURL:options:progress:completed:]
+<span class="copy-code-btn">复制代码</span></code></pre>
+                                <p>看一下这个方法的具体实现：</p>
+                                <pre><code class="hljs objc copyable" lang="objc"> <span class="hljs-comment">// ==============  SDWebImageManager.m ============== //</span>
+- (<span class="hljs-keyword">id</span> &lt;SDWebImageOperation&gt;)loadImageWithURL:(<span class="hljs-keyword">nullable</span> <span
+                                            class="hljs-built_in">NSURL</span> *)url
+                                     options:(SDWebImageOptions)options
+                                    progress:(<span class="hljs-keyword">nullable</span> SDWebImageDownloaderProgressBlock)progressBlock
+                                   completed:(<span class="hljs-keyword">nullable</span> SDInternalCompletionBlock)completedBlock {
+     ...
+    <span class="hljs-comment">//在SDImageCache里查询是否存在缓存的图片</span>
+    operation.cacheOperation = [<span class="hljs-keyword">self</span>.imageCache queryCacheOperationForKey:key done:^(<span
+                                            class="hljs-built_in">UIImage</span> *cachedImage, <span
+                                            class="hljs-built_in">NSData</span> *cachedData, SDImageCacheType cacheType) {
+
+        ...
+        <span class="hljs-comment">//（没有缓存图片） || （即使有缓存图片，也需要更新缓存图片） || （代理没有响应imageManager:shouldDownloadImageForURL:消息，默认返回yes，需要下载图片）|| （imageManager:shouldDownloadImageForURL:返回yes，需要下载图片）</span>
+        <span class="hljs-keyword">if</span> ((!cachedImage || options &amp; SDWebImageRefreshCached) &amp;&amp; (![<span
+                                            class="hljs-keyword">self</span>.delegate respondsToSelector:<span
+                                            class="hljs-keyword">@selector</span>(imageManager:shouldDownloadImageForURL:)] || [<span
+                                            class="hljs-keyword">self</span>.delegate imageManager:<span
+                                            class="hljs-keyword">self</span> shouldDownloadImageForURL:url])) {
+
+            <span class="hljs-comment">//1. 存在缓存图片 &amp;&amp; 即使有缓存图片也要下载更新图片</span>
+            <span class="hljs-keyword">if</span> (cachedImage &amp;&amp; options &amp; SDWebImageRefreshCached) {
+                [<span class="hljs-keyword">self</span> callCompletionBlockForOperation:weakOperation completion:completedBlock image:cachedImage data:cachedData error:<span
+                                            class="hljs-literal">nil</span> cacheType:cacheType finished:<span
+                                            class="hljs-literal">YES</span> url:url];
+            }
+
+
+            <span class="hljs-comment">// 2. 如果不存在缓存图片</span>
+            ...
+
+            <span class="hljs-comment">//开启下载器下载</span>
+            <span class="hljs-comment">//subOperationToken 用来标记当前的下载任务，便于被取消</span>
+            SDWebImageDownloadToken *subOperationToken = [<span class="hljs-keyword">self</span>.imageDownloader downloadImageWithURL:url options:downloaderOptions progress:progressBlock completed:^(<span
+                                            class="hljs-built_in">UIImage</span> *downloadedImage, <span
+                                            class="hljs-built_in">NSData</span> *downloadedData, <span
+                                            class="hljs-built_in">NSError</span> *error, <span class="hljs-built_in">BOOL</span> finished) {
+                __<span class="hljs-keyword">strong</span> __<span class="hljs-keyword">typeof</span>(weakOperation) strongOperation = weakOperation;
+                <span class="hljs-keyword">if</span> (!strongOperation || strongOperation.isCancelled) {
+                    <span class="hljs-comment">// 1. 如果任务被取消，则什么都不做，避免和其他的completedBlock重复</span>
+
+                } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (error) {
+
+                    <span class="hljs-comment">//2. 如果有错误</span>
+                    <span class="hljs-comment">//2.1 在completedBlock里传入error</span>
+                    [<span class="hljs-keyword">self</span> callCompletionBlockForOperation:strongOperation completion:completedBlock error:error url:url];
+
+							<span class="hljs-comment">//2.2 在错误url名单中添加当前的url</span>
+                    <span class="hljs-keyword">if</span> (   error.code != <span class="hljs-built_in">NSURLErrorNotConnectedToInternet</span>
+                        &amp;&amp; error.code != <span class="hljs-built_in">NSURLErrorCancelled</span>
+                        &amp;&amp; error.code != <span class="hljs-built_in">NSURLErrorTimedOut</span>
+                        &amp;&amp; error.code != <span class="hljs-built_in">NSURLErrorInternationalRoamingOff</span>
+                        &amp;&amp; error.code != <span class="hljs-built_in">NSURLErrorDataNotAllowed</span>
+                        &amp;&amp; error.code != <span class="hljs-built_in">NSURLErrorCannotFindHost</span>
+                        &amp;&amp; error.code != <span class="hljs-built_in">NSURLErrorCannotConnectToHost</span>) {
+
+                       <span class="hljs-keyword">@synchronized</span> (<span class="hljs-keyword">self</span>.failedURLs) {
+                            [<span class="hljs-keyword">self</span>.failedURLs addObject:url];
+                        }
+                    }
+                }
+                <span class="hljs-keyword">else</span> {
+
+                    <span class="hljs-comment">//3. 下载成功</span>
+                    <span class="hljs-comment">//3.1 如果需要下载失败后重新下载，则将当前url从失败url名单里移除</span>
+                    <span class="hljs-keyword">if</span> ((options &amp; SDWebImageRetryFailed)) {
+                        <span class="hljs-keyword">@synchronized</span> (<span class="hljs-keyword">self</span>.failedURLs) {
+                            [<span class="hljs-keyword">self</span>.failedURLs removeObject:url];
+                        }
+                    }
+
+                    <span class="hljs-comment">//3.2 进行缓存</span>
+                    <span class="hljs-built_in">BOOL</span> cacheOnDisk = !(options &amp; SDWebImageCacheMemoryOnly);
+
+
+                    <span class="hljs-keyword">if</span> (options &amp; SDWebImageRefreshCached &amp;&amp; cachedImage &amp;&amp; !downloadedImage) {
+
+                        <span class="hljs-comment">//（即使缓存存在，也要刷新图片） &amp;&amp; 缓存图片 &amp;&amp; 不存在下载后的图片：不做操作</span>
+
+                    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (downloadedImage &amp;&amp; (!downloadedImage.images || (options &amp; SDWebImageTransformAnimatedImage)) &amp;&amp; [<span
+                                            class="hljs-keyword">self</span>.delegate respondsToSelector:<span
+                                            class="hljs-keyword">@selector</span>(imageManager:transformDownloadedImage:withURL:)]) {
+
+          <span class="hljs-comment">//（下载图片成功 &amp;&amp; （没有动图||处理动图） &amp;&amp; （下载之后，缓存之前处理图片）               dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{</span>
+                            <span class="hljs-built_in">UIImage</span> *transformedImage = [<span class="hljs-keyword">self</span>.delegate imageManager:<span
+                                            class="hljs-keyword">self</span> transformDownloadedImage:downloadedImage withURL:url];
+
+                            <span class="hljs-keyword">if</span> (transformedImage &amp;&amp; finished) {
+                                <span class="hljs-built_in">BOOL</span> imageWasTransformed = ![transformedImage isEqual:downloadedImage];
+                                <span class="hljs-comment">// pass nil if the image was transformed, so we can recalculate the data from the image</span>
+                                <span class="hljs-comment">//缓存图片</span>
+                                [<span class="hljs-keyword">self</span>.imageCache storeImage:transformedImage imageData:(imageWasTransformed ? <span
+                                            class="hljs-literal">nil</span> : downloadedData) forKey:key toDisk:cacheOnDisk completion:<span
+                                            class="hljs-literal">nil</span>];
+                            }
+                            <span class="hljs-comment">//将图片传入completedBlock</span>
+                            [<span class="hljs-keyword">self</span> callCompletionBlockForOperation:strongOperation completion:completedBlock image:transformedImage data:downloadedData error:<span
+                                            class="hljs-literal">nil</span> cacheType:SDImageCacheTypeNone finished:finished url:url];
+                        });
+                    } <span class="hljs-keyword">else</span> {
+
+                        <span class="hljs-comment">//(图片下载成功并结束)</span>
+                        <span class="hljs-keyword">if</span> (downloadedImage &amp;&amp; finished) {
+                            [<span class="hljs-keyword">self</span>.imageCache storeImage:downloadedImage imageData:downloadedData forKey:key toDisk:cacheOnDisk completion:<span
+                                            class="hljs-literal">nil</span>];
+                        }
+
+                        [<span class="hljs-keyword">self</span> callCompletionBlockForOperation:strongOperation completion:completedBlock image:downloadedImage data:downloadedData error:<span
+                                            class="hljs-literal">nil</span> cacheType:SDImageCacheTypeNone finished:finished url:url];
+                    }
+                }
+
+					 <span class="hljs-comment">//如果完成，从当前运行的操作列表里移除当前操作</span>
+                <span class="hljs-keyword">if</span> (finished) {
+                    [<span class="hljs-keyword">self</span> safelyRemoveOperationFromRunning:strongOperation];
+                }
+            }];
+
+            <span class="hljs-comment">//取消的block</span>
+            operation.cancelBlock = ^{
+
+                <span class="hljs-comment">//取消当前的token</span>
+                [<span class="hljs-keyword">self</span>.imageDownloader cancel:subOperationToken];
+                __<span class="hljs-keyword">strong</span> __<span class="hljs-keyword">typeof</span>(weakOperation) strongOperation = weakOperation;
+                <span class="hljs-comment">//从当前运行的操作列表里移除当前操作</span>
+                [<span class="hljs-keyword">self</span> safelyRemoveOperationFromRunning:strongOperation];
+            };
+
+        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (cachedImage) {
+
+            <span class="hljs-comment">//存在缓存图片</span>
+            __<span class="hljs-keyword">strong</span> __<span class="hljs-keyword">typeof</span>(weakOperation) strongOperation = weakOperation;
+
+            <span class="hljs-comment">//调用完成的block</span>
+            [<span class="hljs-keyword">self</span> callCompletionBlockForOperation:strongOperation completion:completedBlock image:cachedImage data:cachedData error:<span
+                                            class="hljs-literal">nil</span> cacheType:cacheType finished:<span
+                                            class="hljs-literal">YES</span> url:url];
+
+            <span class="hljs-comment">//删去当前的的下载操作（线程安全）</span>
+            [<span class="hljs-keyword">self</span> safelyRemoveOperationFromRunning:operation];
+
+        } <span class="hljs-keyword">else</span> {
+
+            <span class="hljs-comment">//没有缓存的图片，而且下载被代理终止了</span>
+            __<span class="hljs-keyword">strong</span> __<span class="hljs-keyword">typeof</span>(weakOperation) strongOperation = weakOperation;
+
+            <span class="hljs-comment">// 调用完成的block</span>
+            [<span class="hljs-keyword">self</span> callCompletionBlockForOperation:strongOperation completion:completedBlock image:<span
+                                            class="hljs-literal">nil</span> data:<span class="hljs-literal">nil</span> error:<span
+                                            class="hljs-literal">nil</span> cacheType:SDImageCacheTypeNone finished:<span
+                                            class="hljs-literal">YES</span> url:url];
+
+            <span class="hljs-comment">//删去当前的下载操作</span>
+            [<span class="hljs-keyword">self</span> safelyRemoveOperationFromRunning:operation];
+        }
+    }];
+
+    <span class="hljs-keyword">return</span> operation;
+}
+
+</code></pre>
+
+                                <p>看完了<code>SDWebImageManager</code>的回调处理，我们分别看一下
+                                    <code>SDImageCache</code>和<code>SDWebImageDownloader</code>内部具体是如何工作的。首先看一下<code>SDImageCache</code>：
+                                </p>
+                                <h3 id="SDImageCache"><a title="SDImageCache" href="#SDImageCache"></a>SDImageCache</h3>
+                                <h4 class="heading" data-id="heading-3">属性</h4>
+                                <pre><code class="hljs objc copyable" lang="objc"> <span class="hljs-comment">// ==============  SDImageCache.m ============== //</span>
+<span class="hljs-keyword">@property</span> (<span class="hljs-keyword">strong</span>, <span class="hljs-keyword">nonatomic</span>, <span
+                                            class="hljs-keyword">nonnull</span>) <span
+                                            class="hljs-built_in">NSCache</span> *memCache;<span class="hljs-comment">//内存缓存</span>
+<span class="hljs-keyword">@property</span> (<span class="hljs-keyword">strong</span>, <span class="hljs-keyword">nonatomic</span>, <span
+                                            class="hljs-keyword">nonnull</span>) <span
+                                            class="hljs-built_in">NSString</span> *diskCachePath;<span
+                                            class="hljs-comment">//磁盘缓存路径</span>
+<span class="hljs-keyword">@property</span> (<span class="hljs-keyword">strong</span>, <span class="hljs-keyword">nonatomic</span>, <span
+                                            class="hljs-keyword">nullable</span>) <span class="hljs-built_in">NSMutableArray</span>&lt;<span
+                                            class="hljs-built_in">NSString</span> *&gt; *customPaths;<span
+                                            class="hljs-comment">//</span>
+<span class="hljs-keyword">@property</span> (SDDispatchQueueSetterSementics, <span class="hljs-keyword">nonatomic</span>, <span
+                                            class="hljs-keyword">nullable</span>) <span class="hljs-built_in">dispatch_queue_t</span> <span
+                                            class="hljs-comment">//ioQueue唯一子线程;</span>
+<span class="copy-code-btn">复制代码</span></code></pre>
+                                <h4 class="heading" data-id="heading-4">核心方法：查询缓存</h4>
+                                <pre><code class="hljs objc copyable" lang="objc"> <span class="hljs-comment">// ==============  SDImageCache.m ============== //</span>
+- (<span class="hljs-keyword">nullable</span> <span class="hljs-built_in">NSOperation</span> *)queryCacheOperationForKey:(<span
+                                            class="hljs-keyword">nullable</span> <span
+                                            class="hljs-built_in">NSString</span> *)key done:(<span
+                                            class="hljs-keyword">nullable</span> SDCacheQueryCompletedBlock)doneBlock {
+
+    <span class="hljs-keyword">if</span> (!key) {
+        <span class="hljs-keyword">if</span> (doneBlock) {
+            doneBlock(<span class="hljs-literal">nil</span>, <span class="hljs-literal">nil</span>, SDImageCacheTypeNone);
+        }
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>;
+    }
+
+    <span class="hljs-comment">//================查看内存的缓存=================//</span>
+    <span class="hljs-built_in">UIImage</span> *image = [<span class="hljs-keyword">self</span> imageFromMemoryCacheForKey:key];
+
+    <span class="hljs-comment">// 如果存在，直接调用block，将image，data，CaheType传进去</span>
+    <span class="hljs-keyword">if</span> (image) {
+
+        <span class="hljs-built_in">NSData</span> *diskData = <span class="hljs-literal">nil</span>;
+
+        <span class="hljs-comment">//如果是gif，就拿到data，后面要传到doneBlock里。不是gif就传nil</span>
+        <span class="hljs-keyword">if</span> ([image isGIF]) {
+            diskData = [<span class="hljs-keyword">self</span> diskImageDataBySearchingAllPathsForKey:key];
+        }
+
+        <span class="hljs-keyword">if</span> (doneBlock) {
+            doneBlock(image, diskData, SDImageCacheTypeMemory);
+        }
+
+        <span class="hljs-comment">//因为图片有缓存可供使用，所以不用实例化NSOperation，直接范围nil</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>;
+    }
+
+    <span class="hljs-comment">//================查看磁盘的缓存=================//</span>
+    <span class="hljs-built_in">NSOperation</span> *operation = [<span class="hljs-built_in">NSOperation</span> new];
+
+    <span class="hljs-comment">//唯一的子线程：self.ioQueue</span>
+    <span class="hljs-built_in">dispatch_async</span>(<span class="hljs-keyword">self</span>.ioQueue, ^{
+
+        <span class="hljs-keyword">if</span> (operation.isCancelled) {
+            <span class="hljs-comment">// 在用之前就判断operation是否被取消了，作者考虑的非常严谨</span>
+            <span class="hljs-keyword">return</span>;
+        }
+
+        <span class="hljs-keyword">@autoreleasepool</span> {
+
+            <span class="hljs-built_in">NSData</span> *diskData = [<span class="hljs-keyword">self</span> diskImageDataBySearchingAllPathsForKey:key];
+            <span class="hljs-built_in">UIImage</span> *diskImage = [<span class="hljs-keyword">self</span> diskImageForKey:key];
+
+            <span class="hljs-keyword">if</span> (diskImage &amp;&amp; <span class="hljs-keyword">self</span>.config.shouldCacheImagesInMemory) {
+
+                <span class="hljs-comment">// cost 被用来计算缓存中所有对象的代价。当内存受限或者所有缓存对象的总代价超过了最大允许的值时，缓存会移除其中的一些对象。</span>
+                <span class="hljs-built_in">NSUInteger</span> cost = SDCacheCostForImage(diskImage);
+
+                <span class="hljs-comment">//存入内存缓存中</span>
+                [<span class="hljs-keyword">self</span>.memCache setObject:diskImage forKey:key cost:cost];
+            }
+
+            <span class="hljs-keyword">if</span> (doneBlock) {
+                <span class="hljs-built_in">dispatch_async</span>(dispatch_get_main_queue(), ^{
+                    doneBlock(diskImage, diskData, SDImageCacheTypeDisk);
+                });
+            }
+        }
+    });
+
+    <span class="hljs-keyword">return</span> operation;
+}
+<span class="copy-code-btn">复制代码</span></code></pre>
+                                <h3 id="SDWebImageDownloader"><a href="#SDWebImageDownloader"
+                                                                 title="SDWebImageDownloader"></a>SDWebImageDownloader
+                                </h3>
+                                <h4 class="heading" data-id="heading-6">属性</h4>
+                                <pre><code class="hljs objc copyable" lang="objc"> <span class="hljs-comment">// ==============  SDWebImageDownloader.m ============== //</span>
+<span class="hljs-keyword">@property</span> (<span class="hljs-keyword">strong</span>, <span class="hljs-keyword">nonatomic</span>, <span
+                                            class="hljs-keyword">nonnull</span>) <span class="hljs-built_in">NSOperationQueue</span> *downloadQueue;<span
+                                            class="hljs-comment">//下载队列</span>
+<span class="hljs-keyword">@property</span> (<span class="hljs-keyword">weak</span>, <span class="hljs-keyword">nonatomic</span>, <span
+                                            class="hljs-keyword">nullable</span>) <span class="hljs-built_in">NSOperation</span> *lastAddedOperation;<span
+                                            class="hljs-comment">//最后添加的下载操作</span>
+<span class="hljs-keyword">@property</span> (<span class="hljs-keyword">assign</span>, <span class="hljs-keyword">nonatomic</span>, <span
+                                            class="hljs-keyword">nullable</span>) Class operationClass;<span
+                                            class="hljs-comment">//操作类</span>
+<span class="hljs-keyword">@property</span> (<span class="hljs-keyword">strong</span>, <span class="hljs-keyword">nonatomic</span>, <span
+                                            class="hljs-keyword">nonnull</span>) <span class="hljs-built_in">NSMutableDictionary</span>&lt;<span
+                                            class="hljs-built_in">NSURL</span> *, SDWebImageDownloaderOperation *&gt; *URLOperations;<span
+                                            class="hljs-comment">//操作数组</span>
+<span class="hljs-keyword">@property</span> (<span class="hljs-keyword">strong</span>, <span class="hljs-keyword">nonatomic</span>, <span
+                                            class="hljs-keyword">nullable</span>) SDHTTPHeadersMutableDictionary *HTTPHeaders;<span
+                                            class="hljs-comment">//HTTP请求头</span>
+<span class="hljs-keyword">@property</span> (SDDispatchQueueSetterSementics, <span class="hljs-keyword">nonatomic</span>, <span
+                                            class="hljs-keyword">nullable</span>) <span class="hljs-built_in">dispatch_queue_t</span> barrierQueue;<span
+                                            class="hljs-comment">//用来阻塞前面的下载线程（串行化）</span>
+<span class="copy-code-btn">复制代码</span></code></pre>
+                                <h4 class="heading" data-id="heading-7">核心方法：下载图片</h4>
+                                <pre><code class="hljs objc copyable" lang="objc"> <span class="hljs-comment">// ==============  SDWebImageDownloader.m ============== //</span>
+- (<span class="hljs-keyword">nullable</span> SDWebImageDownloadToken *)downloadImageWithURL:(<span
+                                            class="hljs-keyword">nullable</span> <span
+                                            class="hljs-built_in">NSURL</span> *)url
+                                                   options:(SDWebImageDownloaderOptions)options
+                                                  progress:(<span class="hljs-keyword">nullable</span> SDWebImageDownloaderProgressBlock)progressBlock
+                                                 completed:(<span class="hljs-keyword">nullable</span> SDWebImageDownloaderCompletedBlock)completedBlock {
+    __<span class="hljs-keyword">weak</span> SDWebImageDownloader *wself = <span class="hljs-keyword">self</span>;
+
+    <span class="hljs-keyword">return</span> [<span class="hljs-keyword">self</span> addProgressCallback:progressBlock completedBlock:completedBlock forURL:url createCallback:^SDWebImageDownloaderOperation *{
+
+        __<span class="hljs-keyword">strong</span> __<span class="hljs-keyword">typeof</span> (wself) sself = wself;
+
+        <span class="hljs-built_in">NSTimeInterval</span> timeoutInterval = sself.downloadTimeout;
+        <span class="hljs-keyword">if</span> (timeoutInterval == <span class="hljs-number">0.0</span>) {
+            timeoutInterval = <span class="hljs-number">15.0</span>;
+        }
+
+        <span class="hljs-comment">// In order to prevent from potential duplicate caching (NSURLCache + SDImageCache) we disable the cache for image requests if told otherwise</span>
+
+        <span class="hljs-comment">//创建下载请求</span>
+        <span class="hljs-built_in">NSMutableURLRequest</span> *request = [[<span class="hljs-built_in">NSMutableURLRequest</span> alloc] initWithURL:url cachePolicy:(options &amp; SDWebImageDownloaderUseNSURLCache ? <span
+                                            class="hljs-built_in">NSURLRequestUseProtocolCachePolicy</span> : <span
+                                            class="hljs-built_in">NSURLRequestReloadIgnoringLocalCacheData</span>) timeoutInterval:timeoutInterval];
+        request.HTTPShouldHandleCookies = (options &amp; SDWebImageDownloaderHandleCookies);
+        request.HTTPShouldUsePipelining = <span class="hljs-literal">YES</span>;
+        <span class="hljs-keyword">if</span> (sself.headersFilter) {
+            request.allHTTPHeaderFields = sself.headersFilter(url, [sself.HTTPHeaders <span
+                                            class="hljs-keyword">copy</span>]);
+        }
+        <span class="hljs-keyword">else</span> {
+            request.allHTTPHeaderFields = sself.HTTPHeaders;
+        }
+
+        <span class="hljs-comment">//创建下载操作：SDWebImageDownloaderOperation用于请求网络资源的操作，它是一个 NSOperation 的子类</span>
+        SDWebImageDownloaderOperation *operation = [[sself.operationClass alloc] initWithRequest:request inSession:sself.session options:options];
+        operation.shouldDecompressImages = sself.shouldDecompressImages;
+
+        <span class="hljs-comment">//url证书</span>
+        <span class="hljs-keyword">if</span> (sself.urlCredential) {
+            operation.credential = sself.urlCredential;
+        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (sself.username &amp;&amp; sself.password) {
+            operation.credential = [<span class="hljs-built_in">NSURLCredential</span> credentialWithUser:sself.username password:sself.password persistence:<span
+                                            class="hljs-built_in">NSURLCredentialPersistenceForSession</span>];
+        }
+
+        <span class="hljs-comment">//优先级</span>
+        <span class="hljs-keyword">if</span> (options &amp; SDWebImageDownloaderHighPriority) {
+            operation.queuePriority = <span class="hljs-built_in">NSOperationQueuePriorityHigh</span>;
+        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (options &amp; SDWebImageDownloaderLowPriority) {
+            operation.queuePriority = <span class="hljs-built_in">NSOperationQueuePriorityLow</span>;
+        }
+
+        <span class="hljs-comment">//在下载队列里添加下载操作，执行下载操作</span>
+        [sself.downloadQueue addOperation:operation];
+
+        <span class="hljs-comment">//如果后进先出</span>
+        <span class="hljs-keyword">if</span> (sself.executionOrder == SDWebImageDownloaderLIFOExecutionOrder) {
+            <span class="hljs-comment">// Emulate LIFO execution order by systematically adding new operations as last operation's dependency</span>
+            <span class="hljs-comment">//addDependency:参数opertaion倍添加到NSOperationQueue后，只有等该opertion结束后才能执行其他的operation，实现了后进先出</span>
+            [sself.lastAddedOperation addDependency:operation];
+            sself.lastAddedOperation = operation;
+        }
+
+        <span class="hljs-keyword">return</span> operation;
+    }];
+}
+<span class="copy-code-btn">复制代码</span></code></pre>
+                                <p>这里面还有一个<code>addProgressCallback: progressBlock: completedBlock: forURL:
+                                    createCallback:</code>方法，用来保存<code>progressBlock</code>和<code>completedBlock</code>。我们看一下这个方法的实现：
+                                </p>
+                                <pre><code class="hljs objc copyable" lang="objc"> <span class="hljs-comment">// ==============  SDWebImageDownloader.m ============== //</span>
+- (<span class="hljs-keyword">nullable</span> SDWebImageDownloadToken *)addProgressCallback:(SDWebImageDownloaderProgressBlock)progressBlock
+                                           completedBlock:(SDWebImageDownloaderCompletedBlock)completedBlock
+                                                   forURL:(<span class="hljs-keyword">nullable</span> <span
+                                            class="hljs-built_in">NSURL</span> *)url
+                                           createCallback:(SDWebImageDownloaderOperation *(^)())createCallback {
+
+    <span class="hljs-comment">// url 用来作为回调字典的key，如果为空，立即返回失败 </span>
+    <span class="hljs-keyword">if</span> (url == <span class="hljs-literal">nil</span>) {
+        <span class="hljs-keyword">if</span> (completedBlock != <span class="hljs-literal">nil</span>) {
+            completedBlock(<span class="hljs-literal">nil</span>, <span class="hljs-literal">nil</span>, <span
+                                            class="hljs-literal">nil</span>, <span class="hljs-literal">NO</span>);
+        }
+        <span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>;
+    }
+
+    __block SDWebImageDownloadToken *token = <span class="hljs-literal">nil</span>;
+
+    <span class="hljs-comment">//串行化前面所有的操作</span>
+    dispatch_barrier_sync(<span class="hljs-keyword">self</span>.barrierQueue, ^{
+
+        	<span class="hljs-comment">//当前下载操作中取出SDWebImageDownloaderOperation实例</span>
+        SDWebImageDownloaderOperation *operation = <span class="hljs-keyword">self</span>.URLOperations[url];
+
+        <span class="hljs-keyword">if</span> (!operation) {
+        <span class="hljs-comment">//如果没有，就初始化它</span>
+            operation = createCallback();
+            <span class="hljs-keyword">self</span>.URLOperations[url] = operation;
+            __<span class="hljs-keyword">weak</span> SDWebImageDownloaderOperation *woperation = operation;
+
+            operation.completionBlock = ^{
+              SDWebImageDownloaderOperation *soperation = woperation;
+              <span class="hljs-keyword">if</span> (!soperation) <span class="hljs-keyword">return</span>;
+              <span class="hljs-keyword">if</span> (<span class="hljs-keyword">self</span>.URLOperations[url] == soperation) {
+                  [<span class="hljs-keyword">self</span>.URLOperations removeObjectForKey:url];
+              };
+            };
+        }
+        <span class="hljs-keyword">id</span> downloadOperationCancelToken = [operation addHandlersForProgress:progressBlock completed:completedBlock];
+        <span class="hljs-comment">//这里 downloadOperationCancelToken 默认是一个字典，存放 progressBlock 和 completedBlock</span>
+        token = [SDWebImageDownloadToken new];
+        token.url = url;
+        token.downloadOperationCancelToken = downloadOperationCancelToken;
+    });
+
+    <span class="hljs-keyword">return</span> token;
+}
+
+<span class="copy-code-btn">复制代码</span></code></pre>
+                                <p>这里真正保存两个block的方法是<code>addHandlersForProgress: completed:</code>：</p>
+                                <pre><code class="hljs objc copyable" lang="objc">- (<span
+                                        class="hljs-keyword">nullable</span> <span class="hljs-keyword">id</span>)addHandlersForProgress:(<span
+                                        class="hljs-keyword">nullable</span> SDWebImageDownloaderProgressBlock)progressBlock
+                            completed:(<span class="hljs-keyword">nullable</span> SDWebImageDownloaderCompletedBlock)completedBlock {
+    <span class="hljs-comment">//实例化一个SDCallbacksDictionary，存放一个progressBlock 和 completedBlock</span>
+    SDCallbacksDictionary *callbacks = [<span class="hljs-built_in">NSMutableDictionary</span> new];
+    <span class="hljs-keyword">if</span> (progressBlock) callbacks[kProgressCallbackKey] = [progressBlock <span
+                                            class="hljs-keyword">copy</span>];
+    <span class="hljs-keyword">if</span> (completedBlock) callbacks[kCompletedCallbackKey] = [completedBlock <span
+                                            class="hljs-keyword">copy</span>];
+    dispatch_barrier_async(<span class="hljs-keyword">self</span>.barrierQueue, ^{
+        <span class="hljs-comment">//添加到缓存中 self.callbackBlocks</span>
+        [<span class="hljs-keyword">self</span>.callbackBlocks addObject:callbacks];
+    });
+    <span class="hljs-keyword">return</span> callbacks;
+}
+
+<span class="copy-code-btn">复制代码</span></code></pre>
+                                <p>到这里<code>SDWebImage</code>的核心方法都讲解完毕了，其他没有讲到的部分以后会慢慢添加上去。</p>
+
+                                <h2 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>最后看一下一些比较零散的知识点：</h2>
+                                <h4 id="运行时存取关联对象"><a href="#运行时存取关联对象" title="运行时存取关联对象"></a> 1. 运行时存取关联对象：
+                                </h4>
+                                <p><strong>存：</strong></p>
+                                <pre><code class="hljs objc copyable" lang="objc">objc_setAssociatedObject(<span
+                                        class="hljs-keyword">self</span>, &amp;loadOperationKey, operations, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+<span class="hljs-comment">//将operations对象关联给self，地址为&amp;loadOperationKey，语义是OBJC_ASSOCIATION_RETAIN_NONATOMIC。</span>
+<span class="copy-code-btn">复制代码</span></code></pre>
+                                <p><strong>取：</strong></p>
+                                <pre><code class="hljs objc copyable" lang="objc">SDOperationsDictionary *operations = objc_getAssociatedObject(<span
+                                        class="hljs-keyword">self</span>, &amp;loadOperationKey);
+<span class="hljs-comment">//将operations对象通过地址&amp;loadOperationKey从self里取出来</span>
+<span class="copy-code-btn">复制代码</span></code></pre>
+                                <h4 id="数组的写操作需要加锁"><a href="#数组的写操作需要加锁" title="2. 数组的写操作需要加锁"></a> 2.
+                                    数组的写操作需要加锁</h4>
+                                <pre><code class="hljs objc copyable" lang="objc">
+<span class="hljs-comment">//给self.runningOperations加锁</span>
+<span class="hljs-comment">//self.runningOperations数组的添加操作</span>
+    <span class="hljs-keyword">@synchronized</span> (<span class="hljs-keyword">self</span>.runningOperations) {
+        [<span class="hljs-keyword">self</span>.runningOperations addObject:operation];
+    }
+
+<span class="hljs-comment">//self.runningOperations数组的删除操作</span>
+- (<span class="hljs-keyword">void</span>)safelyRemoveOperationFromRunning:(<span class="hljs-keyword">nullable</span> SDWebImageCombinedOperation*)operation {
+    <span class="hljs-keyword">@synchronized</span> (<span class="hljs-keyword">self</span>.runningOperations) {
+        <span class="hljs-keyword">if</span> (operation) {
+            [<span class="hljs-keyword">self</span>.runningOperations removeObject:operation];
+        }
+    }
+}
+<span class="copy-code-btn">复制代码</span></code></pre>
+                                <h4 id="确保在主线程的宏:"><a href="#确保在主线程的宏：" title="3. 确保在主线程的宏："></a>3. 确保在主线程的宏：</h4>
+                                <pre><code class="hljs objc copyable" lang="objc">dispatch_main_async_safe(^{
+ 				 <span class="hljs-comment">//将下面这段代码放在主线程中</span>
+            [<span class="hljs-keyword">self</span> sd_setImage:placeholder imageData:<span
+                                            class="hljs-literal">nil</span> basedOnClassOrViaCustomSetImageBlock:setImageBlock];
+        });
+
+<span class="hljs-comment">//宏定义：</span>
+<span class="hljs-meta">#define dispatch_main_async_safe(block)\</span>
+    <span class="hljs-keyword">if</span> (strcmp(dispatch_queue_get_label(DISPATCH_CURRENT_QUEUE_LABEL), dispatch_queue_get_label(dispatch_get_main_queue())) == <span
+                                            class="hljs-number">0</span>) {\
+        block();\
+    } <span class="hljs-keyword">else</span> {\
+        <span class="hljs-built_in">dispatch_async</span>(dispatch_get_main_queue(), block);\
+    }
+<span class="hljs-meta">#endif</span>
+<span class="copy-code-btn">复制代码</span></code></pre>
+                                <h4 id="设置不能为nil的参数"><a title="设置不能为nil的参数" href="#4. 设置不能为nil的参数"></a> 4.
+                                    设置不能为nil的参数</h4>
+                                <pre><code class="hljs objc copyable" lang="objc">- (<span
+                                        class="hljs-keyword">nonnull</span> <span
+                                        class="hljs-keyword">instancetype</span>)initWithCache:(<span
+                                        class="hljs-keyword">nonnull</span> SDImageCache *)cache downloader:(<span
+                                        class="hljs-keyword">nonnull</span> SDWebImageDownloader *)downloader {
+    <span class="hljs-keyword">if</span> ((<span class="hljs-keyword">self</span> = [<span
+                                            class="hljs-keyword">super</span> init])) {
+        _imageCache = cache;
+        _imageDownloader = downloader;
+        _failedURLs = [<span class="hljs-built_in">NSMutableSet</span> new];
+        _runningOperations = [<span class="hljs-built_in">NSMutableArray</span> new];
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">self</span>;
+}
+<span class="copy-code-btn">复制代码</span></code></pre>
+                                <blockquote>
+                                    <p>如果在参数里添加了nonnull关键字，那么编译器就可以检查传入的参数是否为nil，如果是，则编译器会有警告</p>
+                                </blockquote>
+                                <h4 id="容错，强制转换类型"><a href="#容错，强制转换类型"></a>5. 容错，强制转换类型</h4>
+                                <pre><code class="hljs objc copyable" lang="objc"><span class="hljs-keyword">if</span> ([url isKindOfClass:<span
+                                        class="hljs-built_in">NSString</span>.class]) {
+        url = [<span class="hljs-built_in">NSURL</span> URLWithString:(<span class="hljs-built_in">NSString</span> *)url];
+}
+<span class="copy-code-btn">复制代码</span></code></pre>
+                                <blockquote>
+                                    <p>在传入的参数为NSString时（但是方法参数要求是NSURL），自动转换为NSURL</p>
+                                </blockquote>
+
+
+                            </div>
+
+                            <div>
+
+
+                            </div>
+
+                            <div>
+
+
+                            </div>
+
+
+                            <footer class="post-footer">
+                                <div class="post-nav">
+                                    <div class="post-nav-next post-nav-item">
+                                        <a href="/" rel="next"
+                                           title="Home">
+                                            <i class="fa fa-chevron-left"></i> Home
+                                        </a>
+                                    </div>
+
+                                    <div class="post-nav-prev post-nav-item">
+                                        <a href="/objective-c-runtime-2" rel="prev"
+                                           title="Objective-C Runtime 运行时之二：成员变量与属性">
+                                            Objective-C Runtime 运行时之二：成员变量与属性 <i class="fa fa-chevron-right"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </footer>
+
+                        </article>
+                        <div class="post-spread"></div>
+                    </div>
+                </div>
+
+                <div class="comments" id="comments">
+                </div>
+
+            </div>
+
+
+            <div class="sidebar-toggle">
+                <div class="sidebar-toggle-line-wrap">
+                    <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+                    <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+                    <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+                </div>
+            </div>
+
+            <aside id="sidebar" class="sidebar">
+                <div class="sidebar-inner">
+                    <ul class="sidebar-nav motion-element">
+                        <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+                            文章目录
+                        </li>
+                        <li class="sidebar-nav-overview" data-target="site-overview">
+                            站点概览
+                        </li>
+                    </ul>
+
+                    <section class="site-overview sidebar-panel ">
+                        <nav class="site-state motion-element">
+                            <div class="site-state-item site-state-posts">
+                                <a href="/archives">
+                                    <span class="site-state-item-count">86</span>
+                                    <span class="site-state-item-name">日志</span>
+                                </a>
+                            </div>
+
+                            <div class="site-state-item site-state-categories">
+                                <span class="site-state-item-count">7</span>
+                                <span class="site-state-item-name">分类</span>
+                            </div>
+                        </nav>
+                    </section>
+
+
+                    <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+                        <div class="post-toc">
+                            <div class="post-toc-content">
+                                <ol class="nav">
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#UIKit层"><span
+                                            class="nav-number">1.</span> <span class="nav-text">UIKit层</span></a>
+                                    </li>
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#工具层"><span
+                                            class="nav-number">2.</span> <span class="nav-text">工具层</span></a>
+                                    </li>
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#SDImageCache"><span
+                                            class="nav-number">3.</span> <span class="nav-text">SDImageCache</span></a>
+                                    </li>
+                                    <li class="nav-item nav-level-2"><a class="nav-link"
+                                                                        href="#SDWebImageDownloader"><span
+                                            class="nav-number">4.</span> <span
+                                            class="nav-text">SDWebImageDownloader</span></a></li>
+                                    <li class="nav-item nav-level-2"><a class="nav-link" href="#知识点"><span
+                                            class="nav-number">5.</span> <span class="nav-text">知识点</span></a>
+                                        <ol class="nav">
+                                            <li class="nav-item nav-level-2"><a class="nav-link"
+                                                                                href="#运行时存取关联对象"><span
+                                                    class="nav-number">5.1</span> <span
+                                                    class="nav-text">运行时存取关联对象</span></a></li>
+                                            <li class="nav-item nav-level-2"><a class="nav-link"
+                                                                                href="#数组的写操作需要加锁"><span
+                                                    class="nav-number">5.2</span> <span
+                                                    class="nav-text">数组的写操作需要加锁</span></a></li>
+                                            <li class="nav-item nav-level-2"><a class="nav-link"
+                                                                                href="#确保在主线程的宏"><span
+                                                    class="nav-number">5.3</span> <span
+                                                    class="nav-text">确保在主线程的宏</span></a></li>
+                                            <li class="nav-item nav-level-2"><a class="nav-link"
+                                                                                href="#设置不能为nil的参数"><span
+                                                    class="nav-number">5.4</span> <span
+                                                    class="nav-text">设置不能为nil的参数</span></a></li>
+                                            <li class="nav-item nav-level-2"><a class="nav-link"
+                                                                                href="#容错，强制转换类型"><span
+                                                    class="nav-number">5.5</span> <span
+                                                    class="nav-text">容错，强制转换类型</span></a></li>
+
+                                        </ol>
+                                    </li>
+
+
+                                </ol>
+                            </div>
+
+                        </div>
+                    </section>
+
+
+                </div>
+            </aside>
+
+
+        </div>
+    </main>
+
+    <footer id="footer" class="footer">
+        <div class="footer-inner">
+            <div class="copyright">
+                &copy;
+                <span itemprop="copyrightYear">2018</span>
+                <span class="with-love">
+                    <i class="fa fa-heart"></i>
+                </span>
+                <span class="author" itemprop="copyrightHolder">Crow</span>
+            </div>
+        </div>
+    </footer>
+
+    <div class="back-to-top">
+        <i>Top</i>
+    </div>
+
+</div>
+
+
+</body>
+</html>

@@ -28,6 +28,10 @@ def typeSwift_mehtod():
     return send_file("static/html/Categories/typeSwift.html")
 
 
+@app.route('/categories/sourcecode')
+def typeSourceCode_mehtod():
+    return send_file("static/html/Categories/typeSourcecode.html")
+
 
 
 @app.route('/base')
@@ -107,6 +111,11 @@ def swift_9():
 @app.route('/docker')
 def docker():
     return send_file("static/html/docker/docker.html")
+
+#sdwebimage
+@app.route('/sdwebimage-1')
+def sdweb_1():
+    return send_file("static/html/SDWebImage/sdwebimage-1.html")
 
 
 
