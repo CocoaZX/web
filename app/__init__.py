@@ -32,6 +32,9 @@ def typeSwift_mehtod():
 def typeSourceCode_mehtod():
     return send_file("static/html/Categories/typeSourcecode.html")
 
+@app.route('/categories/something')
+def typeSomething_mehtod():
+    return send_file("static/html/Categories/typeSomething.html")
 
 
 @app.route('/base')

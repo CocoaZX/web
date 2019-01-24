@@ -1,615 +1,141 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+    <meta http-equiv="Cache-Control" content="no-transform"/>
+    <meta http-equiv="Cache-Control" content="no-siteapp"/>
+    <link href="/static/vendors/fancybox/source/jquery.fancybox.css" rel="stylesheet" type="text/css"/>
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext"
+          rel="stylesheet" type="text/css">
+    <link href="/static/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+    <link href="/static/css/main.css" rel="stylesheet" type="text/css"/>
 
-<!DOCTYPE html><html lang=zh-CN data-vue-meta-server-rendered><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge,chrome=1"><meta name=viewport content="width=device-width,initial-scale=1,user-scalable=no,viewport-fit=cover"><meta name=google-site-verification content=cCHsgG9ktuCTgWgYfqCJql8AeR4gAne4DTZqztPoirE><meta name=apple-itunes-app content="app-id=987739104"><meta name=baidu-site-verification content=qiK2a1kcFc><meta name=360-site-verification content=4c3c7d57d59f0e1a308462fbc7fd7e51><meta name=sogou_site_verification content=c49WUDZczQ><style>body {
-        font-size: 16px;
-        line-height: 2;
-      }
-      a, button, input {
-        margin: 1rem 1.5rem;
-      }
-      img {
-        width: 0;
-        height: 0;
-      }
-      #juejin {
-        overflow-x: hidden;
-      }</style><meta data-vue-meta="true" data-vmid="keywords" name="keywords" content="源码"/><meta data-vue-meta="true" data-vmid="description" name="description" content="相信对于广大的iOS开发者，对SDWebImage并不会陌生，这个框架通过给UIImageView和UIButton添加分类，实现一个异步下载图片并且支持缓存的功能。整个框架的接口非常简洁，每个类的分工都很明确，是很值得大家学习的。 在使用这个框架的时候，只需"/><title data-vue-meta="true">SDWebImage 源码解析 - 掘金</title><link rel=apple-touch-icon sizes=180x180 href=https://b-gold-cdn.xitu.io/favicons/v2/apple-touch-icon.png><link rel=icon type=image/png sizes=32x32 href=https://b-gold-cdn.xitu.io/favicons/v2/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=https://b-gold-cdn.xitu.io/favicons/v2/favicon-16x16.png><link rel=manifest href=https://b-gold-cdn.xitu.io/favicons/v2/manifest.json><link rel=mask-icon href=https://b-gold-cdn.xitu.io/favicons/v2/safari-pinned-tab.svg color=#5bbad5><link rel="shortcut icon" href=https://b-gold-cdn.xitu.io/favicons/v2/favicon.ico><meta name=msapplication-config content=https://b-gold-cdn.xitu.io/favicons/v2/browserconfig.xml><meta name=theme-color content=#ffffff><link rel=search title=掘金 href=https://b-gold-cdn.xitu.io/conf/search.xml type=application/opensearchdescription+xml><link rel=stylesheet href=https://b-gold-cdn.xitu.io/ionicons/2.0.1/css/ionicons.min.css><link rel=stylesheet href=https://b-gold-cdn.xitu.io/asset/fw-icon/1.0.9/iconfont.css><link href=https://b-gold-cdn.xitu.io/v3/static/css/0.942fe26e757940f083c1.css rel=stylesheet></head><body><div id="juejin" data-server-rendered="true" data-v-451ed118><div class="global-component-box" data-v-451ed118><!----><!----><!----><!----><!----><div class="emoji-barrage" data-v-4610224f data-v-451ed118><!----></div><div class="book-new-user-award-popup" style="display:none;" data-v-284c66aa data-v-451ed118><div class="content-box" style="display:;" data-v-284c66aa><div class="close ion-close-round" data-v-284c66aa></div><div class="header" data-v-284c66aa><div class="icon" data-v-284c66aa><img src="https://b-gold-cdn.xitu.io/v3/static/img/icon.a87e5ae.svg" data-v-284c66aa></div><div class="txt" data-v-284c66aa>新人专享好礼</div></div><div class="desc" data-v-284c66aa>凡未购买过小册的用户，均可领取三张 5 折新人专享券，购买小册时自动使用专享券，最高可节省 45 元。</div><div class="tickets" data-v-284c66aa><div class="ticket" data-v-284c66aa><div class="ticket__inner" data-v-284c66aa><div class="enjoy" data-v-284c66aa><span class="new-title" data-v-284c66aa>小册新人 5 折券</span></div><div class="sale" data-v-284c66aa>最高可省 15 元</div></div></div><div class="ticket" data-v-284c66aa><div class="ticket__inner" data-v-284c66aa><div class="enjoy" data-v-284c66aa><span class="new-title" data-v-284c66aa>小册新人 5 折券</span></div><div class="sale" data-v-284c66aa>最高可省 15 元</div></div></div><div class="ticket" data-v-284c66aa><div class="ticket__inner" data-v-284c66aa><div class="enjoy" data-v-284c66aa><span class="new-title" data-v-284c66aa>小册新人 5 折券</span></div><div class="sale" data-v-284c66aa>最高可省 15 元</div></div></div></div><div class="remark" data-v-284c66aa>注：专享券的使用期限在领券的七天内。</div><div class="submit-btn" data-v-284c66aa>一键领取</div></div><div class="model success" style="display:none;" data-v-284c66aa><div class="heading" data-v-284c66aa>领取成功</div><div class="content-text" data-v-284c66aa>购买小册时自动使用专享券</div><div class="btn-success-footer" data-v-284c66aa><div class="btn-ok" data-v-284c66aa>知道了</div><div class="btn-ok btn-link" data-v-284c66aa>前往小册首页</div></div></div><div class="model fail" style="display:none;" data-v-284c66aa><div class="heading" data-v-284c66aa>领取失败</div><div class="content-text" data-v-284c66aa>本活动仅适用于小册新用户</div><div class="btn-ok" data-v-284c66aa>知道了</div></div></div><!----></div><!----><div class="view-container" data-v-582c797a data-v-af01be76 data-v-451ed118><div class="main-header-box" data-v-582c797a><header class="main-header main-header unauthorized visible" data-v-7a9761eb data-v-582c797a><div class="container" data-v-7a9761eb><a href="/" class="logo" data-v-7a9761eb><img src="https://b-gold-cdn.xitu.io/v3/static/img/logo.a7995ad.svg" alt="掘金" class="logo-img" data-v-7a9761eb></a><nav role="navigation" class="main-nav" data-v-7a9761eb><ul class="nav-list" data-v-7a9761eb><li class="main-nav-list" data-v-7a9761eb><div class="phone-show-menu" data-v-7a9761eb><span data-v-7a9761eb>首页</span><div class="icon ion-arrow-down-b" data-v-7a9761eb></div></div><ul class="phone-hide" data-v-7a9761eb><li class="nav-item link-item route-active" data-v-7a9761eb><a href="/" data-v-7a9761eb>首页</a></li><li class="nav-item link-item activities" data-v-7a9761eb><a href="/activities" data-v-7a9761eb>动态</a></li><li class="nav-item link-item" data-v-7a9761eb><a href="/topics" data-v-7a9761eb>话题</a></li><li class="nav-item link-item book" data-v-7a9761eb><a href="/books" data-v-7a9761eb>小册</a></li><li class="nav-item link-item" data-v-7a9761eb><a href="/events/all" data-v-7a9761eb>活动</a></li><li class="nav-item link-item juejin-2018" data-v-7a9761eb><a title="2018掘金年度回顾" target="_blank" href="https://2018.juejin.im/" data-v-7a9761eb><img src="https://b-gold-cdn.xitu.io/v3/static/img/juejin-2018.7b9d1ea.png" alt="2018掘金年度回顾" class="juejin-2018-icon" data-v-7a9761eb></a></li></ul></li><li class="nav-item search" data-v-7a9761eb><form role="search" class="search-form" data-v-7a9761eb><input maxlength="32" placeholder="搜索掘金" value="" class="search-input" data-v-7a9761eb><img src="https://b-gold-cdn.xitu.io/v3/static/img/juejin-search-icon.6f8ba1b.svg" alt="搜索" class="search-icon" data-v-7a9761eb></form></li><!----><!----><!----><li class="nav-item submit" data-v-7a9761eb><img src="https://b-gold-cdn.xitu.io/v3/static/img/submit-icon.53f4253.svg" class="icon" data-v-7a9761eb><span data-v-7a9761eb>写文章</span><!----></li><li class="nav-item auth" data-v-7a9761eb><span class="login" data-v-7a9761eb>登录</span><span class="register" data-v-7a9761eb>注册</span></li></ul></nav></div></header></div><main class="container main-container" style="max-width:;" data-v-582c797a><div class="view column-view" data-v-582c797a data-v-af01be76><div class="main-area article-area shadow" data-v-582c797a data-v-af01be76><article itemscope="itemscope" itemtype="http://schema.org/Article" class="article" data-v-af01be76><meta itemprop="url" content="https://juejin.im/post/5a4080d16fb9a0451969d0aa"><meta itemprop="headline" content="SDWebImage 源码解析"><meta itemprop="keywords" content="源码"><meta itemprop="datePublished" content="2017-12-25T04:43:07.717Z"><meta itemprop="image" content="https://user-gold-cdn.xitu.io/2017/12/25/1608bfa401a04d12?w=1746&amp;h=1146&amp;f=png&amp;s=206117"><div itemprop="author" itemscope="itemscope" itemtype="http://schema.org/Person"><meta itemprop="name" content="J_Knight_"><meta itemprop="url" content="https://juejin.im/user/57f8ffda2e958a005581e3c0"></div><div itemprop="publisher" itemscope="itemscope" itemtype="http://schema.org/Organization"><meta itemprop="name" content="掘金"><div itemprop="logo" itemscope="itemscope" itemtype="https://schema.org/ImageObject"><meta itemprop="url" content="https://b-gold-cdn.xitu.io/icon/icon-white-180.png"><meta itemprop="width" content="180"><meta itemprop="height" content="180"></div></div><div class="author-info-block" data-v-af01be76><a href="/post/5a4080d16fb9a0451969d0aa" target="_blank" rel="" class="avatar-link" data-v-af01be76><div data-src="https://b-gold-cdn.xitu.io/v3/static/img/default-avatar.e30559a.svg" class="lazy avatar avatar" style="background-image:none;" data-v-652c31ca data-v-1f07d044 data-v-af01be76></div></a><div class="author-info-box" data-v-af01be76><a href="/post/5a4080d16fb9a0451969d0aa" target="_blank" rel="" class="username ellipsis" data-v-af01be76></a><div class="meta-box" data-v-af01be76><time datetime="2017-12-25T04:43:07.717Z" title="Mon Dec 25 2017 12:43:07 GMT+0800 (CST)" class="time" data-v-af01be76>2017年12月25日</time><span class="views-count" data-v-af01be76>阅读 2460</span><!----></div></div></div><div data-src="https://user-gold-cdn.xitu.io/2017/12/25/1608bfa401a04d12?imageView2/1/w/1304/h/734/q/85/interlace/1" class="lazy thumb article-hero" style="background-image:none;background-size:cover;" data-v-652c31ca data-v-5e0ba3b7 data-v-af01be76></div><h1 class="article-title" data-v-af01be76>SDWebImage 源码解析</h1><div data-id="5a4081dbf265da430c120adf" itemprop="articleBody" class="article-content" data-v-af01be76><p>相信对于广大的iOS开发者，对<a target="_blank" href="https://link.juejin.im?target=https%3A%2F%2Fgithub.com%2Frs%2FSDWebImage" rel="nofollow noopener noreferrer">SDWebImage</a>并不会陌生，这个框架通过给UIImageView和UIButton添加分类，实现一个异步下载图片并且支持缓存的功能。整个框架的接口非常简洁，每个类的分工都很明确，是很值得大家学习的。</p>
-<p>在使用这个框架的时候，只需要提供一个下载的url和占位图就可以在回调里拿到下载后的图片：</p>
-<pre><code class="hljs objc copyable" lang="objc">[imageview sd_setImageWithURL:[<span class="hljs-built_in">NSURL</span> URLWithString:<span class="hljs-string">@"pic.jpg"</span>] placeholderImage:[<span class="hljs-built_in">UIImage</span> imageNamed:<span class="hljs-string">@"placeholder"</span>] completed:^(<span class="hljs-built_in">UIImage</span> * _Nullable image, <span class="hljs-built_in">NSError</span> * _Nullable error, SDImageCacheType cacheType, <span class="hljs-built_in">NSURL</span> * _Nullable imageURL) {
-        
-        imageview.image = image;
-        <span class="hljs-built_in">NSLog</span>(<span class="hljs-string">@"图片加载完成"</span>);
-        
-}];
-<span class="copy-code-btn">复制代码</span></code></pre><p>而且我们还可以不设置占位图片，也可以不使用回调的block，非常灵活:</p>
-<pre><code class="hljs objc copyable" lang="objc"><span class="hljs-comment">//图片下载完成后直接显示下载后的图片</span>
-[imageview sd_setImageWithURL:[<span class="hljs-built_in">NSURL</span> URLWithString:<span class="hljs-string">@"pic.jpg"</span>]];
-<span class="copy-code-btn">复制代码</span></code></pre><p>在最开始先简单介绍这个框架：</p>
-<p>这个框架的核心类是<code>SDWebImageManger</code>，在外部有<code>UIImageView+WebCache</code> 和 <code>UIButton+WebCache</code> 为下载图片的操作提供接口。内部有<code>SDWebImageManger</code>负责处理和协调 <code>SDWebImageDownloader</code> 和 <code>SDWebImageCache</code>：<code>SDWebImageDownloader</code>负责具体的下载任务，<code>SDWebImageCache</code>负责关于缓存的工作：添加，删除，查询缓存。</p>
-<p>首先我们大致看一下这个框架的调用流程图：</p>
-<p></p><figure><img alt="SDWebImage" class="lazyload" data-src="https://user-gold-cdn.xitu.io/2017/12/25/1608bf72cff0b2e1?imageView2/0/w/1280/h/960/ignore-error/1" data-width="1240" data-height="983"><figcaption></figcaption></figure><p></p>
-<p>从这个流程图里可以大致看出，该框架分为两个层：UIKit层（负责接收下载参数）和工具层（负责下载操作和缓存）。</p>
-<p>OK～基本流程大概清楚了，我们看一下每个层具体实现吧～</p>
-<hr>
-<h2 class="heading" data-id="heading-0">UIKit层</h2>
-<p>该框架最外层的类是<code>UIImageView +WebCache</code>，我们将图片的URL，占位图片直接给这个类。下面是这个类的公共接口：</p>
-<pre><code class="hljs objc copyable" lang="objc"> <span class="hljs-comment">// ==============  UIImageView + WebCache.h ============== //</span>
-- (<span class="hljs-keyword">void</span>)sd_setImageWithURL:(<span class="hljs-keyword">nullable</span> <span class="hljs-built_in">NSURL</span> *)url;
+    <meta name="keywords" content="Hexo, NexT"/>
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico"/>
 
-- (<span class="hljs-keyword">void</span>)sd_setImageWithURL:(<span class="hljs-keyword">nullable</span> <span class="hljs-built_in">NSURL</span> *)url
-          placeholderImage:(<span class="hljs-keyword">nullable</span> <span class="hljs-built_in">UIImage</span> *)placeholder;
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Crow的技术博客">
+    <meta property="og:url" content="http://southpeak.github.io/categories/objectivec/index.html">
+    <meta property="og:site_name" content="Crow的技术博客">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Crow的技术博客">
 
-- (<span class="hljs-keyword">void</span>)sd_setImageWithURL:(<span class="hljs-keyword">nullable</span> <span class="hljs-built_in">NSURL</span> *)url
-          placeholderImage:(<span class="hljs-keyword">nullable</span> <span class="hljs-built_in">UIImage</span> *)placeholder
-                   options:(SDWebImageOptions)options;
-
-- (<span class="hljs-keyword">void</span>)sd_setImageWithURL:(<span class="hljs-keyword">nullable</span> <span class="hljs-built_in">NSURL</span> *)url
-                 completed:(<span class="hljs-keyword">nullable</span> SDExternalCompletionBlock)completedBlock;
-
-- (<span class="hljs-keyword">void</span>)sd_setImageWithURL:(<span class="hljs-keyword">nullable</span> <span class="hljs-built_in">NSURL</span> *)url
-          placeholderImage:(<span class="hljs-keyword">nullable</span> <span class="hljs-built_in">UIImage</span> *)placeholder
-                 completed:(<span class="hljs-keyword">nullable</span> SDExternalCompletionBlock)completedBlock;
-
-- (<span class="hljs-keyword">void</span>)sd_setImageWithURL:(<span class="hljs-keyword">nullable</span> <span class="hljs-built_in">NSURL</span> *)url
-          placeholderImage:(<span class="hljs-keyword">nullable</span> <span class="hljs-built_in">UIImage</span> *)placeholder
-                   options:(SDWebImageOptions)options
-                 completed:(<span class="hljs-keyword">nullable</span> SDExternalCompletionBlock)completedBlock;
-
-- (<span class="hljs-keyword">void</span>)sd_setImageWithURL:(<span class="hljs-keyword">nullable</span> <span class="hljs-built_in">NSURL</span> *)url
-          placeholderImage:(<span class="hljs-keyword">nullable</span> <span class="hljs-built_in">UIImage</span> *)placeholder
-                   options:(SDWebImageOptions)options
-                  progress:(<span class="hljs-keyword">nullable</span> SDWebImageDownloaderProgressBlock)progressBlock
-                 completed:(<span class="hljs-keyword">nullable</span> SDExternalCompletionBlock)completedBlock;
-<span class="copy-code-btn">复制代码</span></code></pre><p>可以看出，这个类提供的接口非常灵活，可以根据我们自己的需求来调用其中某一个方法，而这些方法到最后都会走到：</p>
-<pre><code class="hljs objc copyable" lang="objc"><span class="hljs-comment">// ==============  UIView+ WebCache.m ============== //</span>
-- (<span class="hljs-keyword">void</span>)sd_setImageWithURL:(<span class="hljs-keyword">nullable</span> <span class="hljs-built_in">NSURL</span> *)url
-          placeholderImage:(<span class="hljs-keyword">nullable</span> <span class="hljs-built_in">UIImage</span> *)placeholder
-                   options:(SDWebImageOptions)options
-                  progress:(<span class="hljs-keyword">nullable</span> SDWebImageDownloaderProgressBlock)progressBlock
-                 completed:(<span class="hljs-keyword">nullable</span> SDExternalCompletionBlock)completedBlock;
-<span class="copy-code-btn">复制代码</span></code></pre><p>而这个方法里面，调用的是<code>UIView+WebCache</code>分类的：</p>
-<pre><code class="hljs objc copyable" lang="objc"><span class="hljs-comment">// ==============  UIView+ WebCache.m ============== //</span>
-- (<span class="hljs-keyword">void</span>)sd_internalSetImageWithURL:(<span class="hljs-keyword">nullable</span> <span class="hljs-built_in">NSURL</span> *)url
-                  placeholderImage:(<span class="hljs-keyword">nullable</span> <span class="hljs-built_in">UIImage</span> *)placeholder
-                           options:(SDWebImageOptions)options
-                      operationKey:(<span class="hljs-keyword">nullable</span> <span class="hljs-built_in">NSString</span> *)operationKey
-                     setImageBlock:(<span class="hljs-keyword">nullable</span> SDSetImageBlock)setImageBlock
-                          progress:(<span class="hljs-keyword">nullable</span> SDWebImageDownloaderProgressBlock)progressBlock
-                         completed:(<span class="hljs-keyword">nullable</span> SDExternalCompletionBlock)completedBlock;
-<span class="copy-code-btn">复制代码</span></code></pre><blockquote>
-<p>为什么不是UIImageView+WebCache而要上一层到UIView的分类里呢？
-因为SDWebImage框架也支持UIButton的下载图片等方法，所以需要在它们的父类：UIView里面统一一个下载方法。</p>
-</blockquote>
-<p>简单看一下这个方法的实现（省略的代码用...代替）：</p>
-<pre><code class="hljs objc copyable" lang="objc"> <span class="hljs-comment">// ==============  UIView+ WebCache.m ============== //</span>
-
-    <span class="hljs-comment">//valid key：UIImageView || UIButton</span>
-    <span class="hljs-built_in">NSString</span> *validOperationKey = operationKey ?: <span class="hljs-built_in">NSStringFromClass</span>([<span class="hljs-keyword">self</span> <span class="hljs-keyword">class</span>]);
-    <span class="hljs-comment">//UIView+WebCacheOperation 的 operationDictionary</span>
-    <span class="hljs-comment">//下面这行代码是保证没有当前正在进行的异步下载操作, 使它不会与即将进行的操作发生冲突</span>
-    [<span class="hljs-keyword">self</span> sd_cancelImageLoadOperationWithKey:validOperationKey];
-    
-
-    <span class="hljs-comment">//添加临时的占位图（在不延迟添加占位图的option下）</span>
-    <span class="hljs-keyword">if</span> (!(options &amp; SDWebImageDelayPlaceholder)) {
-        dispatch_main_async_safe(^{
-            [<span class="hljs-keyword">self</span> sd_setImage:placeholder imageData:<span class="hljs-literal">nil</span> basedOnClassOrViaCustomSetImageBlock:setImageBlock];
-        });
-    }
-    
-    <span class="hljs-comment">//如果url存在</span>
-    <span class="hljs-keyword">if</span> (url) {
-       
-       ...
-        __<span class="hljs-keyword">weak</span> __<span class="hljs-keyword">typeof</span>(<span class="hljs-keyword">self</span>)wself = <span class="hljs-keyword">self</span>;
-
-       <span class="hljs-comment">//SDWebImageManager下载图片</span>
-        <span class="hljs-keyword">id</span> &lt;SDWebImageOperation&gt; operation = [SDWebImageManager.sharedManager loadImageWithURL:url options:options progress:progressBlock completed:^(<span class="hljs-built_in">UIImage</span> *image, <span class="hljs-built_in">NSData</span> *data, <span class="hljs-built_in">NSError</span> *error, SDImageCacheType cacheType, <span class="hljs-built_in">BOOL</span> finished, <span class="hljs-built_in">NSURL</span> *imageURL) {
-          
-            ...
-            <span class="hljs-comment">//dispatch_main_sync_safe : 保证block能在主线程进行</span>
-            dispatch_main_async_safe(^{
-                
-                <span class="hljs-keyword">if</span> (!sself) {
-                    <span class="hljs-keyword">return</span>;
-                }
-               
-                <span class="hljs-keyword">if</span> (image &amp;&amp; (options &amp; SDWebImageAvoidAutoSetImage) &amp;&amp; completedBlock) {
-                     <span class="hljs-comment">//image，而且不自动替换 placeholder image</span>
-                    completedBlock(image, error, cacheType, url);
-                    <span class="hljs-keyword">return</span>;
-                    
-                } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (image) {
-                    <span class="hljs-comment">//存在image，需要马上替换 placeholder image</span>
-                    [sself sd_setImage:image imageData:data basedOnClassOrViaCustomSetImageBlock:setImageBlock];
-                    [sself sd_setNeedsLayout];
-                
-                } <span class="hljs-keyword">else</span> {                    
-                    <span class="hljs-comment">//没有image，在图片下载完之后显示 placeholder image</span>
-                    <span class="hljs-keyword">if</span> ((options &amp; SDWebImageDelayPlaceholder)) {
-                        [sself sd_setImage:placeholder imageData:<span class="hljs-literal">nil</span> basedOnClassOrViaCustomSetImageBlock:setImageBlock];
-                        [sself sd_setNeedsLayout];
-                    }
-                }
-                
-                <span class="hljs-keyword">if</span> (completedBlock &amp;&amp; finished) {
-                    completedBlock(image, error, cacheType, url);
-                }
-            });
-        }];
-        
-        <span class="hljs-comment">//在操作缓存字典（operationDictionary）里添加operation，表示当前的操作正在进行</span>
-        [<span class="hljs-keyword">self</span> sd_setImageLoadOperation:operation forKey:validOperationKey];
-        
-    } <span class="hljs-keyword">else</span> {
-        <span class="hljs-comment">//如果url不存在，就在completedBlock里传入error（url为空）</span>
-        dispatch_main_async_safe(^{
-            [<span class="hljs-keyword">self</span> sd_removeActivityIndicator];
-            <span class="hljs-keyword">if</span> (completedBlock) {
-                <span class="hljs-built_in">NSError</span> *error = [<span class="hljs-built_in">NSError</span> errorWithDomain:SDWebImageErrorDomain code:<span class="hljs-number">-1</span> userInfo:@{<span class="hljs-built_in">NSLocalizedDescriptionKey</span> : <span class="hljs-string">@"Trying to load a nil url"</span>}];
-                completedBlock(<span class="hljs-literal">nil</span>, error, SDImageCacheTypeNone, url);
+    <script type="text/javascript" id="hexo.configuration">
+        var NexT = window.NexT || {};
+        var CONFIG = {
+            scheme: 'Pisces',
+            sidebar: {"position": "left", "display": "post"},
+            fancybox: true,
+            motion: true,
+            duoshuo: {
+                userId: 0,
+                author: '博主'
             }
-        });
-    }
-    ```
+        };
+    </script>
+
+    <link rel="canonical" href="47.106.99.78:8080/docker"/>
+    <title>Docker 常用命令 | Crow的技术博客</title>
+    <!--设置图标-->
+    <!--<link rel="shortcut icon" href="image/abc.jpg">-->
+
+    <h1 style="left: 2%">Docker 常用命令备忘</h1>
+</head>
+
+<body lang="zh-Hans">
+
+<script>
+    (function (i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r;
+        i[r] = i[r] || function () {
+            (i[r].q = i[r].q || []).push(arguments)
+        }, i[r].l = 1 * new Date();
+        a = s.createElement(o),
+            m = s.getElementsByTagName(o)[0];
+        a.async = 1;
+        a.src = g;
+        m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+    ga('create', 'UA-68856508-1', 'auto');
+    ga('send', 'pageview');
+</script>
+
+<div>
+    <div class="title">基本语法:</div>
+    <div class="content">`
+        docker run [OPTIONS] IMAGE [COMMAND] [ARG...]
+    </div>
+</div>
+
+<div style="color:#000000">
+    <h3 style="color: #FFFFFF"> 常用命令</h3>
+    <div>
+        <h4 style="color: #FFFFFF">容器相关:</h4>
+        <p class="command"> docker ps&nbsp&nbsp&nbsp&nbsp</p>
+        <p> 查看正在运行的容器。</p>
+        <p class="command"> docker ps -a&nbsp&nbsp&nbsp&nbsp</p>
+        <p> 查看本地全部容器。</p>
+        <p class="command"> docker -e &nbsp&nbsp&nbsp&nbsp
+        <p>在实际应用场景中，不论是从安全还是可配置方面去考虑，很多参数是比较适合用环境变量加载进去的，比如数据库的连接信息，时区，还有字体支持等等，在创建容器的时候其实都可以使用-e
+            指定key/value进行传递环境变量进去。 </p>
+        <p class="command"> docker port id&nbsp&nbsp&nbsp&nbsp
+        <p>可以查看指定 容器的某个确定端口映射到宿主机的端口号。</p>
+        <p class="command"> docker logs id&nbsp&nbsp&nbsp&nbsp
+        <p> 可以查看容器日志</p>
+        <p class="command"> docker inspect &nbsp&nbsp&nbsp&nbsp
+        <p>查看Docker的底层信息。它会返回一个 JSON 文件记录着 Docker 容器的配置和状态信息</p>
+        <p class="command"> docker create 'name'&nbsp&nbsp&nbsp&nbsp
+        <p style="width:85%"> 创建容器</p>
+        <p class="command"> docker start 'name'&nbsp&nbsp&nbsp&nbsp
+        <p style="width: 85%"> 启动容器</p>
+        <p class="command"> docker run 'name'&nbsp&nbsp&nbsp&nbsp
+        <p> 创建并启动容器，run 命令包含了create和start俩个命令</p>
+        <p class="command"> docker rm id &nbsp&nbsp&nbsp&nbsp
+        <p>移除不需要的容器 ,需先停止容器</p>
+        <p class="command"> docker exec -it "id" /bin/bash &nbsp&nbsp&nbsp&nbsp
+        <p style="width: 80%"> 进入容器</p>
+        <p class="command"> Ctrl+P+Q&nbsp&nbsp&nbsp&nbsp
+        <p>退出容器,容器会继续运行</p>
+        <p class="command"> exit 容器内使用&nbsp&nbsp&nbsp&nbsp
+        <p>退出并且关闭容器</p>
+        <p class="command"> docker -d &nbsp&nbsp&nbsp&nbsp
+        <p> 容器后台运行，
+            Dockerfile中CMD会直接关闭docker。但是-d并不意味着脚本永远执行，而是可以后台运行，也就是说我们需要开一个前台的程序让脚本挂起。如果脚本执行结束，那么容器也就关闭了。可以直接使用-it连用，会在容器中打开一个输入终端。这样就实现了挂起前台的任务。</p>
+    </div>
+    <div>
+        <h4 style="color: #FFFFFF;float:left;width: 100%">镜像相关:</h4>
+        <p class="command"> docker images&nbsp&nbsp&nbsp&nbsp
+        <p> 查看镜像</p>
+        <p class="command"> docker save -o image_name.tar image_name&nbsp&nbsp&nbsp&nbsp
+        <p class="langConnect"> 导出镜像</p>
+        <p class="command"> docker rmi &nbsp&nbsp&nbsp&nbsp
+        <p>删除镜像，需先rm容器</p>
+        <p class="command"> commit &nbsp&nbsp&nbsp&nbsp
+        <p>创建新镜像</p>
+        <p class="command"> docker search [name]&nbsp&nbsp&nbsp&nbsp
+        <p style="width: 70%"> 查找镜像</p>
+        <p> docker image 和 container 区别。image文件是只读的，container可以读写。container在image基础上修改。<a style="color: green"
+                                                                                          href="https://www.cnblogs.com/bethal/p/5942369.html"
+                                                                                          target="_blank"
+                                                                                          title="container和image区别详解">container和image区别详解</a>
+        </p>
+
+    </div>
+
+    <div>
+        <h4 style="color: #FFFFFF;float:left;width: 100%">运行命令解释:</h4>
+        <p class="command"> docker run -ditp 8080:8080 -v /root/software/:/software/flask -w /software/flask --name=XXX
+            docker.io/python /bin/bash&nbsp&nbsp&nbsp&nbsp
+        <p class="langConnect">本项目构建使用docker启动命令 -d 保持后台运行 -it创建完成后进入这个容器并打开容器内控制台 -w /software/flask
+            :指定容器的/software/flask目录为工作目录，不存在会创建。-v /code:/usr/src/app
+            表示把宿主机上的/code目录挂载到容器内的/usr/src/app目录，可以通过直接管理宿主机上的挂载目录来管理容器内部的挂载目录。:为分割之前为宿主机路径。</p>
+    </div>
 
 
+</div>
 
-&gt; 值得一提的是，在这一层，使用一个字典``operationDictionary``专门用作存储操作的缓存，随时添加，删除操作任务。
-而这个字典是``<span class="hljs-built_in">UIView</span>+WebCacheOperation``分类的关联对象，它的存取方法使用运行时来操作：
+</body>
+</html>
 
-
-```objc
- <span class="hljs-comment">// ==============  UIView+WebCacheOperation.m ============== //</span>
- <span class="hljs-comment">//获取关联对象：operations（用来存放操作的字典）</span>
-- (SDOperationsDictionary *)operationDictionary {
-    SDOperationsDictionary *operations = objc_getAssociatedObject(<span class="hljs-keyword">self</span>, &amp;loadOperationKey);
-    <span class="hljs-comment">//存放操作的字典</span>
-    <span class="hljs-keyword">if</span> (operations) {
-        <span class="hljs-keyword">return</span> operations;
-    }
-    
-    <span class="hljs-comment">//如果没有，就新建一个</span>
-    operations = [<span class="hljs-built_in">NSMutableDictionary</span> dictionary];
-    
-    objc_setAssociatedObject(<span class="hljs-keyword">self</span>, &amp;loadOperationKey, operations, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-    <span class="hljs-keyword">return</span> operations;
-}
-<span class="copy-code-btn">复制代码</span></code></pre><blockquote>
-<p>为什么不直接在<code>UIImageView+WebCache</code>里直接关联这个对象呢？我觉得这里作者应该是遵从面向对象的<strong>单一职责原则（SRP：Single responsibility principle）</strong>，就连类都要履行这个职责，何况分类呢？这里作者专门创造一个分类<code>UIView+WebCacheOperation</code>来管理操作缓存（字典）。</p>
-</blockquote>
-<p>到这里，<code>UIKit</code>层上面的东西都讲完了，现在开始正式讲解工具层。</p>
-<h2 class="heading" data-id="heading-1">工具层</h2>
-<p>上文提到过，<code>SDWebImageManager</code>同时管理<code>SDImageCache</code>和<code>SDWebImageDownloader</code>两个类，它是这一层的<strong>老大哥</strong>。在下载任务开始的时候，<code>SDWebImageManager</code>首先访问<code>SDImageCache</code>来查询是否存在缓存，如果有缓存，直接返回缓存的图片。如果没有缓存，就命令<code>SDWebImageDownloader</code>来下载图片，下载成功后，存入缓存，显示图片。以上是<code>SDWebImageManager</code>大致的工作流程。</p>
-<p>在详细讲解<code>SDWebImageManager</code>是如何下载图片之前，我们先看一下这个类的几个重要的属性：</p>
-<pre><code class="hljs objc copyable" lang="objc"> <span class="hljs-comment">// ==============  SDWebImageManager.h ============== //</span>
-<span class="hljs-keyword">@property</span> (<span class="hljs-keyword">strong</span>, <span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">readwrite</span>, <span class="hljs-keyword">nonnull</span>) SDImageCache *imageCache;<span class="hljs-comment">//管理缓存</span>
-<span class="hljs-keyword">@property</span> (<span class="hljs-keyword">strong</span>, <span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">readwrite</span>, <span class="hljs-keyword">nonnull</span>) SDWebImageDownloader <span class="hljs-comment">//下载器*imageDownloader;</span>
-<span class="hljs-keyword">@property</span> (<span class="hljs-keyword">strong</span>, <span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">nonnull</span>) <span class="hljs-built_in">NSMutableSet</span>&lt;<span class="hljs-built_in">NSURL</span> *&gt; *failedURLs;<span class="hljs-comment">//记录失效url的名单</span>
-<span class="hljs-keyword">@property</span> (<span class="hljs-keyword">strong</span>, <span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">nonnull</span>) <span class="hljs-built_in">NSMutableArray</span>&lt;SDWebImageCombinedOperation *&gt; *runningOperations;<span class="hljs-comment">//记录当前正在执行的操作</span>
-<span class="copy-code-btn">复制代码</span></code></pre><p><code>SDWebImageManager</code>下载图片的方法只有一个：</p>
-<pre><code class="hljs objc copyable" lang="objc">[SDWebImageManager.sharedManager loadImageWithURL:options:progress:completed:]
-<span class="copy-code-btn">复制代码</span></code></pre><p>看一下这个方法的具体实现：</p>
-<pre><code class="hljs objc copyable" lang="objc"> <span class="hljs-comment">// ==============  SDWebImageManager.m ============== //</span>
-- (<span class="hljs-keyword">id</span> &lt;SDWebImageOperation&gt;)loadImageWithURL:(<span class="hljs-keyword">nullable</span> <span class="hljs-built_in">NSURL</span> *)url
-                                     options:(SDWebImageOptions)options
-                                    progress:(<span class="hljs-keyword">nullable</span> SDWebImageDownloaderProgressBlock)progressBlock
-                                   completed:(<span class="hljs-keyword">nullable</span> SDInternalCompletionBlock)completedBlock {
-     ...                             
-    <span class="hljs-comment">//在SDImageCache里查询是否存在缓存的图片</span>
-    operation.cacheOperation = [<span class="hljs-keyword">self</span>.imageCache queryCacheOperationForKey:key done:^(<span class="hljs-built_in">UIImage</span> *cachedImage, <span class="hljs-built_in">NSData</span> *cachedData, SDImageCacheType cacheType) {
-        
-        ...
-        <span class="hljs-comment">//（没有缓存图片） || （即使有缓存图片，也需要更新缓存图片） || （代理没有响应imageManager:shouldDownloadImageForURL:消息，默认返回yes，需要下载图片）|| （imageManager:shouldDownloadImageForURL:返回yes，需要下载图片）</span>
-        <span class="hljs-keyword">if</span> ((!cachedImage || options &amp; SDWebImageRefreshCached) &amp;&amp; (![<span class="hljs-keyword">self</span>.delegate respondsToSelector:<span class="hljs-keyword">@selector</span>(imageManager:shouldDownloadImageForURL:)] || [<span class="hljs-keyword">self</span>.delegate imageManager:<span class="hljs-keyword">self</span> shouldDownloadImageForURL:url])) {
-            
-            <span class="hljs-comment">//1. 存在缓存图片 &amp;&amp; 即使有缓存图片也要下载更新图片</span>
-            <span class="hljs-keyword">if</span> (cachedImage &amp;&amp; options &amp; SDWebImageRefreshCached) {
-                [<span class="hljs-keyword">self</span> callCompletionBlockForOperation:weakOperation completion:completedBlock image:cachedImage data:cachedData error:<span class="hljs-literal">nil</span> cacheType:cacheType finished:<span class="hljs-literal">YES</span> url:url];
-            }
-
-
-            <span class="hljs-comment">// 2. 如果不存在缓存图片</span>
-            ...
-            
-            <span class="hljs-comment">//开启下载器下载</span>
-            <span class="hljs-comment">//subOperationToken 用来标记当前的下载任务，便于被取消</span>
-            SDWebImageDownloadToken *subOperationToken = [<span class="hljs-keyword">self</span>.imageDownloader downloadImageWithURL:url options:downloaderOptions progress:progressBlock completed:^(<span class="hljs-built_in">UIImage</span> *downloadedImage, <span class="hljs-built_in">NSData</span> *downloadedData, <span class="hljs-built_in">NSError</span> *error, <span class="hljs-built_in">BOOL</span> finished) {
-                __<span class="hljs-keyword">strong</span> __<span class="hljs-keyword">typeof</span>(weakOperation) strongOperation = weakOperation;
-                <span class="hljs-keyword">if</span> (!strongOperation || strongOperation.isCancelled) {
-                    <span class="hljs-comment">// 1. 如果任务被取消，则什么都不做，避免和其他的completedBlock重复</span>
-                
-                } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (error) {
-                    
-                    <span class="hljs-comment">//2. 如果有错误</span>
-                    <span class="hljs-comment">//2.1 在completedBlock里传入error</span>
-                    [<span class="hljs-keyword">self</span> callCompletionBlockForOperation:strongOperation completion:completedBlock error:error url:url];
-
-							<span class="hljs-comment">//2.2 在错误url名单中添加当前的url</span>
-                    <span class="hljs-keyword">if</span> (   error.code != <span class="hljs-built_in">NSURLErrorNotConnectedToInternet</span>
-                        &amp;&amp; error.code != <span class="hljs-built_in">NSURLErrorCancelled</span>
-                        &amp;&amp; error.code != <span class="hljs-built_in">NSURLErrorTimedOut</span>
-                        &amp;&amp; error.code != <span class="hljs-built_in">NSURLErrorInternationalRoamingOff</span>
-                        &amp;&amp; error.code != <span class="hljs-built_in">NSURLErrorDataNotAllowed</span>
-                        &amp;&amp; error.code != <span class="hljs-built_in">NSURLErrorCannotFindHost</span>
-                        &amp;&amp; error.code != <span class="hljs-built_in">NSURLErrorCannotConnectToHost</span>) {
-                        
-                       <span class="hljs-keyword">@synchronized</span> (<span class="hljs-keyword">self</span>.failedURLs) {
-                            [<span class="hljs-keyword">self</span>.failedURLs addObject:url];
-                        }
-                    }
-                }
-                <span class="hljs-keyword">else</span> {
-                    
-                    <span class="hljs-comment">//3. 下载成功</span>
-                    <span class="hljs-comment">//3.1 如果需要下载失败后重新下载，则将当前url从失败url名单里移除</span>
-                    <span class="hljs-keyword">if</span> ((options &amp; SDWebImageRetryFailed)) {
-                        <span class="hljs-keyword">@synchronized</span> (<span class="hljs-keyword">self</span>.failedURLs) {
-                            [<span class="hljs-keyword">self</span>.failedURLs removeObject:url];
-                        }
-                    }
-                    
-                    <span class="hljs-comment">//3.2 进行缓存</span>
-                    <span class="hljs-built_in">BOOL</span> cacheOnDisk = !(options &amp; SDWebImageCacheMemoryOnly);
-
-                   
-                    <span class="hljs-keyword">if</span> (options &amp; SDWebImageRefreshCached &amp;&amp; cachedImage &amp;&amp; !downloadedImage) {
-                    
-                        <span class="hljs-comment">//（即使缓存存在，也要刷新图片） &amp;&amp; 缓存图片 &amp;&amp; 不存在下载后的图片：不做操作</span>
-                                           
-                    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (downloadedImage &amp;&amp; (!downloadedImage.images || (options &amp; SDWebImageTransformAnimatedImage)) &amp;&amp; [<span class="hljs-keyword">self</span>.delegate respondsToSelector:<span class="hljs-keyword">@selector</span>(imageManager:transformDownloadedImage:withURL:)]) {
-                        
-          <span class="hljs-comment">//（下载图片成功 &amp;&amp; （没有动图||处理动图） &amp;&amp; （下载之后，缓存之前处理图片）               dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{</span>
-                            <span class="hljs-built_in">UIImage</span> *transformedImage = [<span class="hljs-keyword">self</span>.delegate imageManager:<span class="hljs-keyword">self</span> transformDownloadedImage:downloadedImage withURL:url];
-
-                            <span class="hljs-keyword">if</span> (transformedImage &amp;&amp; finished) {
-                                <span class="hljs-built_in">BOOL</span> imageWasTransformed = ![transformedImage isEqual:downloadedImage];
-                                <span class="hljs-comment">// pass nil if the image was transformed, so we can recalculate the data from the image</span>
-                                <span class="hljs-comment">//缓存图片</span>
-                                [<span class="hljs-keyword">self</span>.imageCache storeImage:transformedImage imageData:(imageWasTransformed ? <span class="hljs-literal">nil</span> : downloadedData) forKey:key toDisk:cacheOnDisk completion:<span class="hljs-literal">nil</span>];
-                            }
-                            <span class="hljs-comment">//将图片传入completedBlock</span>
-                            [<span class="hljs-keyword">self</span> callCompletionBlockForOperation:strongOperation completion:completedBlock image:transformedImage data:downloadedData error:<span class="hljs-literal">nil</span> cacheType:SDImageCacheTypeNone finished:finished url:url];
-                        });
-                    } <span class="hljs-keyword">else</span> {
-                        
-                        <span class="hljs-comment">//(图片下载成功并结束)</span>
-                        <span class="hljs-keyword">if</span> (downloadedImage &amp;&amp; finished) {
-                            [<span class="hljs-keyword">self</span>.imageCache storeImage:downloadedImage imageData:downloadedData forKey:key toDisk:cacheOnDisk completion:<span class="hljs-literal">nil</span>];
-                        }
-                        
-                        [<span class="hljs-keyword">self</span> callCompletionBlockForOperation:strongOperation completion:completedBlock image:downloadedImage data:downloadedData error:<span class="hljs-literal">nil</span> cacheType:SDImageCacheTypeNone finished:finished url:url];
-                    }
-                }
-
-					 <span class="hljs-comment">//如果完成，从当前运行的操作列表里移除当前操作</span>
-                <span class="hljs-keyword">if</span> (finished) {
-                    [<span class="hljs-keyword">self</span> safelyRemoveOperationFromRunning:strongOperation];
-                }
-            }];
-            
-            <span class="hljs-comment">//取消的block</span>
-            operation.cancelBlock = ^{
-            
-                <span class="hljs-comment">//取消当前的token</span>
-                [<span class="hljs-keyword">self</span>.imageDownloader cancel:subOperationToken];
-                __<span class="hljs-keyword">strong</span> __<span class="hljs-keyword">typeof</span>(weakOperation) strongOperation = weakOperation;
-                <span class="hljs-comment">//从当前运行的操作列表里移除当前操作</span>
-                [<span class="hljs-keyword">self</span> safelyRemoveOperationFromRunning:strongOperation];
-            };
-        
-        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (cachedImage) {
-            
-            <span class="hljs-comment">//存在缓存图片</span>
-            __<span class="hljs-keyword">strong</span> __<span class="hljs-keyword">typeof</span>(weakOperation) strongOperation = weakOperation;
-            
-            <span class="hljs-comment">//调用完成的block</span>
-            [<span class="hljs-keyword">self</span> callCompletionBlockForOperation:strongOperation completion:completedBlock image:cachedImage data:cachedData error:<span class="hljs-literal">nil</span> cacheType:cacheType finished:<span class="hljs-literal">YES</span> url:url];
-            
-            <span class="hljs-comment">//删去当前的的下载操作（线程安全）</span>
-            [<span class="hljs-keyword">self</span> safelyRemoveOperationFromRunning:operation];
-        
-        } <span class="hljs-keyword">else</span> {
-            
-            <span class="hljs-comment">//没有缓存的图片，而且下载被代理终止了</span>
-            __<span class="hljs-keyword">strong</span> __<span class="hljs-keyword">typeof</span>(weakOperation) strongOperation = weakOperation;
-           
-            <span class="hljs-comment">// 调用完成的block</span>
-            [<span class="hljs-keyword">self</span> callCompletionBlockForOperation:strongOperation completion:completedBlock image:<span class="hljs-literal">nil</span> data:<span class="hljs-literal">nil</span> error:<span class="hljs-literal">nil</span> cacheType:SDImageCacheTypeNone finished:<span class="hljs-literal">YES</span> url:url];
-            
-            <span class="hljs-comment">//删去当前的下载操作</span>
-            [<span class="hljs-keyword">self</span> safelyRemoveOperationFromRunning:operation];
-        }
-    }];
-
-    <span class="hljs-keyword">return</span> operation;                                                             
-}
-<span class="copy-code-btn">复制代码</span></code></pre><p>看完了<code>SDWebImageManager</code>的回调处理，我们分别看一下
-<code>SDImageCache</code>和<code>SDWebImageDownloader</code>内部具体是如何工作的。首先看一下<code>SDImageCache</code>：</p>
-<h3 class="heading" data-id="heading-2">SDImageCache</h3>
-<h4 class="heading" data-id="heading-3">属性</h4>
-<pre><code class="hljs objc copyable" lang="objc"> <span class="hljs-comment">// ==============  SDImageCache.m ============== //</span>
-<span class="hljs-keyword">@property</span> (<span class="hljs-keyword">strong</span>, <span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">nonnull</span>) <span class="hljs-built_in">NSCache</span> *memCache;<span class="hljs-comment">//内存缓存</span>
-<span class="hljs-keyword">@property</span> (<span class="hljs-keyword">strong</span>, <span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">nonnull</span>) <span class="hljs-built_in">NSString</span> *diskCachePath;<span class="hljs-comment">//磁盘缓存路径</span>
-<span class="hljs-keyword">@property</span> (<span class="hljs-keyword">strong</span>, <span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">nullable</span>) <span class="hljs-built_in">NSMutableArray</span>&lt;<span class="hljs-built_in">NSString</span> *&gt; *customPaths;<span class="hljs-comment">//</span>
-<span class="hljs-keyword">@property</span> (SDDispatchQueueSetterSementics, <span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">nullable</span>) <span class="hljs-built_in">dispatch_queue_t</span> <span class="hljs-comment">//ioQueue唯一子线程;</span>
-<span class="copy-code-btn">复制代码</span></code></pre><h4 class="heading" data-id="heading-4">核心方法：查询缓存</h4>
-<pre><code class="hljs objc copyable" lang="objc"> <span class="hljs-comment">// ==============  SDImageCache.m ============== //</span>
-- (<span class="hljs-keyword">nullable</span> <span class="hljs-built_in">NSOperation</span> *)queryCacheOperationForKey:(<span class="hljs-keyword">nullable</span> <span class="hljs-built_in">NSString</span> *)key done:(<span class="hljs-keyword">nullable</span> SDCacheQueryCompletedBlock)doneBlock {
-   
-    <span class="hljs-keyword">if</span> (!key) {
-        <span class="hljs-keyword">if</span> (doneBlock) {
-            doneBlock(<span class="hljs-literal">nil</span>, <span class="hljs-literal">nil</span>, SDImageCacheTypeNone);
-        }
-        <span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>;
-    }
-		
-    <span class="hljs-comment">//================查看内存的缓存=================//</span>
-    <span class="hljs-built_in">UIImage</span> *image = [<span class="hljs-keyword">self</span> imageFromMemoryCacheForKey:key];
-    
-    <span class="hljs-comment">// 如果存在，直接调用block，将image，data，CaheType传进去</span>
-    <span class="hljs-keyword">if</span> (image) {
-    
-        <span class="hljs-built_in">NSData</span> *diskData = <span class="hljs-literal">nil</span>;
-        
-        <span class="hljs-comment">//如果是gif，就拿到data，后面要传到doneBlock里。不是gif就传nil</span>
-        <span class="hljs-keyword">if</span> ([image isGIF]) {
-            diskData = [<span class="hljs-keyword">self</span> diskImageDataBySearchingAllPathsForKey:key];
-        }
-        
-        <span class="hljs-keyword">if</span> (doneBlock) {
-            doneBlock(image, diskData, SDImageCacheTypeMemory);
-        }
-        
-        <span class="hljs-comment">//因为图片有缓存可供使用，所以不用实例化NSOperation，直接范围nil</span>
-        <span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>;
-    }
-
-    <span class="hljs-comment">//================查看磁盘的缓存=================//</span>
-    <span class="hljs-built_in">NSOperation</span> *operation = [<span class="hljs-built_in">NSOperation</span> new];
-    
-    <span class="hljs-comment">//唯一的子线程：self.ioQueue</span>
-    <span class="hljs-built_in">dispatch_async</span>(<span class="hljs-keyword">self</span>.ioQueue, ^{
-        
-        <span class="hljs-keyword">if</span> (operation.isCancelled) {
-            <span class="hljs-comment">// 在用之前就判断operation是否被取消了，作者考虑的非常严谨</span>
-            <span class="hljs-keyword">return</span>;
-        }
-
-        <span class="hljs-keyword">@autoreleasepool</span> {
-            
-            <span class="hljs-built_in">NSData</span> *diskData = [<span class="hljs-keyword">self</span> diskImageDataBySearchingAllPathsForKey:key];
-            <span class="hljs-built_in">UIImage</span> *diskImage = [<span class="hljs-keyword">self</span> diskImageForKey:key];
-            
-            <span class="hljs-keyword">if</span> (diskImage &amp;&amp; <span class="hljs-keyword">self</span>.config.shouldCacheImagesInMemory) {
-                
-                <span class="hljs-comment">// cost 被用来计算缓存中所有对象的代价。当内存受限或者所有缓存对象的总代价超过了最大允许的值时，缓存会移除其中的一些对象。</span>
-                <span class="hljs-built_in">NSUInteger</span> cost = SDCacheCostForImage(diskImage);
-                
-                <span class="hljs-comment">//存入内存缓存中</span>
-                [<span class="hljs-keyword">self</span>.memCache setObject:diskImage forKey:key cost:cost];
-            }
-
-            <span class="hljs-keyword">if</span> (doneBlock) {
-                <span class="hljs-built_in">dispatch_async</span>(dispatch_get_main_queue(), ^{
-                    doneBlock(diskImage, diskData, SDImageCacheTypeDisk);
-                });
-            }
-        }
-    });
-
-    <span class="hljs-keyword">return</span> operation;
-}
-<span class="copy-code-btn">复制代码</span></code></pre><h3 class="heading" data-id="heading-5">SDWebImageDownloader</h3>
-<h4 class="heading" data-id="heading-6">属性</h4>
-<pre><code class="hljs objc copyable" lang="objc"> <span class="hljs-comment">// ==============  SDWebImageDownloader.m ============== //</span>
-<span class="hljs-keyword">@property</span> (<span class="hljs-keyword">strong</span>, <span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">nonnull</span>) <span class="hljs-built_in">NSOperationQueue</span> *downloadQueue;<span class="hljs-comment">//下载队列</span>
-<span class="hljs-keyword">@property</span> (<span class="hljs-keyword">weak</span>, <span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">nullable</span>) <span class="hljs-built_in">NSOperation</span> *lastAddedOperation;<span class="hljs-comment">//最后添加的下载操作</span>
-<span class="hljs-keyword">@property</span> (<span class="hljs-keyword">assign</span>, <span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">nullable</span>) Class operationClass;<span class="hljs-comment">//操作类</span>
-<span class="hljs-keyword">@property</span> (<span class="hljs-keyword">strong</span>, <span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">nonnull</span>) <span class="hljs-built_in">NSMutableDictionary</span>&lt;<span class="hljs-built_in">NSURL</span> *, SDWebImageDownloaderOperation *&gt; *URLOperations;<span class="hljs-comment">//操作数组</span>
-<span class="hljs-keyword">@property</span> (<span class="hljs-keyword">strong</span>, <span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">nullable</span>) SDHTTPHeadersMutableDictionary *HTTPHeaders;<span class="hljs-comment">//HTTP请求头</span>
-<span class="hljs-keyword">@property</span> (SDDispatchQueueSetterSementics, <span class="hljs-keyword">nonatomic</span>, <span class="hljs-keyword">nullable</span>) <span class="hljs-built_in">dispatch_queue_t</span> barrierQueue;<span class="hljs-comment">//用来阻塞前面的下载线程（串行化）</span>
-<span class="copy-code-btn">复制代码</span></code></pre><h4 class="heading" data-id="heading-7">核心方法：下载图片</h4>
-<pre><code class="hljs objc copyable" lang="objc"> <span class="hljs-comment">// ==============  SDWebImageDownloader.m ============== //</span>
-- (<span class="hljs-keyword">nullable</span> SDWebImageDownloadToken *)downloadImageWithURL:(<span class="hljs-keyword">nullable</span> <span class="hljs-built_in">NSURL</span> *)url
-                                                   options:(SDWebImageDownloaderOptions)options
-                                                  progress:(<span class="hljs-keyword">nullable</span> SDWebImageDownloaderProgressBlock)progressBlock
-                                                 completed:(<span class="hljs-keyword">nullable</span> SDWebImageDownloaderCompletedBlock)completedBlock {
-    __<span class="hljs-keyword">weak</span> SDWebImageDownloader *wself = <span class="hljs-keyword">self</span>;
-
-    <span class="hljs-keyword">return</span> [<span class="hljs-keyword">self</span> addProgressCallback:progressBlock completedBlock:completedBlock forURL:url createCallback:^SDWebImageDownloaderOperation *{
-        
-        __<span class="hljs-keyword">strong</span> __<span class="hljs-keyword">typeof</span> (wself) sself = wself;
-        
-        <span class="hljs-built_in">NSTimeInterval</span> timeoutInterval = sself.downloadTimeout;
-        <span class="hljs-keyword">if</span> (timeoutInterval == <span class="hljs-number">0.0</span>) {
-            timeoutInterval = <span class="hljs-number">15.0</span>;
-        }
-
-        <span class="hljs-comment">// In order to prevent from potential duplicate caching (NSURLCache + SDImageCache) we disable the cache for image requests if told otherwise</span>
-        
-        <span class="hljs-comment">//创建下载请求</span>
-        <span class="hljs-built_in">NSMutableURLRequest</span> *request = [[<span class="hljs-built_in">NSMutableURLRequest</span> alloc] initWithURL:url cachePolicy:(options &amp; SDWebImageDownloaderUseNSURLCache ? <span class="hljs-built_in">NSURLRequestUseProtocolCachePolicy</span> : <span class="hljs-built_in">NSURLRequestReloadIgnoringLocalCacheData</span>) timeoutInterval:timeoutInterval];
-        request.HTTPShouldHandleCookies = (options &amp; SDWebImageDownloaderHandleCookies);
-        request.HTTPShouldUsePipelining = <span class="hljs-literal">YES</span>;
-        <span class="hljs-keyword">if</span> (sself.headersFilter) {
-            request.allHTTPHeaderFields = sself.headersFilter(url, [sself.HTTPHeaders <span class="hljs-keyword">copy</span>]);
-        }
-        <span class="hljs-keyword">else</span> {
-            request.allHTTPHeaderFields = sself.HTTPHeaders;
-        }
-        
-        <span class="hljs-comment">//创建下载操作：SDWebImageDownloaderOperation用于请求网络资源的操作，它是一个 NSOperation 的子类</span>
-        SDWebImageDownloaderOperation *operation = [[sself.operationClass alloc] initWithRequest:request inSession:sself.session options:options];
-        operation.shouldDecompressImages = sself.shouldDecompressImages;
-        
-        <span class="hljs-comment">//url证书</span>
-        <span class="hljs-keyword">if</span> (sself.urlCredential) {
-            operation.credential = sself.urlCredential;
-        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (sself.username &amp;&amp; sself.password) {
-            operation.credential = [<span class="hljs-built_in">NSURLCredential</span> credentialWithUser:sself.username password:sself.password persistence:<span class="hljs-built_in">NSURLCredentialPersistenceForSession</span>];
-        }
-        
-        <span class="hljs-comment">//优先级</span>
-        <span class="hljs-keyword">if</span> (options &amp; SDWebImageDownloaderHighPriority) {
-            operation.queuePriority = <span class="hljs-built_in">NSOperationQueuePriorityHigh</span>;
-        } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (options &amp; SDWebImageDownloaderLowPriority) {
-            operation.queuePriority = <span class="hljs-built_in">NSOperationQueuePriorityLow</span>;
-        }
-
-        <span class="hljs-comment">//在下载队列里添加下载操作，执行下载操作</span>
-        [sself.downloadQueue addOperation:operation];
-        
-        <span class="hljs-comment">//如果后进先出</span>
-        <span class="hljs-keyword">if</span> (sself.executionOrder == SDWebImageDownloaderLIFOExecutionOrder) {
-            <span class="hljs-comment">// Emulate LIFO execution order by systematically adding new operations as last operation's dependency</span>
-            <span class="hljs-comment">//addDependency:参数opertaion倍添加到NSOperationQueue后，只有等该opertion结束后才能执行其他的operation，实现了后进先出</span>
-            [sself.lastAddedOperation addDependency:operation];
-            sself.lastAddedOperation = operation;
-        }
-
-        <span class="hljs-keyword">return</span> operation;
-    }];
-}
-<span class="copy-code-btn">复制代码</span></code></pre><p>这里面还有一个<code>addProgressCallback: progressBlock: completedBlock: forURL: createCallback:</code>方法，用来保存<code>progressBlock</code>和<code>completedBlock</code>。我们看一下这个方法的实现：</p>
-<pre><code class="hljs objc copyable" lang="objc"> <span class="hljs-comment">// ==============  SDWebImageDownloader.m ============== //</span>
-- (<span class="hljs-keyword">nullable</span> SDWebImageDownloadToken *)addProgressCallback:(SDWebImageDownloaderProgressBlock)progressBlock
-                                           completedBlock:(SDWebImageDownloaderCompletedBlock)completedBlock
-                                                   forURL:(<span class="hljs-keyword">nullable</span> <span class="hljs-built_in">NSURL</span> *)url
-                                           createCallback:(SDWebImageDownloaderOperation *(^)())createCallback {
-
-    <span class="hljs-comment">// url 用来作为回调字典的key，如果为空，立即返回失败 </span>
-    <span class="hljs-keyword">if</span> (url == <span class="hljs-literal">nil</span>) {
-        <span class="hljs-keyword">if</span> (completedBlock != <span class="hljs-literal">nil</span>) {
-            completedBlock(<span class="hljs-literal">nil</span>, <span class="hljs-literal">nil</span>, <span class="hljs-literal">nil</span>, <span class="hljs-literal">NO</span>);
-        }
-        <span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>;
-    }
-
-    __block SDWebImageDownloadToken *token = <span class="hljs-literal">nil</span>;
-
-    <span class="hljs-comment">//串行化前面所有的操作</span>
-    dispatch_barrier_sync(<span class="hljs-keyword">self</span>.barrierQueue, ^{
-    
-        	<span class="hljs-comment">//当前下载操作中取出SDWebImageDownloaderOperation实例</span>
-        SDWebImageDownloaderOperation *operation = <span class="hljs-keyword">self</span>.URLOperations[url];
-        
-        <span class="hljs-keyword">if</span> (!operation) {
-        <span class="hljs-comment">//如果没有，就初始化它</span>
-            operation = createCallback();
-            <span class="hljs-keyword">self</span>.URLOperations[url] = operation;
-            __<span class="hljs-keyword">weak</span> SDWebImageDownloaderOperation *woperation = operation;
-            
-            operation.completionBlock = ^{
-              SDWebImageDownloaderOperation *soperation = woperation;
-              <span class="hljs-keyword">if</span> (!soperation) <span class="hljs-keyword">return</span>;
-              <span class="hljs-keyword">if</span> (<span class="hljs-keyword">self</span>.URLOperations[url] == soperation) {
-                  [<span class="hljs-keyword">self</span>.URLOperations removeObjectForKey:url];
-              };
-            };
-        }
-        <span class="hljs-keyword">id</span> downloadOperationCancelToken = [operation addHandlersForProgress:progressBlock completed:completedBlock];
-        <span class="hljs-comment">//这里 downloadOperationCancelToken 默认是一个字典，存放 progressBlock 和 completedBlock</span>
-        token = [SDWebImageDownloadToken new];
-        token.url = url;
-        token.downloadOperationCancelToken = downloadOperationCancelToken;
-    });
-
-    <span class="hljs-keyword">return</span> token;
-}
-
-<span class="copy-code-btn">复制代码</span></code></pre><p>这里真正保存两个block的方法是<code>addHandlersForProgress: completed:</code>：</p>
-<pre><code class="hljs objc copyable" lang="objc">- (<span class="hljs-keyword">nullable</span> <span class="hljs-keyword">id</span>)addHandlersForProgress:(<span class="hljs-keyword">nullable</span> SDWebImageDownloaderProgressBlock)progressBlock
-                            completed:(<span class="hljs-keyword">nullable</span> SDWebImageDownloaderCompletedBlock)completedBlock {
-    <span class="hljs-comment">//实例化一个SDCallbacksDictionary，存放一个progressBlock 和 completedBlock</span>
-    SDCallbacksDictionary *callbacks = [<span class="hljs-built_in">NSMutableDictionary</span> new];
-    <span class="hljs-keyword">if</span> (progressBlock) callbacks[kProgressCallbackKey] = [progressBlock <span class="hljs-keyword">copy</span>];
-    <span class="hljs-keyword">if</span> (completedBlock) callbacks[kCompletedCallbackKey] = [completedBlock <span class="hljs-keyword">copy</span>];
-    dispatch_barrier_async(<span class="hljs-keyword">self</span>.barrierQueue, ^{
-        <span class="hljs-comment">//添加到缓存中 self.callbackBlocks</span>
-        [<span class="hljs-keyword">self</span>.callbackBlocks addObject:callbacks];
-    });
-    <span class="hljs-keyword">return</span> callbacks;
-}
-
-<span class="copy-code-btn">复制代码</span></code></pre><p>到这里<code>SDWebImage</code>的核心方法都讲解完毕了，其他没有讲到的部分以后会慢慢添加上去。</p>
-<h2 class="heading" data-id="heading-8">最后看一下一些比较零散的知识点：</h2>
-<hr>
-<h4 class="heading" data-id="heading-9">1. 运行时存取关联对象：</h4>
-<p><strong>存：</strong></p>
-<pre><code class="hljs objc copyable" lang="objc">objc_setAssociatedObject(<span class="hljs-keyword">self</span>, &amp;loadOperationKey, operations, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-<span class="hljs-comment">//将operations对象关联给self，地址为&amp;loadOperationKey，语义是OBJC_ASSOCIATION_RETAIN_NONATOMIC。</span>
-<span class="copy-code-btn">复制代码</span></code></pre><p><strong>取：</strong></p>
-<pre><code class="hljs objc copyable" lang="objc">SDOperationsDictionary *operations = objc_getAssociatedObject(<span class="hljs-keyword">self</span>, &amp;loadOperationKey);
-<span class="hljs-comment">//将operations对象通过地址&amp;loadOperationKey从self里取出来</span>
-<span class="copy-code-btn">复制代码</span></code></pre><h4 class="heading" data-id="heading-10">2. 数组的写操作需要加锁（多线程访问，避免覆写）</h4>
-<pre><code class="hljs objc copyable" lang="objc">
-<span class="hljs-comment">//给self.runningOperations加锁</span>
-<span class="hljs-comment">//self.runningOperations数组的添加操作</span>
-    <span class="hljs-keyword">@synchronized</span> (<span class="hljs-keyword">self</span>.runningOperations) {
-        [<span class="hljs-keyword">self</span>.runningOperations addObject:operation];
-    }
-
-<span class="hljs-comment">//self.runningOperations数组的删除操作</span>
-- (<span class="hljs-keyword">void</span>)safelyRemoveOperationFromRunning:(<span class="hljs-keyword">nullable</span> SDWebImageCombinedOperation*)operation {
-    <span class="hljs-keyword">@synchronized</span> (<span class="hljs-keyword">self</span>.runningOperations) {
-        <span class="hljs-keyword">if</span> (operation) {
-            [<span class="hljs-keyword">self</span>.runningOperations removeObject:operation];
-        }
-    }
-}
-<span class="copy-code-btn">复制代码</span></code></pre><h4 class="heading" data-id="heading-11">3. 确保在主线程的宏：</h4>
-<pre><code class="hljs objc copyable" lang="objc">dispatch_main_async_safe(^{
- 				 <span class="hljs-comment">//将下面这段代码放在主线程中</span>
-            [<span class="hljs-keyword">self</span> sd_setImage:placeholder imageData:<span class="hljs-literal">nil</span> basedOnClassOrViaCustomSetImageBlock:setImageBlock];
-        });
-
-<span class="hljs-comment">//宏定义：</span>
-<span class="hljs-meta">#define dispatch_main_async_safe(block)\</span>
-    <span class="hljs-keyword">if</span> (strcmp(dispatch_queue_get_label(DISPATCH_CURRENT_QUEUE_LABEL), dispatch_queue_get_label(dispatch_get_main_queue())) == <span class="hljs-number">0</span>) {\
-        block();\
-    } <span class="hljs-keyword">else</span> {\
-        <span class="hljs-built_in">dispatch_async</span>(dispatch_get_main_queue(), block);\
-    }
-<span class="hljs-meta">#endif</span>
-<span class="copy-code-btn">复制代码</span></code></pre><h4 class="heading" data-id="heading-12">4. 设置不能为nil的参数</h4>
-<pre><code class="hljs objc copyable" lang="objc">- (<span class="hljs-keyword">nonnull</span> <span class="hljs-keyword">instancetype</span>)initWithCache:(<span class="hljs-keyword">nonnull</span> SDImageCache *)cache downloader:(<span class="hljs-keyword">nonnull</span> SDWebImageDownloader *)downloader {
-    <span class="hljs-keyword">if</span> ((<span class="hljs-keyword">self</span> = [<span class="hljs-keyword">super</span> init])) {
-        _imageCache = cache;
-        _imageDownloader = downloader;
-        _failedURLs = [<span class="hljs-built_in">NSMutableSet</span> new];
-        _runningOperations = [<span class="hljs-built_in">NSMutableArray</span> new];
-    }
-    <span class="hljs-keyword">return</span> <span class="hljs-keyword">self</span>;
-}
-<span class="copy-code-btn">复制代码</span></code></pre><blockquote>
-<p>如果在参数里添加了nonnull关键字，那么编译器就可以检查传入的参数是否为nil，如果是，则编译器会有警告</p>
-</blockquote>
-<h4 class="heading" data-id="heading-13">5. 容错，强制转换类型</h4>
-<pre><code class="hljs objc copyable" lang="objc"><span class="hljs-keyword">if</span> ([url isKindOfClass:<span class="hljs-built_in">NSString</span>.class]) {
-        url = [<span class="hljs-built_in">NSURL</span> URLWithString:(<span class="hljs-built_in">NSString</span> *)url];
-}
-<span class="copy-code-btn">复制代码</span></code></pre><blockquote>
-<p>在传入的参数为NSString时（但是方法参数要求是NSURL），自动转换为NSURL</p>
-</blockquote>
-<hr>
-<p>貌似还有图片解码等内容没有详细看，以后会逐渐补充哒～</p>
-<p>本文已经同步到我的个人技术博客：<a target="_blank" href="https://link.juejin.im?target=https%3A%2F%2Fknightsj.github.io%2F2017%2F02%2F04%2FSDWebImage%25E6%25BA%2590%25E7%25A0%2581%25E8%25A7%25A3%25E6%259E%2590%2F" rel="nofollow noopener noreferrer">传送门</a></p>
-<p><strong>----------------------------  2018年7月17日更新  ----------------------------</strong></p>
-<p><strong>注意注意！！！</strong></p>
-<p>笔者在近期开通了个人公众号，主要分享编程，读书笔记，思考类的文章。</p>
-<ul>
-<li><strong>编程类</strong>文章：包括笔者以前发布的精选技术文章，以及后续发布的技术文章（以原创为主），并且逐渐脱离 iOS 的内容，将侧重点会转移到<strong>提高编程能力</strong>的方向上。</li>
-<li><strong>读书笔记类</strong>文章：分享<strong>编程类</strong>，<strong>思考类</strong>，<strong>心理类</strong>，<strong>职场类</strong>书籍的读书笔记。</li>
-<li><strong>思考类</strong>文章：分享笔者平时在<strong>技术上</strong>，<strong>生活上</strong>的思考。</li>
-</ul>
-<blockquote>
-<p>因为公众号每天发布的消息数有限制，所以到目前为止还没有将所有过去的精选文章都发布在公众号上，后续会逐步发布的。</p>
-</blockquote>
-<p><strong>而且因为各大博客平台的各种限制，后面还会在公众号上发布一些短小精干，以小见大的干货文章哦~</strong></p>
-<p>扫下方的公众号二维码并点击关注，期待与您的共同成长~</p>
-<p></p><figure><img alt="公众号：程序员维他命" class="lazyload" data-src="https://user-gold-cdn.xitu.io/2018/7/17/164a40ee6f77891c?imageView2/0/w/1280/h/960/ignore-error/1" data-width="378" data-height="392"><figcaption></figcaption></figure><p></p>
-</div></article><div class="tag-list-box" data-v-582c797a data-v-af01be76><div class="tag-list-title" data-v-582c797a data-v-af01be76>关注下面的标签，发现更多相似文章</div><div st:block="tagList" class="tag-list" data-v-582c797a data-v-af01be76><a href="/tag/%E6%BA%90%E7%A0%81" target="_blank" rel="" st:name="tag" class="item" data-v-af01be76><div data-src="https://lc-gold-cdn.xitu.io/c3548169d07fd1b84e19.png?imageView2/2/w/42/h/42/q/85/interlace/1" class="lazy thumb tag-icon" style="background-image:none;background-size:contain;" data-v-652c31ca data-v-5e0ba3b7 data-v-af01be76></div><div class="tag-title" data-v-af01be76>源码</div></a></div></div><div st:block="banner" class="article-banner" data-v-582c797a data-v-af01be76><a st:name="link" st:state="https://juejin.im/extension/?utm_source=juejin.im&amp;utm_medium=post&amp;utm_campaign=extension_promotion" href="https://juejin.im/extension/?utm_source=juejin.im&amp;utm_medium=post&amp;utm_campaign=extension_promotion" target="_blank" class="banner-title" data-v-582c797a data-v-af01be76>安装掘金浏览器插件</a><div class="banner-content" data-v-582c797a data-v-af01be76>打开新标签页发现好内容，掘金、GitHub、Dribbble、ProductHunt 等站点内容轻松获取。快来安装掘金浏览器插件获取高质量内容吧！</div></div><!----><!----><div id="comment-box" class="comment-list-box" data-v-110013b4 data-v-af01be76><div class="title" data-v-110013b4>评论</div><div class="comment-form comment-form" data-v-d1ef796e data-v-110013b4><div class="avatar-box" data-v-d1ef796e><div data-src="https://b-gold-cdn.xitu.io/v3/static/img/default-avatar.e30559a.svg" class="lazy avatar avatar" style="background-image:none;" data-v-652c31ca data-v-1f07d044 data-v-d1ef796e></div></div><div class="form-box" data-v-d1ef796e><div class="input-box" data-v-d1ef796e><div contenteditable="true" spellcheck="false" placeholder="输入评论..." class="rich-input empty" data-v-d1ef796e><br data-v-d1ef796e></div><!----></div><!----></div><input type="file" class="hidden" data-v-d1ef796e></div><!----><!----></div></div><!----><!----><div st:block="sidebar" class="sidebar sidebar" data-v-97e496fa data-v-af01be76><div class="sidebar-block author-block shadow" data-v-52a5f00a data-v-14a62399 data-v-97e496fa><div class="block-title" data-v-52a5f00a>关于作者</div><div class="block-body" data-v-52a5f00a><a href="/post/5a4080d16fb9a0451969d0aa" target="_blank" rel="" class="user-item item" data-v-14a62399><div data-src="https://b-gold-cdn.xitu.io/v3/static/img/default-avatar.e30559a.svg" class="lazy avatar avatar" style="background-image:none;" data-v-652c31ca data-v-1f07d044 data-v-14a62399></div><div class="info-box" data-v-14a62399><div class="username" data-v-14a62399></div><!----></div></a><!----><!----><!----><a href="https://juejin.im/2018/" target="_blank" class="banner" data-v-52a5f00a data-v-14a62399></a></div></div><!----><!----><!----><!----><div class="sticky-block-box" data-v-97e496fa><!----><div class="sidebar-block catalog-block pure" data-v-52a5f00a data-v-30b2a929 data-v-97e496fa><nav class="article-catalog" style="display:none;" data-v-deed8010 data-v-30b2a929><div class="catalog-title" data-v-deed8010>目录</div><div class="catalog-body" data-v-deed8010><ul class="catalog-list" style="margin-top:0px;" data-v-deed8010></ul></div></nav></div></div></div><div class="article-suspended-panel article-suspended-panel" data-v-38916d75 data-v-af01be76><div badge="52" class="like-btn panel-btn like-adjust with-badge" data-v-38916d75></div><div badge="5" class="comment-btn panel-btn comment-adjust with-badge" data-v-38916d75></div><div class="collect-btn panel-btn" data-v-38916d75><!----></div><div class="share-title" data-v-38916d75>分享</div><div class="weibo-btn share-btn panel-btn" data-v-38916d75></div><div class="qq-btn share-btn panel-btn" data-v-38916d75></div><div class="wechat-btn share-btn panel-btn" data-v-38916d75><img src="" class="wechat-qr-code-img shadow" style="display:none;" data-v-38916d75></div></div><div class="image-viewer-box" data-v-d73faac8 data-v-af01be76><!----></div></div></main></div><!----></div>
-      <div id="jjis" style="display:none;" data-state="N4Igbglgpg7iBcoCGBjALhSaCeBJAdgCZQAeCy6mEOAMhAM5oIDaAugDQgAOSA5lAQBmAewT4ArgBtJnJILRQATgAVh9ahGH4EIELMpZsdRrno1hSQhHy8EaReKj6Mh42lMBRRYuGKEgpEl6JxBFKBRhAFtIqCIAVWDFehYOEFIUSXFiQhTOMIjo2MIEpXpTc0trW3h7R05xRIBBA2ojBiZ4Nk4uSVQoAAthSWI/eF1nTXwAFWwuKHIQADEPKYBhAAkdSFgAelQXVoBaa2ISHeW1zc4LjYB9ACUPVYB5AFlXjwA5ABFbmlwAMpTLbQGB7Fo4Y5EUjnFZ3R4vd5fX7/IF6JZw9a3ZQ0RqrDzrZ40b4ee4g3b7KiQk6kG5YnF4glEklkziPAErW54qa4ABquCmAE0/oDgWNtmDKYYoacduzOdy+QLhajgddMbc4hz7lzVjz+UKRWjxaDwQdqdCznTNdrdfrlUa1RjLrdPh4AOq3F5xT5i8CmqVHGlWjVuz3e33okk0FYeO1KoXkyUQ7AymHR2Pxg2C9FTZ4AcXzMduiyJNGenq1pKTZqpqeDOzzheLpZo5cr2vR1q+U3uwsRH19jprgYtsu7vr7Xreg6mw84cWU30aUzjqr+z0a31wn3zI5TabOi+Xq8dG63O736pdCJnyJtpIB+/N9ctsJvTzvPwf9yfbI8HJ+hKtbSg28rAgAvhBnDBEgigoP0Cz0OIvD8IwUCEFMfBuLkICUloMxzAsdI1rB8H9O+GxdhqrzPI8pFQHBCGUVitH0f+gEMUxFHgSA0EgJI7QLDw/AAhAABe8zwAATAADN0fBSQAjJwaDCGggQIPJ3DCNYCijBI0icL0jCqHpShiFIMgCUJnSpJIFhWDY/iBMEnBKD4BlWZwKBIPgyhhGAdgOCEvn4J8pAdLUISCfgADWOF2cZSCMIsUBoAhzz4ACShgBZ8ABEEIT4dMsxSaAx4rh4XHkTsgmMDslWrtRlw1cx9VoCxXZ0fiJaYm1FEdecPVxiR153Gx1UmrsZHte0LG3JN6K8dNYKzYN828fxMC+DkYzoshqFQOhmHYbZbBQe5JA9L4AiWgsHXCYpYmSQgckKfwCAqSAakaZIWndLp+D6ZZRkCSlaBmcD+WGdZj1JQJjlVC5RXud4vig9ZYUBVAQU1CFPl+RFJBRQTNnxYlXTg6l6WZdluX5YVbl4ZQBFlQsTVTf6uykJIXC3QQspDZzLVUatOy8/zYSCzCQ1jUsI19a14uSwLb5y4r8vWktKskHzatC/N2t0dVHErDWqvS+rm0Aeb/H0L4HQ6VwUhweivkKLwvjYDogT/ZdIARJkkT4DLZCIDZjBPaJElSe93CKV9qnqZp8Dafz5leWDJmQ0DIPwLDxnnfZSPOQVrkhB5GMF95gd+TjePRYT4WRcFdTkwlxfJTTGX9FlOWKHloxM8VrOlUREci+LQfiCHYd1fNIvjZs09DLPofWw1Wua/1q/BxvhtbzvrXL4tJs1jPc+b51xvsSAK3c2Cl8H7LNucfbjs6PgsDHUwhOe97X20g+KcEGGgRKoARJQBenHdOid4DfV+qndOecYa1xzlDfOhdI4dCpg5SoZcR5o08pjZuDc26hSJq3fG7dYqdyjgjHOaVe79wZsPCuEw2YTwqkuKqF815X1lGAtwjVeHNWXvw/e89hFG36tcY+YtH47GftI9SIjSz3F6lrGi5897r1UeA2RLolpmyAqaFRb4ZENS2gHDAMRYp3VOAsOxUAHGNEIJTVIHsoBe0UNgT4SAwCeM4ePcqzo7g8g+P8N0twABCjRPhunuKqGsLiHHz2tJEjw0S4zxMSaSFJp9VhVXzHRFUopUkQHsdYRxMJrTFNXKUqcKT+Lw0gc9WOb04GfQQcnP6AMdKZ1IdTXOQya7Zy7ojAh1QiFpHRlnLG9dAoUObsTUmtDrD0NwfZCGzC6YDyHijZmJVCJhKnkotJNT57CzEabcJK8LlVNcVc6+XV5GaNGrvR51Tv7XKNgoq49yz70XFpc35rzb53IfsBMFtSzhDS2jBT+Yx+Yu16H4f+PjAFjGQgAI3oCgRQEBcXzADkHSQ4QMBaDDg9Wy7SY6vRkt05SfTkGAzGdgjBqCFlFwYXg0uMyOFzJIeMxZ/llk0MoS3EmKyO7BJGXsvu9NB6MyFSc9mk9bmSIpWPP5DUl73O1ZSyYeqb5yIVh8pWijgLkuNdSiFALRasV0Uo21uqIU6LvtC8xQwdVUpfvCt+dtVIatCOEKIMRoQ5FUnwHQgALRUABcJB1kUgG/jAX+ICfpnT5akdV3CgVTEaPmYce8/UmrfJkot85762zMbsN1/r542JguIfFhLiVhLxQSolJK9qgDaQnBlsCPosp+inf6ad2XQx5SMzBaCJk5uMgKo5ld5nDOxhKpuddpXrJips+VTDaZKoOaq1GLN/WnI5lq8WXb20kp2LentGEF76q1RIm9rbu0dofZ+u9z65bmo0Vor5wFH3frA72l9N9HWnx1koiDUAf1tqfYQKDC0TE1s4h+5D4Hf0obQzY/iftaUMPpdAzpTKR1JzHf0ydgzp3DK5Ry9Bkz8FOUFWequM6N241lWFNZsq6EHt2Ue1hKr2FnrzWc698G8Pfr9mhg1JFsNfvvQpgDJ8LXAeVrJnDanpBoaA58zTkLSJyf05IQznqoW1rM3pxD6mg2QSRYoJ2YCFBR04DtRQe1dBQX4rEew2BvjpSQBACdoBAt+IWA0fKwAA79AgLwfoglktoFWBGwLwywi9AUIQDwwM/Hypy0gPLGXpB2vwPKqTxEQOmii8F0L4W3mYfNirQrjWNLNcRYHTLwMIGDvI4y+OUDqNIInSg5j2cIZzpnfDfl0yV3EOrtgnjjcyb8eoVuoTrGRMsOVYc8ukmx6Xs1SeLmwEGsha65ZgokbDGvvO06i2HXrthdu31h7ZqTOOva0Ft7zW7uBfUTBoFcHLuvaax9wo/WjETXPqYl7/2ofKM+yInrDXcB7WwQ7VzX8f6eZAIwOCaAphPOGcT1z6x1KY1aRAOKSgBtQJgV0qjvSaNsvo1g9BM3uWMdY8uo7zMuPrqWbxyVqyttkx24uhVomDunuOSdjVPCnt/b8QDyzgkGeKBEUpurPNIc3YXjr9RgHftKKuyj7XjP/mWu0cYl1EPkfG5t7ruHzqvW2fV5197JvbfWNswFjrWPaeyDQAoaE7vSODZZ5RwbY3x0DIzgx0V3dRmp85QLxbQvV0itW2L9b7dNsyol3K3bPd9lsKW+eyYp3Vd8J95rvYEeigB86vrnTzuNco9K5HkYZufv24N2CK3xu+9t+j9B4fJnrNI57+P1vUfB/w691hy3Ru/cT+X05zNmPsdWQDg15QrbBIoAWA1mLiRyABxK3lgrQXiuuNKxhcrZatDytxX5b+M6asR2UxvkFifrimfi1taHkkkvPtgMAaAeAQkpAYjj7jARACgHKEHj5GjnSrHhRiNvAogknnRintztNqZHzmnjgrhGxsjLnsttxoXnxlQqXttvuhXmgIqmJodrMn/g3s1EgafigajjDl9qIk9u+oAX4sgagUDrDlvObjPtavVh1pIYIfdiDvIYCqZnwSAQIdIcIaZogeIdAfwVIZgYHu/O5CHgfmDJTqTuTqKkflYGgA/tFhHJfhHLFqMPFkRsrvmgAZdo4c4dgC1t6jzAER1mge/PxB4VfnFt4ReiroauLB4cEd7koskbxAuDJsBMkSLPxMQDdgNtwa1nWmCMkfke9ujugTZAzkzh0sNsyonrRpNpnjzqQVNnDNnuxjXiLuQWtgwTuoJiwbLoevtiehJkrvEfmuctkYkDsOUeFiIjbnrm+okWkbMfMZIIsfTlACvhoRbjMUoHMVDlsTUXbtplRLBk7qaGUccfNEsR7sCjZuvgcYoEcQUXcdsZUeYSAB4aHvYTBP0HBDsVgczjgQ0ezuNsnmQZyrzu0bytskujnrMj0QXuKuLluiXrukXBTKwewQruMaPJMdJmrmsYcRsSIvQICWEMsaIasS8W8RUfNJSUCbsd1OoTWDce8Q1MydSWccZhcWDlcbsJyYydyVScCbIY7mvm1qSa8eSUyeKV8cGj8YkH8bDPxPzIwLUUOqzgnhCQQc0cQXDLCS0QugiVMl0TQcKitrXH0WXpiYMTicMXtlXuJjXkUdMdcesbcQ1JqcIZ3gocKd6VyZ1H6aye8ucQ8vSfKb6WoHoaDpobKQyQsfNGGQ8RhiEaUcGaKaGXGUqc5iqUoGqYfhgRVmPNqUNlJAAMzgn4FNFTpGnp6zb87DGC7Ilrq9H0H2mMFYnl7OmV7HrV5WkelZFelkk+mdQNqTA0l8JiHRkTmo5ln+rhlab8lRljlykLlTkf58lWoaFz5JHZkpkNTblVbpkI7FEclHmbHzSnn5mZq/FWHWQ4ATzqkxq8AVlx64E9J1mc5EHzrGltGmkdGtlIlCoom2ldkYk9mOlbKUEumDlunDk+HEmN5JkxmdQaQfmLwrF+EbnJk3kNRYUrlGZ7lXnjkhk7DEW7kO6r4Xb4UYVUXZrfZ0XLSpHzmUXUVmHKmPlh4gAiDSDCDppT7RyVm6mjb6n1lc4AVNnQksagWWntn56QVolF5SoCZl4y7mkjGumcFqooVXokkcU5k7ACUOTCUzniJ0kMULlmVCXt5gH7E2WUV2UWU0WAYHnoW2W+r2VT7oYXmZk7AinHmdSuUOU9a8X/H8U+UwBVCflgls6/kTYNkyWzpyVmmUFtngUdmonkLdkDGaVDHaUIUcGK6El14JGelBkUUmWuVxU4W0l4XVWbkuUxX1WSkCmkVNVZk1UhWmVtU2BqGRlOqPHkUtW1UDXYUdWe5PEynGV9V1WDW75RGqlPlxF1jxX1GJWsrJXSVzYmmNkUGMJZWcY5UqV5XQUFXMFOnFUDmlUEkhL14gBVU9XjV9WjhtCPaznWXNUEUiIfUkVOW/WMUA3uWz5Sn0XA0Lmg3TWjUGHzWEWdQw2dQ9aAn0BrLKDwJbqRVvkgC4rCDCBwURyglbV6lJVQlwlpWU3zYlxgWnXKVgx2mXUaXXVE14IlX4nukGVnZoUI0iL42E2WV3LdVBXXn80E1bKOXsmHm9WI07AC2S1dUeUQ1jV/XzQK27Fw2Xky1vVy0a3LX1CrXDIvlSS41cDWCbXDpk07UU3AWyXU2dHUFKU2mM1QUbYwWFU3XwV3Wc3IVEmGW83OUmXm1nlfVWUi3BVy0h2A3S1eWUXR1g2dWeV82pkW3nnSklGi2y0iIJ3cUFk40lncDWABRhbBAeIgl1FW0SXaSQmEHpWAUZ6HU02ImKXZUM1ioXXu1XXS5FXe1sHy5jFc3+0828Fx3B3F2KCl0YRC3PY61q2+kT1T3l3TVsnDVz2MUh0l0MDT2J37kq3r0Lmb2T3b3L0sUzVsXPFB19VH1L33krVFlrW2KxoRxYU36PUJEi1YVgEagpKgp8ALSFLa0XL/09YDok1V14E2113U0HWpXN0WlO1t0u0d2bpd0s091e2MIc2D1+0VVTGjm7Bf03KNUj5MW8BWZD5r3APkMazsmXEgrUMUOsXw2mhEMG1E4pqoquwYo/TUAUrDIQCP1eauIFBhJFEi3pqSCiMpGX27CSPSMY4dYLDiOkPyNRCIYNYyNzWmhqMxASzhEZEFq4BRI7i5LwEFIVLiy6MaPhGZLGPZKmNxLmPJIVL8Rf74A/7yreK+IoGpxkZfm1lQOGlwOwNzaO2EJIN0GqX9HoMbKYPs0+04NcHc08GQ1gjWP6NBbKIv4+O+SWYBnrlyMiPqOZN+LZMAJEp5NS1UPAQZOaPeO+C+OWZK3g2sVWPFN6P1M5ONNVP6FAO1MdM2NZMNOVOBARHKm45OxcPoruzdMuF4TAL8T5B9bZAkbmlpoZbiDAwDJUERNnoOll4MBTDCBcDdFnVgwqNd46ODOlNBHLMw7ZDf371KJ1PhH3ORqPN9OQq3DPCfC3B5jKA1ivNZPvNt6obfO/P/PPCAssNFNSMlOaOgtRrjOQQBzqDEBf6eH8VHoYRYQcbMyCA4uECNDiBoCDAPXYu9wYSxLf5lXvmf60siUIyXMRJFpAs3PotQCYsLSFpXhAoQHVjtPwt6OcvctwH5Ksj9PXPCuIaitwQovoirDlgchOMSvssysPqCNcvytKvPAqsCtkj+acD4DqQQCCC+P+oxFYtFGPBbhchtg1gmsYDmseyTBZ2vG2u/CNAOuwtghOtmsWtuvpFVFgOV3iWQMc67X/n7VAVN3hP4t57INkKoPF4e2s3CaJNDnJPD2pOOumsuulZBuzHEPfUi3+sFv+rutMN7Gx3ATluBtaBVu0PDX0NpM7D1uuuNvJEabMNSu7AduFtdvFvLVovYDoSRDKMpM1p2ves0B5vOsNv4APpjsKCRBoEzs+t9t+v5uLvLvjsKt04x7gPhs/lBMpUxuN1wPxtnPt3JvoloNS5xNs07KZtIXZt4OoWj11s7udtLv0ArtQBrslvh2kMDuVv/v7s9s1s1OmhgdusQeruGYJnJ2wc/uDt/sAdAfp2zWZ1weNsIeAcEZB5GsgDWBYBhJkfUBQCbPbN0YstYg7gGhxgRiZ2UcKALSMcCjMfPA+hOgcjficdfumhseIb8e/CCfVQByRDvYn6UkLDSfhYAgaRoANALCuXumuYoH8Nl7ppQBxQULrVcJhLWhAgrhag1gKeSCycUQmeFpTDmecAAhxCxIAirD3C4CxJtuWfWc7BOcuduceeSf8TPwLAhcRyCM6AACsSAAALLJAAByySEBKQABsgguKAAnEgLJDF5F0pBlylxl4QLJEgEgHvko+F75tF3F/F0pIQLioINJCl5F4QLFzWSgEpHJJYIIAdISlALEJSTTmMP0BHlwPQPADsO64cF7MMIcCgIQPgAAHQkDUDiCLeaA7ByRKQADsOwnXm3kXe3KXCXDXsXskSk2XMXyX0kAA/DAAALw7cxcpcABk/Qj3Skz3L3gg93XANgL39A93ckKXSkO37svqlWNHHQkX0kGBQh9AUPCAkXnAvAggcAVpwguKAAVpSn8SANVwl3Vw101y1217JB1114QD1z5P0OEHFEp6Vqp2XriuIOFphHYUpJFzF/F9JBlzFxl6D4t3l9JPFxYUFryKCDoAdOZqUIj3RjYCQKsKgLT+zzEF9FzzzwV5F7JNt5wEPGa9gAzyp8kGXlhSb8wKAAr0rwhLixzxr7zylzF9JN9Fb8rxhLKhgGgNpyAIAAl2gAgB7ogRdjCRfxdVkkpNdZcoDa/SRQCySyQpcoDSTbcYQxdKSB8RDaDDejfjeTdSPTdDCEBzcLfLerfrfCDKJVka+pdFc6+CDJe4rxcxdQD5eLd/e2A+RhAv7EsdDYLiBcCtd5aNA9+H65qkvCCY30Am+zKT3xQ0ppyLdx+yRyTxcZeyRVmp95d89VlVmgJDezJ98D8YRD8LC3C3Am06CH/ohgCBCOA6BbcZeHDneHDSQxdTDnfwCReRcIJKRC+g8ABamaRprwGsCBA4gigCdCABG5oAxuE3HYFj0cBY9rA63Ndn6R2AE9EuyXNLpl0u6b9CuxXUrlfyUAG9VgnfQfsP0ZqkCj+HQUAKf3P5jBL+evG/lJBABbdtuhwTrs/0i5v8Yu8AGLlWTTjbdFu23HbgAPvpYsg++PbboIHi6CA6+SAGPhlxD7ZdZIn/WrlACrIoBZI4PaIFs1aALB00xKUQBHGCCSBBAIWL9FwEtZjBAAVHKAAuuUAA2ioAHR5QAO/KgALH/AA0F6AB4vUAAaKoABe/QAGtygAXxUAABIACAGQAE56gAbltAAWJrRDAARNaAA5+MADOioAAubAAH7ohWevmfLg72kgw8Uu0kdECAWEC8B3EhAMIJPx0BQCuAsAgwfjUW4FAgqe3DLrkPyGFDDaSgfAEgDV5jAAAUrcAADS+AJLCN1uDohAkpWOCDQDgg9JIBo3WAWgGv4/91AXQqpLwAaFLtCUJzRbi30647Cmu+wlLjsMS47BtuNZMPoxCgBY8YAMghCAAEcUuvAEgE72x5yQYuXAHLkpEiAkBZIi3LHlwFsD8RgBZLVtFay6E9CQAcUYYWlnoBY9xh1/DSLrhmHMDqhOfPYAiLgj0BpIi3YEf0FbQeEM+keNAA0KiBNDOuigqsttxUE3cwA93GLpkIkHkjIulIlQXxH4hhVFAcvUHlWRS4pdOAi1XgFyO16cASUdABnIQDl789FBIoqAPcEYgSjhAWzDoNpFPJy9tICGU6IKMVG0cUuuvEADAB8AKBYkEtNUSKMVFpZjRhNU0b1iXIYRnC0ABHtqI6Dc8+RvWSIDwHwA+wxggARidAA4pqAAvIPRAcjHRSor6EpB5Guiwqx0IUdpB8De8MI1ADGIDBOiqBGAIY2jjWU4AMASWZLauFuj9J2jCsDouXjv0jYZZ4ecvZkXqNd429Veyke3gV354u8nh1vFXrKglCFj7AxYp0QgHX7bdXRWPTHmTi97MCIAeraXvZk1HpiOguonam/kqzTiEAUo5HoWUUDgjmB/QoYSMLQBjDZAGIpEYoFmGojYBFKPyBkEVGF8ZuhfebktxW4qcy+e3HIelzOEZd4uKAKstJFK6EAN+vwtvjdyqSKQJeuwaSDsDBBKQ4+OwCiOBNkg7A7hOwE4SIEUDSdQyzkTgJjxx7oA8ekXKQTILkEKClBcfVQUpHUGaD4Rkw0YHMOgFojTx+Ac8VkHz6zcbxJfe8Rt1B4tDnxVZV8e+M/GWAfxrfGwP+Ok78AgJYIECWBIglQSIJcEhCb4GQk7A2+6IXLL/HMDADv4hAAgMf16KUDu+wyA/l300m40kApLcllLzQlEpVJqcLdGAjn41kdei3fnjFz1GEissYwQAB9ugAQ/lAAn9qAA4uUAD+eoAHJNQACFuY4gEIAAB9QAIvKgAUADAAMP+eSAQ3wd0Fy1wBCSoAgANz1AAsHKAAseUAAyaYAHxXaKYAE346wYADELQAG3mgALATAA4/GABNvziC4BkpgE0EIABiVOqbElJZqR8AgAb9tAABUqAAwJUADePtFMAB52oAAbnQAABy1gwAED6gAU2tAA0HKABfeMAB/aoAHEnVKYABQ5QAPSmgAQGNAAyP6AANbUCmAB8pUAC/AaEMAAupiVNKmBTAApcaABj5UAB66YAA49QAAHegAQFtopgAeetrB/UwKb1MACnuoAF+EwABH6gAODNAAdh7RTAA9GZAzAAPAqAB0/X8mAA27UABm2oAAM5QKaEOCFFSypgUwABwWgAYf1+pkM+KYlNxQNT+ArwPyIADICdEJ7294kykpKU4If70ADHkYAATzRSRDHLH3YycEIrbvF3YGyRDgVZJSG/wy68D+BSkeLkIJX4ACQ0E8HSITliC8B6oiEK0iMy9GgAJBn/Aobiji6RcoAMXXFHHyj7bdCAGXTLjF1i5p9jW3Q0cWoFpl8NRx44/iBKEXEyRnu2kJAPinsD7BTJ4MDzOlk+yaSaBZ/UNAwPABMC7+53AWeBOFmizZI4svgQgmlnbdZZmaI5icxQIeA8otHWZA2nd655g84vSXpVyi5ndau9XRrs11a58C5Ia/NORoPRANYRJWEiuUT2rmk865cfSkaH3Pxi8/Ebcmrh3JJ61z2unXErlT3B7QxaOIAAADxcAAAfB5J8kBTgperCKTFM8lzykAwQxEfwDQD3cAAOiAFuAgE/IcUE+cEP6BhAfuJ848ZN1xGtoSRa7JIL5wSmMzFIJ8xeQzLJkpS55ewReRlJyn5TsZFUmqXVPJlQARJLUjzu1K0A9SBpw08aVNLmlLTVpm03aQdJOnnTLpN0h6S9PelfSfp/04GeDKhmwyEZKM9GaEIAVLyj5+ABeYvMAAU6oAH95QABSuYCwKYADfTQAJgK0UwAFfKgAAHTAAgZGAAF40ADZ8hNIWmBTxA4ApqYAANlQALLyi0wAIw6gAe+VAAp3LMLAAe2qABgGMAAziYAH+jQAAxKC0wAHAqgUlaa4LoWLyGFC8sIIvLnkRBiAwQjIClEB73zJAWPegMEPQkoAr5vQGwMfJAD+Lv5zAACfwAlDBD6AhAW4MEHcApT3Q1AfoHEGSSdA559AD0W4pMieLIB3i+gIcBZ7hYdx1gb+Z8Cc7JIAFWSvyIvOCFpKaAySslkpyJQ2B4AmS7Je4sn4hKUsPiw4IwFaW8Bv5AAARPnm0UAfwgESfOqUejF5rAYIT0D6CDBhgRZFKRkpqX4AclHinpQUqKWs9JApS/AN/MgX/yH0sy4IZEqgABIYghAdpRsq2XdKvFfSgZVUBGVjLegKAAYAXyUDTKzltS+ZQUB6DpQMI8AAAHoAAKDpX5AeV5LelhS4pQctuBlKQAi8k5YpBmW1LghAAKmCGugrI3silBcpSnsBghUKzZV0thW7KEVhy8pRyHmQYr8AdSnFXiukAEqoAwQrjCSvilQLWxUAU5G4rd6nISVZKmFTsr6XUqkVRylFRUoaUMqmVuKz4PipALsrLlDSgAJTBDgADC4ITqt1U6rtVeq3VZcolDIDFIwQ+7kSsUgABuA1YatJX3KKVYq+FfsppXSqAQKkuVZCodW5KnV/SrsTYDeUgAVp3U+aYABjtQAAhGvyjZYvLVU2rNldq4IQwogisA41AClxVACcXyTHFTCwADABa0wAIhGgAG7lAAG/FaL0pgAPujAAdv7KKVp0UwAPpyZajhfosCnFCUAcUaKU9MACuDpEPaXyS7FjCrgNmvTWiqnlvisJSAGCFBLeAIS8dU4u9XbLR1c3T7N/Mm4rSFpEa8xYABe3a6YAD4zQAFyeFiqxctLlUMKIlKU6JbEviXpQoFTS1JekuYAirHVi6iVcisXkyqqlfyxlfUuSS3qWlVQO5Z0p9WLqXlAalFaMqLoTL/hQy+eZ+rmUpr7FqOYgJmsHUZqmFzCwAADmoUwANOagACUVnpgAVWVAA03KABZvzAU2K+19ipeVwoJlEznFwgJDb/KgWUybASgNNfRozXRTmFgANE0E0gASHM6NSGtFcJNBAABqUmbyrY1IbghTU0lemtRVwKI8WgMTVywk2IaM1wQwAFxyC0laYFMACzJoAB15SRXdNCGABQxT40CaM1jGlKcxv4CKBJNGawAPixgAYljAAIJqAAwFyamAB5ZT0Wyb2NP8j+X/MUjfAhK+ANjKxrU11KZNFm/zaTJ5Vu97Ni8mxXJqs1BaQtYWuzRFuc2AB3RUADK8oFIWmABvuUACFStFOi0pb+AqmuTc5qSHeT9pgUv6fptcE9TopgAAiVAAJmnRTAAp+aAAj6P2m0KKNA6xeYADTMnDUWv8mAAXwMADQ7mNNmlcK9F7CwAIK27gxaeRvoWDbbFc881rwDkWoa1hwQwIIfJPnlaoAV8+gPBB6XZ9YBHhBideOL53i1uG3VgXtxAl5CjuJ3QQNt2kgoBZBskXFDHyUh3dHuL/WSC926FcArV73V8VWVB3uirVP3NvjDvB2A9wx8XAoRl2/mbaksvkSwZMEzVbbsd/qPHUlh21OKl5tiyjYvMABzckVKW2LSDFWiibZNsABfitFMACn0WVN6kabAAJHLWDAAQjquC6pAw6gLzsAAQ/85uumAA2UwWmAAh5UAAOpoAEh/pqX9Ky2i7nNC0gzU1P2ny7+ta2phc8AGGAA9f8ABf6oABpzJbf5MABBloAFA7QAFqWgAMLlopRa6bbNK+m87cto0wAOQqBu8nYwpvn9q55/QaSCOsgHyjXlKKwXcLoAWB7/dS89naVPQ1cbedgU2jXJqE3QLQQwQ5Tbikq1+bHdhawAGA6OmhpdFJrXLTt11Uoqf1NCGzTAARumQzK9gU+wYAEdFO6atpj1Dr2NweuFX4ux4BKJ1U6mdb3u/n2rANC6/JX0t0Irqdg5q+7rPrn3z659OqtPSJMz3BDxNbvRbv0Bn0L6d9FqybievwCHBghXq0fY8vH2FKGc2AbzIQG/lgBdIhAOVWqsvUJKb1KShpfABP3Qqn15+w4Jfuv3fzYYbKuVSPq/1Aaf9L6qVW+sqU0BgDWKtVXIskBxqGFR+z/eSrANwrf9UAK/btFv337H9z+69Ukrf3pLUDXe3ZX/pwMorADyq4A4+vQNUqXVkq2lbKtg3Yr4D4A21QmsWWfLllIwKBR/roNj6MDFBnzAAaVUUpaD86s/RgYgPHL6ppy6NWwe4NfKVligJA4fuP2CHpD5BrA//pRV37BG+BuJS/qINkt39pB7/cId0OUHF51BiQ6wa0OUrxVjB19e+pgOsG4DCBzg3auUO8HVlikAQ1IacMX7rDohqg+IagCSHT9wRvZSUqYPh75D6Kjw2qt8PfLFA3hhNQmpOb+pxu4K47c8Bx1aB6Aaq7I5MHoDqGUDjh31SIZv36G8DsGp/cYcIOKRb15hqo4upqNiHWVNBhw0Ed9WyG3VLBxQ54Y4PxrMjCawFRSjyyBHoj1R0I7UdsMRHgD8UjwCTE6GBByxQK/1LEgchtq1Vkx4FYQB2PCA21FRzQ30Y6PzHcDhhhowQcSUtHiDNAGY6AaEM6HsDYRxY90fsOKH2j4Blw5AbcOwH2DkgDI3qtSOqH+DFh+g30s6PhGvjkR3o7MefX/G5DUCoE+CZGCgnxjbiqIFsZBVQnXjMJq43Cd6A9HFDKxtY2uI2O4mpjkwY43sYON5Z6TcUM4wSe0NEn3jCxgww/tuNNH7j/AVoyQd+NWHOTXR0k98fOXCmGDcR1w9AaBNeGxjXBj5Sob4NrK2TMR2E58fFMImfjFxv4zKcgNp70Typvw+kcVPYnDVpRoox/vyOFH8AxRq0/aaxPjHGT+JqUxyb0NamgDrBik/pC6GSBNjtJrQMyf2M0nDjzJ1k+6ZCOim6jNx6NY0avX8moAgpp4+qbmMxmvTZJyU3qZkMonBjH64Y8CedMLKTTaRyE1GcwMZm7DOp7M0if1OIrX1Rp5IxiZ+XmmLTuqx07kdtM5GSjdp+gMWcyODqShFQ3IxWc1PVnljAWqBcFpgChbHISgAKMOeOj0AQzQ53gCOeZMDm7Vrp25WmcuNVmljPpkkJSf9OBn0odJ3Y3FFDPuipj1LS86moi10Ls1S8rRczsKnfTJF+CrtZEOilaLAAnBaAA7YyLWAArwMACPuoFKEWAAhG0ACm5vNsABuioAFo5QAAvmE0wAJ2mgAVZtopOagqYAGy5DCyYvQ3mKAZmUwAA6xJitvZRo72uLLDBSnvVjz72Tq/I06k+bOorOT6UVk3bfbvvn1L6+QomtfSpo32RAuL3F2fcEP32wbkD5xusyKc9PcmjDiZ1/WYaFM5m3jnpic4iZePsnnVBp5gwWfOUjGQTbZsE6WYhNqmxzxJzMxKcxUVmBj8mtE82dMuYnjL7ZzszaanMpSCjPZzs1uZ8M+B1zy5542gcJPRn1Lh58kx5dS2zn0ti5gK5P1XP+WNzl53y3qp3NBWyDHpmwxpYiurG/T1Jm8+eeDOXnrzeJo4/eYQ1yanzqGpedhesEYWDFNe6KfNsCmQzotdUkSVnpz1IaBpgUiiwOqovsqaLPiuiwxYH0sWh9KKti8uo4vT7RLC+3ix1YEvZ6hLIl0S+JZ2AH7KjqlzKx8fku8nJVeVyQDlCTMpn0rQ10K1lfCu1mtLMRuy4CeSMKn2zPhpy/4f4BnXoTF1j49leuvBXtLsRhs4acSP8BjTSytIylaetuW8jkV/gF5bKO9mcj4NrI3MEnr+oBhWB96yFcrNhX4TURm6/0bzNQG/1NgIEycyUDoc0b2ARG4apMOKRmTGNv6+OauuYr4px1qBSGZpv8BNzLlp64arXMjn6bGpyy99eZvQ2oAM5uc5YAXOJXlzCVpc/FeSvc2ebOqtK3uZ/2M2cbR53K+sYDNhntjxVncxGYqt+aqrTi1tXFDuHiB1IGainRpsAADcoAAk5dKZDOX2ib19NvHNSIsABQcmNN50mL2roIX6f1IMWAAjFUAD4/wwsAAHahpuO1lS61201qfAvwD5b0FgASW8ML0UwAAJGmi0RcwsADB2oWsCmAA2J36kC6+LsABq4AH2/MadIvmkYWdd/u+WpeYttW2Y9i8gjc7qKkYXApo0kXYAEB3QAKaugUwAMdyfvdhYt3HtD3AA/2by6+rDi1DcOvOsjXAlTFwffReH1TWhCU+1a9xYWv8W3btPRbsJbms8WJL0ahhZwY3v3Yp91/QSIQGCGX7S7UClfQAB9n79ShTR1IP16rbLBNipUTd4CwGb7gjAo2TdRtYHzVfi5G+TfAc3d4AIB367dd/sAh/7iwHwJEFWC5LPVD67a59YWMmDBAuNhB+mc9MUq5VrAWNRfZwdLrN7M1/27AE6tu8QHKNyYMEMCmQPQHkwb4CgX9RwRsAX93VZfcCxT7a9BUwADIRI9yGYAF35QAIPRgAQpteNgAZX1AAskqABja2YWABt+NEeBSZp6u/TSStYW52spgAODlAAzsr57NHem/TeFNymAAmxUACBXvw51XYOZLalmw/g+AOXqwonyyQFAoqCEAmH6HW9RTfgBAP/HUDsB9gHg2Knz7ipwR8DCn09TAALHLcLApNakXcwvSmAA3vUAD78T1JrWBTHTs0+XY4/gcZXcH38s1sAfBUABCcFZ2eCGI6rVwQ47SFl6DQEXrigNVRqq1UuWrANS3uLcAU74BbgKUbALRPiVyAoA4K0FT0/bPOO8b+5z0+49YN3H+DLZxQJav4DfBJhAGhZz/sEj6RAgAB8LMAa/xl0soGDjxc8EUAS8kAqwBoGpEiCs2UpdNjm1AGZNRPMjEECh4qYgicHKHLjifdNcXmTdAAQZqAAc8wQN7TmFJTiyxmcqesHwVCB7p6CdBPj3FuWJ0/nC89PpokAcUYA1i6oeamTawgAh7BtVuyW3HriMl/GZgD4OIH2Lql6YLlXqGE1cTtAFPuO3MbFIigbTcesksuXGXHxuM+cpe4HKrVtpjh1oBe68A0ATT0m8w60AQPmAXLvyDy8W48kMI3L2zZOschKW71TxhA5A5yPwB6nfNwK+a/lsnG4oOJgq9MYhU/3dLCRhy8McuXCqqHd1+KZMNgMD8kA7rwFzpYBu0qvAnkWA5yuafbgUpvK/lb5Bt5CrSn51/666sXmxJngRIYA+a2GGUkMI/rvZ7maddQGhjBl1VckhReK2tz6Lrc+y6n19OeAAzoZ/ErGcoAJnhLYIXA5kdm3jpzCwANxygAfr93Bmjkp5kdrelYEIgzsLMM9GfjP6Akz6Z7M6VuI2hXCxhF4oZqeT9qXZbpW4aqXffywgKnNcSy8Rt/PFbhqxd0S8ssrvzl4Ky5Q07B1WrGnx++pw++O2NBuTOY4QM88UgarGnD7g28Vc1VU3v7VD9iyC52CXKsLa09KcBcAAVSpPcABGxiWdBuqHNnNZ2pYB+Vu627z1r698So5XzISVsb2nvG+Rdxqt3QHgN1jZsN7u5FjC2DaR7I/6qT3hqiCAm4+uUePjriYIIQ7Kfsfl3NLq95cs3cMfWPmNkD5N2hfgfRFgAGyzPb8HxDzwbSMoeh3St5gOu9MExK+T/Bm95cu2caR4Avr4IWc4wgXPcl1z25/c8YBRBP3nNy8/ADecfP6PDH1T/S7uMRQMIZgJANgEVFoBPnC7pj3qpY87uUVnH1D1+uADCfE1/ntl8B+BeTd5H4H5hWurDWABpOXMX7r5PKppQEp4FcRegvi8y95ivBV1O+zt72HRG9i0pTWnnn5QB066cAeov2J5z9S40+KW1l6zlD7p6QC7OiHi6g52TZBNUGTnrBoz/4/wCXPJ+ZniAHc4edWfmjNn613Z7m/vPLzvniL047U+CAWvCStz4QA89efSWq3sj8e63fHe/PW7vLwV6/Xgq/31r0r+DofeZuGAKvITwx5u9tqcPikEleG8I98qyoJKkj0e63PfPHPzHw73qqxPVuZrzCgzftMADq2oAA9FEXQq/Q5cOx4vD+XQYp6nI//U0UwABYRe65R5Y7UeDucvCa+Zz17VuWXlnih1ZylL8cBP/Upr8Jyw8QnBPQnDPyYBTbB+6rODgX89xmZC/AH53dqyH6B4hcIH0p0L6KaouYVve4oBiwAATygAU0UuMIuhAxpsABeXsU9J92qR39bidyM//bTvZ3Mzrc+T54+anqf5yy9WEEiDCA8ozQF8ILAta+BufIv/n56cu91LrvmHsq9a5e9PXHXQbt1SG98Bhv5kyroP8m4qWh+MtihrjLeuC1DP4Ax22P0n4nc4niA3XnjxIEiAkp0jKK9gcAd+L4ARA8AYZcACj/xGoD5gPJrHEIDmD20dpim8AbgcVmQN0GxeeBqmB+Iqge84QLq8sD7bghwwyQMEK8Mwbo1yakH+2bl8UvdlfXyegN9sNDfo1X3/DxG7i1xuyonwLQE4HH/gCfn7Z073auB+8/ODAAAyv8xOYnMruV8EPhljSxFLVzjQVJ9vRSOFE0hH1f+x+cPuHkwXhyv9AAZDlAAC9T2FfTT2lAACoUDNQKX2lopQAHi07hWa12tAzWK1QhBhVqsEfSGSv8q/RszLsYAOVQYcbeDny0Ar/HqySFAAFQDPJQAEMY6KVztApPaUAA15QwsOFQAAX40R24VoLAzVcEb/fACv8L/MJU2VRfTi2PtF9d+w6t97KABICluI+1EC99Daxy9hAnYEAB24MYDKAmgNcFf/IoxF12FaCz2lAAPlMYAhH218z7DQyhtpA+gFR8eHPxDYMtA/ACsCAAmwOF8I3CwIcCtAXh2xU7A3xQtV/FW4APlGgSfhOMpvPLGeBseSlHn8drPB2pc5VElUac2MaQIpsj/ARxi8aHUDwMCjA+H1hcPfGwy99H3ZnyKMA/cjzzdXHD42o8D3Vgy8CQfE/0i8iginwwMxPHYAhd5HaX0AAG00AAvvQmkSnLwMj8PXJB1eBSWNlTcCuhPxGAMrANHz8RDvTg18CElAIIdgUAYIOM8wg9AAiDynFFSt9alWILvd4g/IPwAKbElS8CSVZ4FiRehVYC5BkHZ4FWBcAFcFwBIWR4ELQdwV0F+YVwN4FwBVgJIJ1U8vMoNo9FDSoKTUjbJDRNs55M22bsFAVuzttHbbdRhdU9IG3T16HSQIS0DFbdUoCipGgLDt81QAEnIuGQKkDFfTUilAAFL1WdSGUABXBMp0a9QAEQVGgMClMlewC0BeAReXw0xpQABkApzUAB85UABMJRF0AQe4GUBXBMSBsBCVCoX5h7TYlHCxWgBZVaV5goFRMCaQmwEXlpfQAD34/qQBkRFQAFMdURyKlmQ6KUABVeUABWxQGkw7bENxDQAwAGwlQAAIEiaQGk2rfAKIDaeaQIS1oLQAELvNzRh89pEXWMD67BDWBDLbUEIp0TFbENK1oQoXTQAEtXnU9sa9QKUAAcOUAB/SIBlAAJujQ1B3RGlmFbDRUdAAeH1YwlmWV1edD0N90g9Sw1D1QNReSzCo9aSFbtPbQAHDTMRRMVKpAML81VXLoVs0EtQABgVbhSdCytSN0UgurDNSal2wiryisJbEYAS0edQaVzt69H2ypCBlWkMXlAAQAD/JQAFOVapRlC6Q0IWYVCtIrWw0eFfhV7DP5CmTVdGwiLRG1AAfujAAO9T2wrf1p57QnrUhlAAMhVoXOAIhdeNOAO3VAAFfidFOrRWlQhJoMfC9paX0CFAAE7ltwwLS2c0tecwy05NaCz5dopBaXDVDpcxWik9pJXzgD91D8M0VPbVq2S1RbbV3C05NCbXq19NJbRzC0NQADPowADG/DMMAimNPcOwi/NSGVBctQvl2S8lHPPRw0O7b6UClAAA8VrBQAFnEkRUClAAPR1AAcgNZ7FDScUF7D6yXt+9Fe3Gs17FFRE8/rBoO3td9HVXrD1XLfTkD5Ag/Ty9hlIc2RscAKpzy9Jw4m1g1c3OoJKCFjE1i6FHnFAhiC5IwWwzNO+QgANEqOGyLy8LI2GEf1N/KNzd5sVS5V5UrVJQKdD9pTSOyCPjbSJ8BdIvh0RcDIpcJciQo8yPcCrIlAFiiKPTUwcinIhQGSjigyIIAMtAdyIaNyvHcLFsQIyWw2clAhaUAALNSxUdPYqJGB/IgVy0idIpQD0ioouKO/lDIgB2MjbI4hyysEoqIGsjOo1yNyirIDyNwCATAEH6CNIZVWOs5VMVzldRovS3cNhjO/yacsVAIHCwMIBpXKMlAwAAbowAFV9QAEZNQAAlTBA0ClAAWBV8NYKJSjLLMKIVdmo1d2iifAIyLX8uoxZx6jLIvqKSiBo1qKoMho6QBGjeggtwqUJotlUaBvATzxmjxXY7XLFcUGpDCcpXTZSxVlo7FQcAPGKoAsD/IlIKvsZrPaOUc1HQAHMjLRwM1NIx8yzVqrUSLrDMIqiLAi/NPl0CkMLARV40JpYSIGsynCSMYtglaSL71F5FV0piGwpQA1dxSQgCwiNnNjH1d39Ny0tdxuNK1YB/g1DVJjSdReVYiu7d3RGlmY+e071F7cdXZjmLUJQms6lJQMUid9ZSN5j1XWQNED1rTa2ksso1YPy8eTRQ1miJXUW2kDlotVVFjTDA1wFtuor6yZsv1eaPzNFogyyLMGvNb2Ncyjdyz7CYbPs3hsyjdDzI9JYz2NejvYjWwisI4oqOitQI2KySt/fSWK5sQ4p6xVtXIn2LqVuVadFPNdbC83985fer0NV0XPOLtUAXa2OocsY0D2YVuVLyJt4DFK8NvDmFd8P5dTAvVTsCGhRhx2Cegq6IzN1gxlVNUKtbyItslAbAF5VpAxYF8BgnS/WCFCAPfzBUVgpN2r8mzYYx+91JXDz9ioDTr1gN94zry5UOw6eO385gAVWvioAQoJ58XLSt0FdMYoRxmsRdeR32kVpeXWCFX7YIRF0THVhW/Da1OtVEVAAF7MWgr+OWkf4v+JF0h7NzXkdAAWZU8Qy5WFi7PQYCkAG/GqKgUl4xQHf1AACNtAAewNopQAA28wABLo18OwBjoaKVEU+XeXVgTUEqmPQTFRYYHFs3YxSFwT39ShOoTaE9BRMDZlCH2+j8vfj0K8anfeKgVf4t+yfc73AqKAjZRKAEEAKhfoF5VCAb9zvcH3Gp3N9E3S32iDYNRbmIAKUXgBfxghQUK0BdvY5hyg/UXwGz9tE66JMFKUMP3JdGEvmMUBmEzBLYS9XFKU4T0lNVXmU/4rRLY8dE5lz0SDEnxGMTnEnlxsTAkqn10SafDBNYTsErxN8B39BA3IcH4+uKY8lAn/mCE7wvaRWk7ve9xkTAE4BOWk61ERQWkIElaWU93fMeM98REq73ESmZH9xkTpEsr2O05RRROOhlEt3lUTq4lTwMjYk85TyYdbO1wri21XBOkD4AXFzihpA21y2NJgeACrjLlRZJ6SJE31xWTaxTrzw9PIKJMxtF/I50G9JAYAx+9TkDZKI8yoYIUe9s3W5QrN9k5f0FAAIYv3AF4AVJJn8E1Y9xid2zA2OxFghCF0l8e4vJL7iBEpj2fj2zKt1fj4nGa1ClAAehUKohaWqTt3CFI5cZrPFGkDjmBnE2VdAwAHALbaMJ81w6KUAB++W8lAAaojGA/BIRS9VFpxqj0U2IGxVUUnYJpTNlC1QCTMbIJPqTF5KeLTiBwrL3Xj04ywDFj0lI1zcteU7lMUBYbIo3FC5bcbhzjLzOZNvNblB1wBjg/eywUMDLEVLC0D4z7xej6zaPy9cNIH1xqiMIc+O1T83ZVJj96VDw3Dcj41N3TdWDK5Oe8+knm0JdaktxxijWDZ1MbjiXMqFJdPVaZOkCNVdqNmSLVP1J2C3k7Ewu92U4/WqdA0keL/iY0+GPW4EeM8VcQKUXpOcDzvJFK3tskiF2K1SU/BOik2Qh2wBl0pQAC0FaKUAB/BMABZRSak4LfwUCk5fLiMABYTQpSE1I9xNSzI7+UF9NLUyOyiUVXIPBUuMdJKetY4pQJ+SHwwAExUwAHvoltPDTM0ma2xElIYIVl9ffZk0V8VfC1P7jhPFlIZsYk4JMUNhks8z1trXCZJ2C7PJcNmTGTBZKriuMeAC4wD/SQBeTwBKJ3PsOXV9KPk3019NHTFuIPWYUp0hA3OiELHqUJ8EDGdPGMI0qp11UuMEkVcVqnC1SPi3DWP138g5DxkpRcWYQAIA/TdKFAz2zZpLK8oM4dVgz205w0BjoDWPyV5aJFNIwhsMi01wzwdbZN8BoM9lUIz4M0jPmReZYz1JZqM7E1oymnfDM71mMpVN1SGlWPwwz1jHh0kB7gCwEiA0Y2QS4zxjHjPozFARjOCEBMij09dhM+ZE68kMxoEEp00O2OBS64hTL4yYMuDMEzq/BDPmRyMp1kWATganEYA5MzIyMz5kZTNUzG49TOSQyM7/HUgMsFDPQBjmOzODD8o9NOE9Y45IJdTQoo3wQhHo+v30ihEieI5S1o1NM2ih0iL23S7IpZ0GTalRbkSyNo5JF8VLAfxyWC0AR9MkA3fI71jjqg4/zPdwshYy7TFDYLJ5sR0udNA8qyRbmCFoIw6QcywsxuIaDWsxdIhdeE/aMABSWPMUuIloIWkC0/PWUcEDSnWGz/0/DQMVAAb882tLrI+ChE/tOK8cjApNkSoFOUSCxFgd7Awg6vBrLI8tIyLJvktAGLJaiastqMyzJ4nLOKA8slLK3SBkvdNmVssw7MeyaAXxVt97fKQKKySssrJO8Ks2OKayKPXrO/TghTRyCidfU7LMzX1G1IDjMVH7yyguHegBtcLVWp1aS6MqGLd5XgQDm9gsoSQGwAfndDzBzPUi90jTNsso22z2khRKUSVEgpN/dVkppPUSZE6p3VT5zTVP4Bns7E1CzusntMKUGggBNYV9pKXzKTAAdiUWg7+KZyZEqBNlyyvf5MPVrFUtKJjYcuuLO9hPPnxuzgvIqG49bE+FypzOcyW25z2VBTJqdjc7ICgVOU3xT/jqciVOfdRbHvz8h6ARCUiBGgYYWQkMIKBTq8FMtLK9iogt7KyzQkoxIUATE46CFDzEj91cQHE1xLOyY89AEcTo1D713CXE/GBdy3cjxJNz+DWKmUsnjXxN5zh0xWyUCRdPlxgiFcujI/jeNaD0WlX7dzRryf4hTNLz5pVL2il9pRiPc0Zcnmz18x3KdxQBwVHvP6A/A9KD8CHIL/EkBbgWeMcBwVbcABBlAFcDuAAARTiAPAFfOxB3OOiAdB1gXAHzB1gElVkg1VElRmdVssDPhzAbF1wMtfZe0zdzvcpmWZTXs9lP0SY80PJVVrNJhIfzgDK/NdzZJLPKty1lS3NvyzVXPI9jXkz5I1y1snXOESqnL/JvzTcivKad7Uo7MdTwCgXJ487LRHOANLld0BShnc6/NkkMICB2qdmAGAvwK4ChgA8ALbQIH09DU03KBy84g2J4BJ+Ef3CwLlTbzJZX8oApSg95Gfm/ykJHNxiUB/dNAFVNlfIECAUAV2DDz2CteMmFLktBz3laebL03SUC1AsTcGgqBJPy5nD/L0TfI7yMs9pYNZRIK+Csgsq8dnFPOTMcCngtgLghG7iIzClO5OOcjk1gzgcAChv0mENVVn3RtV4tSDRy4oM5KkD7AhgBtdL0rQF2S/rewsOSyHMNLW9Ks+guazJuQvWWllfOXw0KyfLQv3S/YQ9LGS4oE9Phiz0x6N4AL08uJCKlkgwssLSCtZJ2cXCrZJvTbkqjiX8HC45MFUyoFP0vjqOJormBd/b+EuTrAJ7xBVECu+wQNAcqIpO93go71sLePTtL1zWDE7K3d+ciAp6zYvHYHBUkvGCNSlAAZb9AAfXM1VFIvmLBciYr7SjcmgokSFM/osLyt3f3MTjA8x/J0KbeGJTUh9CgIxcKJEnT0qKaCrZI8LsAeAC8LhAHwr8LUcwIrlTCrfAFCKYjcIpX9HC6NToKebGIoY85i4IQuLKfceLuy6lA9KKL8AZkxyLFXYEvjSsSwEsZ8Six4qOKmZdZKqKZCmoqocwS0f0aK74lovPDfvDor39uirNxV4CoHouuT70oYpBzg4j5KOUP099PfTxihoIhcI1aKUp1lHdgMsdAAdCVcfJbLa1lHNXKULA/dbKpzTi5AvOK0i630mdicuUTt88oReLQd7gLZmGE2lHEvQ4oS5jyB9zS8FPBzFislJbVLzUDMHivHVxGZMIHU3yY9qshYtSDJuMlMJ81IDFLkyESylw+N4szlN/ysvZ0ofT6U+GMZTzSvVQ9S9iy3zdTFDBMot9LLEl3ZTwVENPhiA089JHjg0xiBmTQ0z0r2KGgsUqUcJSgzWlLZS+Uv01AyjUsxUZ3Qlm1KCcvUp2DUHKIENLUYk0rzL4Y80oggoirE21yKcgXymLdTSAv7TGkr9zVLW0zJLiKdgXJKqT1chNVTKDcpZ2TLzlVcuiSMzDMt9TCy/1LuL8ioNOCFsyrEuGLH4r5PnL5tCNXtLrXUDKDKO0tYORKBVaQEyKirY9N8BJk00v9Q8Sq9JXTZU5ZKnL+AaQr08z4skvmQQS31UpLV/IZPaKoAPwv5V+iyCt686ig5MXkHkgECeSH00Ao9K5ym0u9KdgFrUABu5UJ9k7AzRF1+3QAEjtONH4S0PJjwfLe0xeXiyYlLUuwAdSv7P1LOyo0v/U7AsrKHLxizUzqzzlGYovKLTJQM/iDpWtTzUFpYlPgTAACb9AAI2s7dUDK3LWUqnw3LMVVSp3Sdy71MzLTy9DlzKjy/MpPL9y4spPdrSr0ubjOLa8vDVbyttXvKGyr9VRLRk98vGTPy09O/KWHYIuBKCSt61qLDnZfypLWDdZP8r+vBotYNySij2gqIS2CppK24zsLgrOi9lSQrQq+opRUMKrCs5LcKy8vwqrKwipIqlHMirrLlyu1QYqbY5iqbLXENitbKpA9soNLuKtpV4qoi6oOn8wC3YrTL7I9KBo9gDOwKadlC/qsfjj3BLUBCl5SbQTCKIt/JcSEtQKX0V3NPPV6lAAaiVndexQwi6ShLR7CMI1OPDLqYpDTM1ctWiK1CGtDGRG1ndM8PbiLwiLVnt+gKsi70Cwzv3iqr4i6uur/dfoBi5bq6ZG/lBIqPRi529dWOotxIrWLGtdYmSP1j5yw2PmtPIhKpt5D7cGpPsFA0wIajwopqMij7ouLI0rGVEyI6r1LXqOkzPo56MGiPGYaPyiWM1TWGMYgdBzd4MY3KrfjQPEzT2kYchGqESboiKNizIC9qMyjEyoWxxr+o/GqES3IomvjNxiz13/sfXQIt5VMaMliprLKmmsm5AAQY9AADbd9pQAHvYwABD9S6JHLPTZmuRrWajWtdT8ijmqxq3o0rA+iDatcsutk42ZQ1UWM4GOVVQYyehRrZlB2JYyRajwyRisVcQss9IgCWv6Ato+cvVrOajMy1rXMB2sK94pNHLrcEIRfMcBHAY630gcoe7BQJ6ATGrNqvrbmrxrZlZOu3LsbbU3+i1Mgm0HzJ86OqgAz+fXLY8GgzQCjqoARwEAB6VTGlAABW1+3OqIRqSYkSID03q/MI+qUVAmQwtXBHrRhzXq36vJj/qkKzZiga2dUFLFi2GrECHqtouhqzY4+wtiBXLa0gLhbX2LPzaVO0OSNZ4vxAXj2y5ePRst49Wxzru0tAqQcXaws1Xj147+ATjES7Ou9MIrXlUrqd6/8v98r65b1u9hfBuIDq6kqp2qdL9IdPAzEXN+pDMZy3Xz39mTLeOirTatjygbOomeujcd/Pf1GKAvQRMgKvg0ur2TUKwKpgralKoJfT+S2J3nL1I2fU61JtOmtgC9pYhtn1T7AzJUK2POy13ji3O/PhLHKupUuUOyyIHxy7fHerd5cEleKwNJgwhuprIU0D1+TwXKX23V5tM22il89cD19dopJXnOS5gBX3UciKrIInKqcwT2QLUGtzKQcT4jwz6c4oLZNMyoqrBvCro1QcpfjhG5FLF9wXSGWAFBAaX1MV5G8xRr0RFBXxMVgGy8wMVQhJ2wcbVFBXyCrFS2oMNrhXKnLPUzVBgHzBcARYHIdQGw1UMbjGlhriznywxunNJhWJEN5GIciCqAdMqzlKwfavhs8KBG5qqxMdG7+pyDDi7+BAaRKnVS8bsPN1zXjAi41Pga4Krhu9hkG3VRhKag6L2sap9KOxWlvw9RQkUOFTO00V0pdhSGlAAaPlAANGUKlaQOilt1QAGBgwABe1IJtoaak3WtKCuq8oPHLG42Bosbz/I5SEbpakRsm4qG0hoVqKGqhvu4aGuipCbE3T103rhjOwNHjdGkjOebzlNNEEaHmsusWLa6wKQbr3BVwXwcy+SuscB1G95uVSC6vvM9VWGsFqLqj8k7PKbQmvjyqdB4hgHIzvHVNMLyDY5hXYVGI1RUAASJUABa0zsCbwvNId1cQwAGAAwAEUwwKSelAAUjlAAChjQMz4J2bvg2ZVKbjmzIy0ijJe4pjyUoKAH5ghgIXy3MLKvYs9d9G4Y0SaZC+/JSag8r9TSaTCjSEyacobiFybpAb2voAimz4sv1zSo+MYbMVLFWVazVeVrZrUmwIpwT96vVpKbxWvCq2a0WoBqtbWc2HQfd4WjPi20BYlhIlE3eKBTKB8Adpr8Qzi0Sp5sDYiIEYBghYlN0DAAQujAAdO99pBCwzteNSkKHtAAd7lQhBRzprAAdeVAABTTAANCNIpZNv2lKQwAG4DdNsABQ2Mqk7ddDX8lAAQUVAADujApGGW4U28vaUyllsxC0CkxpHCxoD+tYJrEr16wY1Ez9w/dLjIIHeKV5UMsVKF8AoFAfJdav3c8oySM0vppmsEIumsTb6yhVsfzya3lRiV0oUIIwlis01uAqPir4vAcI24rMvb+ytqtPyNGqp3qa9jeJt5ah2xeRhbIsz1QLqD5cd2sBC6quqmdD84IXdKIvR9rih529HKgUSVWVo0gL4uktOQfCzpuxMz/Jj26aWq0nJOaKm7Zv3dOWzFV6q/g2j0qt5YgPRuqO69jG/kqUvlMHDIJKsher269AzurPqgSO+rB6izVZjAaqSOBquYieoIqp6sSx2zKvQ1KUz56ua0XrGayAqDq7oq9wejaQ6BrUqqzNOtk7tK7GsJq/o4mtfb5mnYPBbQvJlUtytOqWtLLFihaUAB8NMlL/a1FpGVGo4Op1rMOhY2mTFO9LKNrEo+zoDyxTe+stqhapB0+bjWnODKFjPUNKUDCLHqSKqzOlOoWMJOkOqu88vDxSSwcOjGoEqua96NxrnOy4tc6szWpQ1VxvMdR2DMu/Tp48GggzX6kQurOpsNwu6zvM61g9GsXlM6uTuU7japLq+iV636Jir0ujzpIybailCGDeHCGLmj1OuUw8ML4rasE7ZkxGNlcVohpXRilAgzVl1AAEb8iumrpK7LOyTsK9pOp6Izr4u+TsS6eatbsLiLalrvil1gKYCmBlAdYHlFSgdrrFt//dwJsCsVA7qO6TukqN9rV20D1u7lAQAHfoyC0AAWTTm6lOhbqRqrOxFzDqGACOv6AtO2OqUB46wLETrqun7tTrNu9Oo2D1uu+rS7GVK2tfaC6qfOLrAsxQ0xYiUJQD06lA3QMABuNMAA9DSUdwwhaX7cRdQACY5URxmbaKxlVljkNbNVer3qsjq7r8ZHur5dmOyiz+rBrAGomttY1ey46DY9SONjBuyjv5jhOtazuaGeswJ27j6lOMKjf8xlLYNLcgVNTN5etzpsteuot2Nag4garW9IbCjtFTxU+02jiijOEvAL44w+qFsi4/jv7CYraWytc9jGVOtdLeuuILi+au3uN70tQ9Kw8GTF+rbVkCrSoc6PjOzqPNxe0VOxU6XZrxMbHW27MVbF5Vlzob5urDu6rWDMqv2KmK58oKzM45cyV5pAL/DbV4AV3qD65fRZMD6bXRCRSTwBNxUoEC+yQCL7fC0FR97QI4buRaXLEPpc6Ku/WvdTbgPL13LEXGPtMEA0+l2DT8HSxpfa86kjPYzRMweECBP8p5G885+m+wgcNvfROpSl+0liiLAG1dxcRl+6dFX6xLCs1z98/b+V+FZIDyNqa95LfvcBD+wIAZcqHU/p+UUVTngX5D3Fyx5Kp+05psbOLAgD8UfMLLzUhxQ3GECxZCqIAWUrbYGCm8x/QgD74z8YxMI8+/cFTcM92kTUhrHq++JMqmmmd2VV5Cwa28jEJFD3DzZ4tMVYL+/YYD8V2CxQFiouPEqp6bNmgzoIrjQtoIWl3uhFOtqBg5VQaU5RUgax6DLMID4HlXTPs9dzungagA+B4Az9gTjeZR6K0AU6yNcfvVQDPxPi+3PtNac0W22qSgVAe8ibCljPEG+BkoEXM1IIOHFqhgFAgi66lNvx17kkXgccBGAOUVFjeAE1kGVa/DYzd5pW9zv37SWFfqoLvBu/v0gb7MrMEH7B4kRe6AQeJMIB1gPyEIAKUDLEJoHRCBzUHfFR3Mj70taIaIA4hiWgdFEOkgdCHFucIciGjBiADmBYoPvzj69isEoyq6PFFtC6KnKnPX7aeB7psyDlJQELyQh3+EW4/YF7vu6RgGzNcRdvNftBamhkYB1aSlJQCRdwBElSa9TBAocO7ju07qSBEemwwiAuASwfIduW7/ps7JiugfqytzDocYAuh6QB6HFh/oeGBvAmJVBaThh7s2HZyrYby7Filgd0deQzQaG6dg9hW8l3uwAEV/QAB2/QABFYn3ksc6AyGQmlghDTvhjWHOusK76B1vpKjhu15uZSZhwQEW47AzLv21BKFAFkHhheQZSU7B3+HgADhtAAuV6YSfgWT1+4IFJGlXNy07MysweMG53E8NHdERzf1qGHqXb1oZHAVZkZSlyjMpqsaf+qfQQNpHQADM5DgeVKqndfoQMSBDCEh7AgQvKdKwgYgGgGH+i1QlHwBKUcVGMAQIGarlhjjzHKfrcrqgLEXCUcSB1xeAsuG2RxgvoBr9OUZ2CGhBUZlGx/c1qhahM5JHVGHR45PtGlRyQFaNEgOz1BaPCU0ctHr9P0YtGPFa/QWVSgdoFiBPlZCp1TzM6AzdGvR5QEjH0ICjNwScoSkdi65lW4eXbem/kZmtAADHkcNQAHK/UUfvbEXbHKadYRkYHWARhAKE0AiUHABtGE0jHvrHGmHAEf7p+s1IBBpArTrbHGx7AFrHksD/q+cdR2rL1Hte8sdXdKx+3uAiJe3XCEp+x1oGbGsSxblbGiUdsewBOx50fjHexouqXHaAIShHH3k29t+bRPRYtXD5pEzsx9upXR2ikCY3RwRSkRjfso6tO/bUIA4YrEqZ8+yyfrzGmBvKohdzFdRxw0mdMsfj6Di8UdBbSAcIFJZJga5xGAZ9Wca5T0tf4FLBVjGCf9R4JtoefaU++SMnqPASIAkL2VVCeeAOVEgAwmWHXaCy9cULcYI5kJJpmJz3x9jBH9YAdhyxL8s3xRzg2J9DgAByXxWIA5gaEFolLBiVoeGCKgrJCxBJxUZQBPiuXVuiwsLQEABYBR6kTFcEaxKtOuCIZiU7VnVujJgTYvMVAAWSNjpAmNrSCnHYOQU7dICZAn7y9fp86PxvzohGJJ4VrbxhJ78axLzS2yYhhfOz8fQ4IHPDs/7Tx3CdD6FjdBoqCzKgLyichqluufNF5bEJr1i1RmOsFotXPqd6k0wvtQBfCyVLisVzWzzxL/ezKer70lOvsYgFABvqb7e1OTXTtdAyRz2lotUvvxcItDar81kiiLVCEndGbU7t0Lbu1VifdOeyHq+ekevY6OYzjvXswa0XqQntqmGtF6Ze/tWXrwJqy206Jp6lMJpaUuAxSmpUsqYynw4pXsE68+53qvN6p93rI9y+qGzSHQIv3r98A+u13ymjpuuMKmNer3t2616rsZdGkcr9UMtbppWz64X8TaeL7TpnafnHhu6ZzVVwVLp2+nSpv2Cb76vL+rEm8q+9OCFdA/TQ019FBH0ClL9aKQhdNfaKUABprxMdXw4bNJVYc3fqvcjXY/opKzGiIqCzah4rrCaqnKuNczKhimfBKr+rczn9UqtCvWaEe9mewbmuuLu5nzG7bvJmAq8pWeBH9HMcRS0Gjlowawipmc5nGVPBp5bdVU/jNslpyjpV6sVf0tpSKhnjwOauW29qUCaemZrJ7k2yxxKcC6nHugBFARt1okbepEsT7FuC2bx7EWoDucCym4MPnLlHXRwQtGApnWrGlAaQOmaEUv2bFSR4rFQRGxxhPsfzxunYPoBmAHCsyNqZ1PqdbV3apzsCAG+cq/DpfQAFwlLDRmbc7R0uMrwZtovSn3vXIbPGYeq4rlVFuaOfhjY51JL8nwpi0y76UulFXD7FeuRO2rhunaGMr/JsFKY8nStEtdKLVYDqetg54bodhjK7ufhil2oKe77DRlOYnmcyiOZRVQpw5qi9iZ5bu3aq5mufYm45p9MQnF5rEpDa9VTPrZTt55JAsDw83Uv+yj23VqyroSmeYHKhyxOYrmKnfTMxVLc6QKxbXEFXuZTXmgrIyHYh0oFwS9p6VNSnXStKzl8yspQOxC14mqK/nk0yQBV7yEkEesEEfeCP0CsprOKD6ZNFqYHadVTWaZT4S6sZV7vmqIsIXFuUmfvTyFlaaW5P57LsQXf5uBco6EFijKQXaFqoPQ7y54Kd3cpZ1g0IW41HkuGqiOqjQMVAAfHcVHGqZ50zbOmPQt0IvzQAWYhilCSAQF1Kbgc0rBLTVj+ptjoF6x6vWLmnthkky17np+aZFd0uxRcyHgF3wFAWb64MvMjve14fnHQF2W2ync4lAs96V6hxbOmSoi6ZDMq45wKUDpmmZomlJ2yGYynLAy7uGDsADBYml6p6TTynLphqcVLQlkubigIl8YK3H3asJbbULhkQb6CuBjrsiWuu1gzIWYZuoYgnEXeqY1Vhkpvtjm4oUBd+m4oLn2Vc4lvL1WH1hkHw3mGkyvuqXsltJeYA4oC6caXml5lKri2lk5g6XODc2bghceq2b7zbZjLPtnHZxQC06kWl+ZiMGglScTb922YZqWMp5k3oAnxj1r6WDlpicPbKUFZNSX6AQ72Q7uFuedXnYKq5cEWYnYRdbql5P0IMUJqpIzk08ZDnvQs4wlmVDVAAVesHdWtPkdYwkxUCkE0XqU0VzFTKUAAjQ3hWepT2yIrCIwPVZ6w9ReUItndHtsAAV60ABg+MAA3tMABjU0ClAAU/dAAMejAATodyNaPXsU/delbo6hDBjtf62s9gO4UmA9QOoDaVn6op1qQ/IsXk9pcjXajkNFjrEjBp3RY47Z1aYPShZgoIK75zl5YNYbNg2HW2D4YvYO4mcjQ4OODTgxoHODLg64NuCVgRoAeDPgJ4LzBXgV4J+clA/PS8CaAygOql8HaKUAAGdUAABdQ004gxyASCsDaKUABb6MABJOUhkjgk4LOCexg1Z5AjV+4L+YzVz4GeDLV1YH7bgU15Zin+VqcMYDhVpcNFWee7Rc1jJV4adnV4pVwKKXru7oJ8De9YfLQA5V+YIVWishZaZd2UlVfB01VrEsSDU1ecttWY5mgKqk3Vz1csBvV7AEp18HAxR9noLYmMI7W6lntI7MVn5Jm7ApQAEzFAzVEVupQAEBUkXWiF+3E8IrTK0wADDIude18B67NdY7c1mSMF7OY7+XsV5yx1bZGUY40oKKY5lde+6NlxYtBab1tGJjnZ1nqQVKNm5ea79zs6LMkh35yLq3m9E19ZsALAodNPnd0x/NA2712ubOWAcpqqOaL1p7sm4X1hqtg32J2dZQDiq0wIMWDRva3jNKqlsuvnOKyIC7Lb12xcfKFpyc1TjoY2GOkC4DV5oCWmav9cuyANsrvKXs++2Zg3wN+Jq6XvfNOZwmnHeFp42Y5q+Y4qENnYLKyWq/DuTXUNSdfo7O6xeVazghMGUkce3ft0ClAAeO0eVsVY1j+ek9b0WQaguobc+8ltymdgO/ko/TuOvKvz0RHQAFbrEe30CNN9wQQsHK4DZp9NPNrw6cOvHZ35nKZ7HqFbRvTLsm9pvT2us9364vvs8VvZqvQ6lArTcAAs7X9XhVpNaocYgDSG/kAAYmIBM3dlRM2DfMzcqrwVM2zVUj5I+UhbDF+eavcBlFAHdFwO4Hr/bHACtduBSTVxBnzAQefJdBVgNJUeAhwZfNXy1wRoE84aAQDvR6i65rda3JAerdHch879obcMe0Gbq8yZij2f6C/ReUv6qZsrZcszbUGZtUttgLx/WhKzFS1V9tv8dPqC3d9qbdP2oHpm3mt+baLrQZklRK29to5orN0tpACy2igL30Z7AQhTeZWlNmLjayq1dKWOkNNUf0Ck5dbnv6teenRcM2pV/RatjKt/mtU69myresBicCjJNpH9OQdvVeVSjcYrkd3meLjWivdrgMfvZhdFT8dm2MJ2aNgGaj64DAAo2dmNqcavc61kMufKnRyreQhkbTAuxG0k+JqRVzq9lQtUfvKIsF2He0CIgdGdsXYezNot5slb8lyaIpRpokpdgAys24FE24NznfO3ux87rtrwY1XZgAblspZpmQpvhdR2DR+LOeWCO42yI6vQluwp0IXZhTl0bxu3UJ2khQADpU2H2ilAAYoT7bQADR/QAEXo8qI0VNFQAAGLTrWV8Id2XRvCwd8LAxm7GgtKD3yozKV41AAM2jAAKRVepxu2tcQQ62190mV6QxZXF5SLjazAATu1x06KUAAufUAA2JUAAbeLg9+pQAGj1KHb6mj1gzdGt4dkGv43j9PebH8GAIXSIBngQQEy7Yx01N1Tz697IpU4mk7KoW8lkjN16v1BpV/V/VXgCp3t42U0n29enCqinx17NXt2fQwbWYUo9uXQ00/7Vfe4URdQADF5SGQws5dERUgtIZNw3l1opGDwb2z9vrt10c9ttTz2XqxQFbtAAGJjAAHnkEplaRZk/eFOxM0y9+R1IjJtaKVhXMpQAAQEwAAQ7QAFMIwAFFFQACWVb3QG0mFE3XLDAAJ91AAeb8mw6aRMV81QKTsFAAAKNAAenNAALWVAAIu0bFXeX3l0oEJTPkglS+QnUb5BRIu0qJWAShFtxWERxEUlZ+Ue1zuXbiX4dgHLnflU4gAFIPAFLjkP4kOQ9X4FD7bjkPGgWSDkPauBQ/i5NDjQ8aAqyBQ6UOMuDwFUOYJb+QV9AAQASQAgBSQAs19bRFXDgFw9cO3D9w48PPDnVX5lAAFz1tuQAAhzHbkABT0wgSdVTw/COIjtw8XCBV3qbJ0RVlIUAB4Q0SPAAQH/Uj6I6nDYjxeUAAUb0ilmFQAEX4wAHxzUKXKk7dOwScFnBaKW7cRFXqUABquX933BaKUABv6KFGsj7aOilAAXANqWn6XLDAAA69CIqQH91BIOdUzX6j6EZFXej1wUABQZUAAboxyPNFJR3ClAAYD1ApQAD6fQAEgE2g96P4DwACnlcxUABbvyWPApTY56ORdTRRZDjQjTW7cX99aRQPAARkDAAbs8LlPVlYcoDmRsABy+S4iqVzKTr3FskxVTXZQsRUAANrPqPjpQAGyldI9lC6YskM9t+tIY/sUhj/47pDmj1o7GPM1iY9qPETxeVGOITukNK0RVzo9ROBVvE8zX8ZNzUJOpw4k4FXGQwAC51ck9lChRwAFkfQKWRPto2E4gBBj9k8xOCTnE8Xl0Tmo5yPAAZz1uFGFxFXaDz2x5PKTqcNylIhcU4fRM1wKU6O2ThuwGP7FA/fz2mFKO3KOPpQAEpNQ46ITZdXjVzaa9sZpMVAAO7clHDTQUri1eR3z1k2yqSIrVjtY96OAZJY+YVyjz22il9jpA+mlDjwiO/3zbb0PVO4jzNbzUo7QABAVfyUYOBTwAAflQKTDPAAWc8jTz0/inMpN05cFPbJY57bAAW/dAAeB0Vj8IXgOczwAEHIoKXCFAAcljejwADOVNIR5PMjwAGsjWaVQtG9FwUAAYuV8E/eVKSpXAAb8VUhaKQKPAAUP0jHQAAqDQKSb0mw8NUAB/VJrPcDsnT7VMdbbWzU9tA7RCVyjjwR8EAhQIVO1zte+Uu1Jua7SvEi+W8VL5xDqWVOE9uXblS4rZOLn640ubbjTkBeFAEB1e5Rp3e5OJaSEacfuf4R8RGnZHW24ueSLgx18dJADtMidXgAJ1cdABS20SdJhR91aZHgvTUfMokR0AmFFeT8kgpEKU3lYpHeT3lkRQ7VPlz5eKCvkeDu+UokYBR+VEPcUF+R2A35Y7XI7Rbew6AUspPKXfMypKqVqkYQmBQTtFNLqT6lBpUaQmkdHdBXWltpOrRwULpHGTuknpN6U+k2I0hVBkIZaGXhkkZNGQxlMjthU4U8FPhUEVRFSRRrtZFeRRrVQ93RUMVTFZXOWktF9vYlW4d/Nb1iImqJQz1afB4zzz1lF6fjHF9upWX2Ulf+zH3dlDv0DVxlSZWg0yHDL1NN+DefeVSjWr9UuVrlEFXb9V9/y46co1WZQBVffTeMNaYQ2AwVUIjFD2h7EHEjNj9MrllW1NFM2DqF2Y3OCtyv8bBff0tjWrK/hMUPdVXiasTY1VBBOUiB0uUd+3ro9VyXOK8GVA1YNTDVI1Sf0trLG1qpt2AQkRcXk81ItVLVxmqtVL161RtXYVm1aRu/Ne1XXVbrxV7S1Hqu9rmKUCkvDdW3V91My4P07L3GAcuvNpy49jwr16eANPL5pVX2fL55XiuwNMZRQJArpK/+UonOTYViMNbDTw0iNUjUulhI2KbwUaNeRYY1eY/cLk1ONHjX41oQp+1dtBLG3gS14lq0LaluLm0IRM5NTTVpiDNIzVulTNczU2rComzWoikNZzXc0vNHzS+W5x0VNRuotEm7kSuwxLVpvkJ0CIS1stPLXxS2blm+q1atA6Qa0mtbqVa0OtPur2lCIpeRG0xtKbQ6m8FebVp0QbjbSgvFzyIF4B0RvC9ouJ1M7RQA+Dsi6m4DzpiXu0HxJ7X25XtVLne1Ptb7UEBftf7UB1OuOLhfP7uKHQ/Pfuf7jvdkdKslR1eeQC6x1gLwnUgu/bkC8DuFzsmMyPqdawVp16dTRUZ0WdOPU50edfnQj00AVXSc1JdGXQV0ldFXTF0nNXR0109pbXUyP9dY3TN13BS3Vt0HddqZd0+dFWK91ephldzCMVwsOTvedEsNbs49BPST0U9PzRdtWJrG4S089BIsCli9UvXL1K9avTr0G9ZvVb1YjlmOPXO9my5BqbNmWtms5A3i0Ru+7pa15VN9Xjo0il6xHfw36jQjcuuBTR43X2j64xdBrXL2U3cu2DBA0jMhEgjctrHL0++cu2d+xaemr7ncZvuar96f17xjdZ3LNHphXv1HHmgm0iumVFIw6cH7yAqfv0ul++TMz79+9S7rLExYV3qrt6cgfHrAB46cgHzxc/vWuiK4yvHLJD2cthPI3qdio4zsxgf5puB5R6EH062QejF5Hq/v0H7sdvuPp4OISXz723oIffTbWzfL0S/W0r6aHyrboeY1Bh6QfNelh8Ifbrh61GNsTQB/MtgHy+9ked44h8LN1nKmw8X5p1euJ2tbKkxGT5k1yqvM5fUR8PuzF+h5PvEHt++kfUH1h5125Hws2wfBzXB+Uf8HkB8nHv78/NVS9erR64edVCh9TjTeh0z7NtH1K6YfqNzWxPN8rYx6EfK4kR5ic8NzjfEeEzN50Ye7Hxaf0Hf7rB4UecH0h9et4KyJ70e1HvAIvy/HxK4CfQ4603+m5EkJ/N6nTAJ+t7Mn2nY7ndp8BeKtDprh50ekdhxYMey4lyvierp0q0NtxruWLeXF5V8xZ1K9T80kvHpbtV/NNFQCxAtwLKC1gt2FRCxQs6rTC2ws8LdCwIsiLUi3ItZ7mHfnvl7Re72uxpte/EC97ZG4PspenexmmpLSJ9SfJH2x5UeZH7J8we77vJ9ceCnxQDwfdHu3vSvynv+/8fyHvs22m6nqh7CemntReKevFuncd6pUlxewXL5bp4ieWn6J8OtBHvxcSexnpnrJjareq0atmrCG4zU6HGAH7uItHqwsutr4Ix2uLnjHSufzYm5/oct7la2mn4a4FOSfTd640A2JHuJUzh/TCLYyePn+x9Kexojh//ut3JR4CMEXgh5BffHsF8qeUCoJ8Kj6nnyyqeOzHYOCcFXzx7QfHH+Ma32/7uwIptQs6LYW99X1R5ZslvdmzteFbK3vhesX9uenN2nlF86eOnt3u1fDVHp4NGSn/h8MfcX4R+unElh8z33UNNU7BCHbJ217uqXyQI9tvbX20pfA7EO3Dt8AKOxjtSpOOy2kuLjqWTsVpNO0wss7HO3zsi7Eu0pfK7au2sEFpOu2z2o3inXbs5brux7sB7Ye1Ht0XKexnsTnnNY73znnWPHqRe658pf0ByQKmm17p58Vn2q1QsWLQne+ywNH7FKRfs37PN60AKto1833V9wB0CBgHXV/AcfAvd63HYHSV9pUUHNB0y6sHVhp/XSHWDQ2GTd88YIqR3yQNmS2HOwM66RgomfnKRHcRz94pHOR0UdVHDRy0dBLgzX0dDHTKVMdzHQmKsdbHBx1hzINu2cjTPHRBd8cvVnYKCd0bdn0PfBG+97wmCKpJxSc0nDJxyc8nFRTMn/UIp3XfON/tKxySvVIaV7n8dp3+fjsrE3y3f2wrZN9r+hD8WWkP6x5L6fNl4r09/N5meG8gtkzyucbnKbws9HnCLdecHX612k3Ri6oNw+n1givF9wBaFyo++XipdXdkXUBrRdx7TF376hEtuc3LjPyAsH7k81hrVVh+zb21nONq3cCnl7s5tkPSbqmK576Bi7wFeGnSGMof4YpGPDmeY1OOFiBYoEiFiqYwf1NyFB2vupGSveOLiW0rRVOvufHpI1ddD43rs8HjW310qvkTfK43SDLcN1aa742+KUb9/a1LTdvn/opy+4xn+++eqolKUauRKit0M+HW/8ZXu2P4Z0izzNtt2CEO3S8y7c+3Ad1EdQMjr8N8m3czbndEbEsoNGaPjb2PmJZ+aYeXcGwHwa9pv6j80bXW+7xkTkhjQdTjX3e/XfcIttRLdaZEuX3m+Fvtr5c/wPPNSg9YPBD3a9LlE/Ln9Gm77wqv70sucHbJZ7DuPHYS7ksO2Jxw1/W+qnLRuv77hmd4IqJPFKRoSRFGTzk8Hv5V/7VUsjby28lveAG08VWrrwM8RvcT4m9JPsLZk/5PqLcJ+4oOMrJ9kf1z365dvaYX28fPGefB8/vvLyO2wvCL3JzLv3/p2B4vKH8S9lpddVS90veH9S/v1ldtMWqcnb/o+O5xj5q9mP877J+XPPj4F+tnPzaFmwqgLfOVsfsb1M88f6T9m8kzOT91+YtuEqRGUftAB289vbz1J/T/Fb9mLg4nvZ99Q310pOK2Sh1NB+JjSvrML1/TyAI83vgH25KgfXIbGuE5vkbZ+p9aH3004fRHzffi17AAx8sfcyfx9CfAzWJ9hv+ge4/61jx2sf6fU9Neaz2rD/VW7Wly159/v3YeEr1l31SFLIXcAX+TpfZdPt/vG5X1V91fLXwRTRvjj8JZJv+iqvebfGqsd86wZ3w9hXfGedt+zvoTYu+N3saIKvLUiP212wHvL9DcIq+ZET8ogCdxaLU4tPyX/rATP3gqT+2eDP7C/JSGL9VSUv2EBy/Svy6uTjHd4A3G/IlGb8sDVv3GK/L165AAe/bAD79gBtjGH9R/e9M+vGVAP6+m3f4T7lmVXRKuGA1nqpXySq/3kP8j8yHKSn0v81/mOat/lG6D/jhkT/hf8zCjf8vOg/87Ci/88Ph/8OwXfe2AGACYAQgC0AX00FDQQCSARFu2GzQCGASKkWARwCr7UpehAWfeOwTICP0i5WdAQYCzAXQsbAQ4CXAUa0vAX4CggWc+7P13uu9jhCdz1qqCaQeeSkUnewgKn0qgS5WmgRjmOgT0ChgVIBxgUti5gRjm+ANsCeAKj+yBULW2gP0BYczE2Za3osFayrWCwUKyR7Uie8WUbWVqmbW0DhJynS3nK6QXUBmQU/eLO0K8XgXTmX33T6PwRjmCs3p+dy0XU5f2aCqinaCnQVhypa2SayX1pU53XwBowSj+PzQ7M5axmCgQWrWIQVrWyqwKSjgIic+wRjm2qxDWeqzDWVwQjWfzDuCJq2jW5qxeCbwRcBfgN2a5yl+C+AF32tu1bqDb0G04IXSkkIStCG93jeEgIRCSIQoCKIWoCaIUxChoXxChIRJC5IUpCmJwZCzIXZCnIW5CvISqAAoQjyRRhFCBzi3Gg6msAkoQpQ0oSJOqikVCyoTVCGoSc02oT1C/UgNCOIUikJoXNC1gktC0IQkCEgM3q4ESdCLoTdC8PkLuuB39Ov+19C/oStCQYRDCYYUjCMYXjCiYWTCWGjTCGYSzCaKzzCimzZ6RYRV0bdwp0FYSrCNYTZuwsWbCrYTc0Z1ShqF1Tk0TU0hu3iyo6cmmHCwI3QBE4UzWs4QXCcpwFWK4TXCG4S0umIKpiCWiPCp4VWqQu0vC3WhvCuSQT234UWa10lfCvcU/C4Lgkqv4QAiTNzde843tCkEQ6ycEQQiSET3UKETQiLIKmqEWlwiDWgIial1Ii5ESlBk1R5cCWgOqDESYiRahYictx+knER4i/ESEiPb0su21yGmA7z1icgJmsogKQmIXzUiE725edFURqt0UsGB9wc+lXWq+dixyicPWS6t9So88onSi2nWDBVGxp2+USK+ChXq++IKgAuXXB+eVUCitU3qiTNUW6/oNsBQYJ/WFkTq6W3S5mQiTSijYxjBhYKa6HkWDmLoNA8FUWTBdN3S0TdVS24nVzBHG20+TFQLBBNWLB8PT5mfNWrBanTiBbqnO6Ku2jUTtRsGdXzdqsuzyyaYL+aBFT2iR0ROi50UfWc81K612Xmm7NQa6ujwU624KR2g4MFqnAyV2UAH12lgwdiUMSiAMMTUkw3Tdqmu3Ymc4IfeeVRxigHwJips3qi0UzDu+oMUgWIIi0tMXpiiUzpe+mysuC9ydBINSC+bnxcSoXwVGwsUi+6vSZ8Jrnji0sR+2k1yViXUxVigEOHqDoLzWoEOF6LLwXq7oKpi473Nik715eSczfmwBnPBfnyxKLsXYSr9w9i1r0+ek4PlMvzwN6OrxNctTygUmr1herELBMzr3Fei02Dmzi09eHr29ePEIw8obx4eB5j4e24FLisTyDMQz1MelfTVKtcWUKKnzL+F40TBUAE7iPIO7ivcS6CtoxRyxlVT+7O3tmNxQUK29Xniw8Xhid80vqG8SS+3j1RMCP2xUQFTK+GX29cHhjAqMHRABCDRviJyTKgQ6SxMoKTO26YJXuVeSgSMCTfsIuRKS9anASkCUBSEUP/i8CSQSKCQNBtmjcSCSUo61rTwS6SiISpCQoSOiioS9AGh+dCQYSqUKUA6UKwSmUKSS2UKeM3CSKhvCW/iYEzR2ov2qcLkMkS1T3UG4v12y9OS6SKiWO+W3zK8miXhaIeWMSpiSIA9AAsSCeXuKT1xtiwynsSieTj8syjMKaCXpGGUIHCWUPf0viXahxkMrmISWfy4STKhceQ821vkiGv+Q2hgqSfSLH2yqn33zGoHmySi5WWkZo2KSUCTKSFSWlyQKXuaN0OahdMxZyZqgUyM4zpynSUpIfUJH+J8yvezlTieGJXcquRX0qP5W8qFfVr+t3kAqv0OAq6yU8hu8kiq+zVlmODScqcFQQqFyRSqyvzSq6FUeSrBkGK8cwtMPJVEmIUJc+wQjHS4Ln+S6hXoGeqiChfOVa+sMxXuMKThS80jZa85WjKWJRV62KVxShVXxSRKTzSoGRIWtCzpSraDRSUsOn+nYNDK1UXnGFO1ohNjxAKMX0hejOxCeWCwtcXrzL6qV3shbD2TcED2xUTxXS+w4OPi7kJlabxUmEsYOIy3Ywn+wxitSr7QwKdqSd+SBRd+OqmbmEYJDKlXVxU5n3mmlnyWhsMMmAhlVpCx5RDhWgDp+s8xbmVW0K80aV7KuJTjSicPQ4iaW/mFWDTSrPw5htMOzS4LlzSZKQLSRaVLSW6xrSdaQbSzaWZhdwyVsw5Uq2TPwceQP0Rcg6VBhVcIY8X6TEavGinSJ+S/Si6Rr+Izzr+66Tn++CyesO0MjmjRVfKg80vMmJXQ4eRXDhI8Xhh16Qgqd6XJhT6XUMVmzXhH6S/SP6T/S4AgAyQGUKqIGUrhs6S8BV3kgyzmQIy9n3oaSDg0ynkCQyPmW/g6ADQyc/W/g/A0+hIcScynkBcyF8Mxs7mRjAlmUQWqaR2KZo2MyTGS/hf1h/hsfnYy/jk4yh8Kes78IYy58JPe/sREyskPEykmW6EMmXZScJTgRSmQQRXzzT8kwm0yumSoyMCJwybOTwyZ8P4yoCLyu7Dw8yf8I8Y6kBsyRAACygCOwRn8MQRhbloRnkCsy3mVyilKH8ycZBZmPr1DauXhY2TbguywwnY2G4K52yJQ+y60S+yxRmbhPNhHhT5XtmM4O+y8GyPa98zzi3TSqyvvxt+QiTrhiiNPc2ryUCKmw6yXcPnKfWTEag2RGyY2QmybISmySjhmyc2R3hC2WWyFiOPh3vjF+MiTpy+2U+yV0LriZ2TER/62IRqNQtaqiM+yyWSMRmhWOhWWTURP2Rqqiq2KyFMJDiOiMphoORMRliMhy0OSzBQ8JyqDkJRUrsPSKxAQCK6OUIK3iLaSotl5UQbWwAROWcBTnz7mIiM8ReQS2yXUJSkHSQZyPSTNGbUIUyHOSJK05U9hxiMCR85RFyYuWYU9ahEUUuRlyCmXlyCmSVy80ksUKuRLSX61fhYkNzGDHhrhBo0MRtvzNhf0LIRdGQty/SP4ANuXahFSJxyTuTKKSEg9yAEjywPuX6hhSTK8yiK42j+RGhYeTGhUeUsSseRmhWfTmhU0KTyS0IiSaUMMKkQHDKpuSmSZ9wLy0SJbhwUPnBeVWbyK0nLyTeXkcNeTrybmgbyZo2byreXbySjk7y0CSVsl2xtmX7RHyKskx4gQEa2UzlnynWyXyK+TXyygA3y7nENA2+V3y++UA6x+RIRStiVegv2NawKMAKwFXlhZEJURLyP2hYeUBR5UKvewKNBR/Bl2RwFWAKNfVKyyfXAKtvx5RcBUd+zJQ9hn0xjhNX0gMRSPOUWBQsKGeVIKhBWIKlyJuUzxXoAFBXEAVBWlRUAAt+cORQ20+ktGzBX72bBQUKN7hgAXBWVRJKgdg2AzCg4eTyY4hSUk+AxAqu8kUSEAykKj33ZRrcPnKTMLyRecSeRisKF2dxQFgpRQNRRhWeKGPw/0eqImhJqIIKegyJhHMxxhVgxVhXOU687hRta57S3G3hUCKfxVKRQRTRK3yN1m/ymjh0JVumNqxWkSRUr6gCLBhsSNxh48MGeUMJDmuRU8qSrnnhSkOWSyqIqKenlJKGkEUyDaOxhROxK+9JXgqmkNOQSVSZKvRVuU/RQ5KKSOiKH3yQ6Rf0WmgyMD+wyPtRyxR5+80lWKmxW2KkaLvaIvwfaRyLNy+yIQK7sMzhQiNKq8LTMh7Kj0KAgH/yD6N82U6JthM6LPa3xV+KKOVrRv5RCKAAMLRtqK+ccJUN+4MIyKE8I/Kg6K/Gw6PJU9aN8q8FWtRwaOoKEvVcKM6MxhjM2Fmqv2RyeMJXRiDS6KSFS3Ry8PlRXJWBy8AL5Kr6TrBYLnBcIpXLKlZX001ZWWytZTkytv1VKR6N1U8aOfKRG2qqJGzqqXFW7Ka+zQxtqLSROql/+bMPyRwfxmsdpTNsBcwTSkZSHmLs3tawvyUxoHl9KhVUIWW7XCR1xQE6ysMjKdnhlhDKVoWtqO9hIYJ76MnT76A/V0qe5TxcB5TQxEDkjh+AGbRzGJ2A7GOg+XGLlKSjhWRsvXVKPaLqUImPYqbZWsh9VUkxM8LA2Um0fmv41P8B6OlmPCx0+V7hchheWphsKJXuD0JUqAcK52fsNsxVGyDhtSizKplSXm7mILKrmMbmCmK+h2cPZ+NlTsqSSyF+qRTCxL5SMe8kIHRX5RThcMIwxY6LWUbULRhPSWqKEFSgxC6L8hcwHxhN8UJhpjWIxJMMwqZMOeSO6OPR9WJph7P2IqpFV0cFFXcE1FXp6iPwtMQmMT6LFWbKomI4q4mLI26GzcmZpSSxzHhSx0xW0xa2JyxLnwkqR6gg8MlXkqSlXyxK3Q6iKZQKxBo1KxjKnKxNWMqxvWJYc1WKLK08wHM2WMfBK92CETWNUxMCKOxkaQhhXWMnh0MNQxYOJHR/WMRhQfWWS42NGCSvzmxKvxE+8fjGx+aJ5m1JVK+tJTKuFGOSqL6LnR82OqGihhoxVpXZh62Kn0m2JFh80mCxB2Ma8nf1YqkWMkBWJQ4a5Gx4qCWOfmvzmfSGHQNGS3y/UvVTWR4BVk2H4IViY1WUqX4NTyhoIi0M1T0Uc1SLUi1WWqjCk5BKYPWqbN22qCWj2qOWgOqR1VCEJ1Rm0eIMwGmi3ruJHQRBmK00hUeho6jKybunfi+qkEl5W0O17ewEP7eQvVGm9qLdBmkKIhC9UnevoJZqUiMt23YIHBYYL3B/rwPB7nRJq8Wg8Mu7UpqSgQ3auSNbB803XBYSM3BCeMa6SeN5qpeLyih4N66Jrx06YtTd43tQfBeHzyqCtWVqatWzBbYL+6S3SA2bNRLxO4LLxgsw8el91R6FsKBiBSxPBYMTPB4rmdqW71dqiAPdqM3i9qBTUe6t0OjxOYM7xeYMB6/TkjqRdTB6igAh60AxQASdSrB/eNLBg+JYew+IKRb7Ru2Azgx6JdRPqHOJmsFdSLqtdSBaLYJ9BKuLbq3uO/k3dXQsvdV60WYIPWAePtBDL0dBIeNkiQ71ZeEeOkBRsRIhAYM7BJTxYyXnT/uFkN3q1kPLRDEIle0+MGUQJlsh19QwJAkO+Aj9UcAz9VxxV5lA6jqTUhscJo+/9T42YoyAa4DX/c1/VA6kDXnR4YIwMjaLi65GIZK38H9+pf1jhcuPrhMDVYJNQ1+c+DQ5cMuIfxoHguaZDQOk+0huasgM1R4+3UeoLyZUN7n5Rr80FRmBS8SaDhqRvKhsh+f2CBihN2UCkQhcEjWukUjUvMMjTkakwgUaSAFK+KjTUangLvRiLhB+/ziD+Y/1pUmX3em0HV3kVCKgqwhLXmq2MYGDWKn0ELnsaZrCcanjRsJrjXcanjQYJ1rh8afjTNYATUABfBJ9hycyvcZ1wuU9AGiasTULyPhPl2lu0taEHQx+arWyaCEE1a+TTJYOrXLR+rXFmhhOCJDcNXcoHXyJ8RPe8jTR8JpVxTBpyBqRvBIL+7hMkJk3AGay0iGaIzXYUYzQmaQSzUm6HEFBqzVSJAxM7BAhPGKHBKT6SGwkJz2PZ+0hKuachKoaChOnel8I+aOwVgMgX0QJRxMN2KQP2JsOJc+ALSBaILTZGT+P/aWn2/h+dWvxveQ/aPVzCxCLX/aay36JYP07B/aQxaSaTYWOLRH+eLQJaSjmJaZLR2CFLTJSVLUikdLQZaj0hZavMIaBWY25aaRLsxXfn5at0FPEwQBFaC6Ov6MOLARejSthaqWaacrViBm4OKJcUHSaqrSyaGrRsAeTW1a+hMicg/wYBGjzJJJRLNalJOkRx2JPaUABZJbOMUxM3yNyC7WAqCmQ9aWgC9aq0N9aNvH9aBAF6JRiLW+GxK3sl7SjasbQTae0iTaKbWoCw9gzaWbT2kebULaxbT2kZbUra1bVrajbWbarbX2kHbTa0XbR7afbV4xOvRHa4WjHakbQtUoSxt407TYIs7RSk4HRpJKUj3RQyI5RrgKV8ueLc2N6ORxVcyzxtxQSUSSP08YpOSqtRIvacZAr6jABvaU71vR30PoJ1TUYJypOeJF21eJQ+Vha5LiJRO4nu2/7Ue2WmO1ezBP5JUHXJJXkK4JF3XRywZIC8wZNQ6vPi4WRhMYqSxP8mrQImuE6xdx/20RBwcw9xtHS/xKKl9xgBLb29LydUjLxwhoeJXxq90gJji1FSkeJE6q+I7xfoI7BAqK7BvfXLxfeN7BbBLjBqeJa6pxPhiWnQNSr4yLqjeNU+eVWM6pnXbxBePbBceM42pn1PxR5Kc6yeM42ejwvxRsN3GZxOGMdk2yA0gTvJ6kIIqgXW6kwXWfJlW0LxUnSES0XWcGJ5IJ2u4MPJvT0/uGXVyUmq0mAOXUm6+mjGO+eLgpr5KLxhWIPJA+K/JJtR/J8BLPJKPXYRo+OPBiQNg0E4JHxfXWGMA3SRebfVDmbtR3m6HGXxumMm4U3Vm6sFING8FM3mPePIpn5P3BJ+P7BZ+PseGqn268w16GZ3THxOgJu6SlMWG/FJCJM1he673S+6IlM42YlKu8m+OB6oPXSgcdUA4kPUPxdsOp2aFIopGFINeManYRY23/ad+MC23gEtm+PXnKRPVJ65PXmklPUNm+2OQhE60L2sKmL2P+NcEHnxnJm1yAhWEOsui5PAJeEJE6qs3XJ0BPmssBPwJrT2lBA4XVmaqjV67sTaM/ENSxVVxoRdXxleiuNcskLw4hpmJN6MLwRsb6JQKzTyKpEfU4pJUSEh2cT1h6Lwqps/kxezVNdeNVN96PS38WnBmKxjFQ/JX6lrBWKls+2415J7KQVRP6yWJ0ZNYM602ymjSxL6nVISWdNiri90xKyxUx+mfSzBUY81DmHfUyMo1PKqRWP+xnG0Bx3vls+o/Vj6J5Qn6vIz+JhZO7Gs/Xv6C6P8Gvg0dG5o1mGluXYy3nk6uzSPBUn1PepiE23+efhf6623f6VMyY8INMCGyo3GKq22/kb/Q22gRJPGWZJCBP+gUi//SomGzmAGKGlzkRI1DRwln5gRIhgGa8XgGFrAIGFRJsAx+h0GtxXQGmkI1UQhT6cbKiDR5OyIGN7kJGvijNYFAzvs6kFp4NA23oCKQxJxhMeGrA3mk7A08+vXTEGtgwkGoQ1gMhI2EGR4LZUBgwVpy1IxGWI2oA0XzH8Sg3MGMkw/0AMLXJ6Wm0GCY10G9FOgMeI0YARg0NEJxiGAZgxUGd/y+eVtLQAjgz1czg0aYg1HP+AZg8GpJJa6cNNygfg1v6X1OCG8tM6GhQx9agCyyGCQ2OgSQyNpJIKUAUdOo42Q2OguQ0JGcwyO6EQx9axQ1KGPRVppfhJQqTONJhaNMaJ/xIaGww00pLQ30g7QzDphw26GGlJKiZw0GGKowrpzQ3GGigEmGMgHhK6/WuGow2veEyzIcfROepGhMXkhiOv66dPrpd3VOG0AHOGrI1mGvdNKA9ROERmNPqC4tOeGR1PhiHw2+G/w0BGBmmBGoI2mJP5UBahFNWRlKWNpXFIhGJgIhGiI3X6qI2wp0g0xGxI21puI1rpxWSVp1gAzG6gBCK5I2XMlE0heNIyiKdI1OhjIxQ0k/BZGLdLZGMpJCwnI2XM/rVuxK9LFpBFUFGIo2lpQNNVGAZk9Gmo0kAK41ThfXA1G5NIgZsw0lGmDJgG2o0Z+AP0EJe5P7Sxo3WMMQDNG6/SDGu0BwZ/qDtG0oy9GhRJn+pVMTGWDI9GbDKwZPo3KhNDKpMdDMYZPmBDGsw1EZd9mRs6gFTGMYy+e3DJgGyYySAUYzTGvgE/pkwEiKkuKCJo/0GJOwCLGpY1QZzhOnGdHx8R59JKiQ436AB4xJyI/0Hi64wbGYoQLpWqI3qmnX3GG4wHGFjJ++d2PIZxfy8eOZOMZrSNMZCdIXGMACsZzDMmAa41cZ9jI7GjjKUJspj3G/7SsZ5gAICIhNgxGNJ7JQuQvGj5JvGd4wfGPOJw2rWPW8oLV06RdTOWWfwlxvxJhRVxPZ+gE2AmoE0MZfjOq2UE3Im4hUwmgAw2cYlmDmJE3QmLTLgmbTNxaYNQImRE2CEJEzImFEypGbTMM8tE0w4hbGGSW4wKyffjTQOFIlSXBS4mdgT4ma8WcmQkxkmKJOXJTkykm0Y1kmsunkmkwGUm3UlUmPYxcZ/7U0mvGm0muky0A+kyMmJkzrSdgQsmVkzqZsaMKZbIxApDk1xKezJcmBtMQ2THk8mjAG8mx5V7m6NNFpvZPN2TQNqxwQjGuA5PGeMUzimCU06CcmhWpI5jWpOsP2m6i0r6cDh2pe1IhmqSwqmfmiqm0FhqmdU06ppuLk0LUzk0bU0LUqEO6mGEIGmcVJAhYBMoZTeLhx402DmG5Ol63oNl6pEJHpAbzMZmEClha0w/GDSwOp1VIl2bVM6pKRk6pGqPziuLKlZTYPOmQ1Mr6CrIi8O1Myp9+IOJpVOYhRlm6pvr3r6krI3puJSxUwM0W2Rc0aW0M3WJVTK3sRrkRmyMz0UqM3RmmMw18OMzxmOigJmTxJHp/aVJmMTIX8ARPc6J2SH+SkIZmOsyDZLXWv6bMwpxAsykpEbPmxgAJsphwBWJybLBKZqzFmWjMqZI9KWJBOJSZXTVvays1lSksIxS2KkIWM1ITZJOMAB81INmtPWNmvGjfBipWmWHlKUA1s37y8LWWWqyxrJDRNPc7s3tRnszyZ3s19mwrP9mOwUDmMIxHZKGN8mV9NxKAbMYqoZV4pORj72fFQWJVDKpyqcx2CvgOXJmc1UUOczzmamNnZBLOLmjfQymu2yJJaWOeR583LAMc2XZDcyhxTHjOpWfXGpxOyCZXc3Dm4LLqx2JgHm/aNlSw8xd+prOnZh818mwaQ/ZT2LXZv9SA5/qH/JsuOhZy33XmdBNIpRRPtmi7LKMt7LEskHNDhUKKWp0amrmF8zE2v2T1KRWTvmK2PGMT8xQ6S9MuJvrO8+9C3hi6cKYWzAH/mH4yTpKi2sWaiwS+qVygWgNOXJsCxo5WJTo5UsJQW2AIwWWLJymt3lwWnaPoG5bOZSJbNpSpSxcsFCyoW99yxMFC1456HH45pbItUqnP9Q6nNiAnCxrZZYNg5X6gEW+HWCpSLPEWkiz2k0i0vMsi3Jei8gsWQCxY5KgDUW3DydxM5znufb0kiTL0L8cBL3JCBPWyArzVU9nOUWNRKc5UqUkhSPQlegkNlZXT2UKfr1/JiLzae8418WIbz7hH9UoJWNMWKQSxCWhBL6W6S2sC0SwMCsSw2p4nNIJJThSWJ7JyWalL2WOSw4ZurN1SCQKj+wBjk5CDMYq/aSqWHWNqWAywlZqSxGW8JVaWQiXaWmjNtZvrKpyw/2q5/S0GWvvmGWAjWVcYywG5A9NveIPmbZsyzG+Nsw7ZMy08pzsxHmpdLtZM1i2WWpJ2WyI3G5ByyOWnxOO5l5nyyH4wTJ43OuWenPS5mJKWJN3Ot2pnLJiHyzZu01R/xAK2BWoK38E4K0hW0KwQOiK2RWqK3ru8IJHJmK2xWM2jxWRK1JWlKxpWKIN90/+y9xU60LC2SXZWnKyoC3K1b2wZwFWQq1rObnNOeHnNPWI0xRUMq0rWGQKsBSSNsByJXsBeQM58WBgKBtcyKBuq31WZQJuCFQONWpqxqB8a2tW7aztW1AQdWTqzdWHqy2CaHzz+0SwDWQax1WoawuCbPMjWVQMeCsawtWrwUTW7+IjeCsUxO6a3x5G13c5QeM85CVP80RawyWngVMBI1gsBFPJrWNgJyBvax8mETl559qI7Wtcy7WlUh7WovL7Wh70HW1LmHWTOlHW74PV5n+JR5nfhnW03XnWi6xEUK6zXWG62PCW613W+639xs5NipIBOwhbLOQ2y5KvWswzvBfFIfWBlJVJKKWvW6GwsCH626kvOPu5VGzmhwSLY2oSIQpxmKrmmfJ7M8TWw572Tr5NOQKyCZMBZKDWOaSgTQ2kmML5IfOw2mgLy8rz0FxiSIuxYuLaU2rP6pnYUvB9Gx2CjGxHizOwLxrGwkRVfPEpVJO42BfJjmW7IaZ3gM3ZI/0b5WWWb5EqQI5N8wuW7fPRpHfIRZhLycUf2yL2SmxU2amxc22m102h6znJo6gXJbLJb+XXyK2lm0YxPmLs2NegKkjmz94zm0G+kZI+ZPJKQ5vH1a8ARgV+YtiJxWMMTZhaMM8Ynw1+En3M8C+Nk+tnktebakU+6hni2SWxS2PoLS2oWCy2OWxqQOAwa2pmy/5s7hK2ZWx9ZF7OoZ9gFq2XAGm2N+PG237Um27WznyC+SxA3W3uAvWznA/WzXyuIGG2o22LJ5KIm23sja25ZJ/awzgW2XTg1Uy20biSNJRUqNODZZWyxMO2wocp2zkx92L2GOgp0ZdXOr8BKL7Bi8lYFY7jm2BvnkFT22KsL21EJjCmIFGWxRUmWy+2mCIJev21CpPSmL2gO2CEwO1B24O0h2fuL02mEKT58VLZZArIvZ8YIt21H3tMGkEx2ZUGx22I1x2bvHC5b0Urx5yk0hbBnJ2jO1SFsPXSFItiCZqvUE6yBVt+1POOx6hIvZ3OzdJuqL52ASJXKn6Igcou0xcSsKj6mnME6Mu0iReWVq5L1Pq5Y+LHBXzTV2Yu0P56gwqFJVN6Fx4NPBTXMGFRzRa5NsVzZYWOt2P1yBCTdkDOrdid2Lux6kbuya6nu292fu2T2oewj2J+xj214Tj2kgAT2kMiT2we1T2me3reKwod2Be0nJJe3L2le1r2De2b22PN15LLODxZ60msCHMyJRrgH2JwGH2o+ywJVQCrm0+yHSc+y+ed1x/UXl0euW8WFqM+OceK8OVx/vI6BaGiOFH+3/sl+xv2d+1l0D+yf20Bhf2b+zg8H+xYMX+3RFDdyYUwB1AOy0nAOkB2gOvGlgO8BzhWKBwwO2B0yO+B2IOpB3IOlB1sEtB0YOzBxwuh4jYOJ8g4OF8iIut8j1uaIkEOMIix4IhxBElFxPOkhxAkMh2O0Jh2UOjQAsO6h00O2h10OHgH0OjQEMOxh0UOqh3MOq/B2AVh1sODF0yOmJ0iO9oq8OdMJjkfh0CO23BCOLQTCODoq9FLh215rdkxOiRxSOaRzpBGRxnO2R1yOhR2KOpRwcELgkqO1RzqODRxZOHRy6OgUl6O/R0kAHJ2GOAq2xOwYtlCExxmOcxwWOyx3WOxxx2O+x0OOxx1OO5x0uO1xzWkdx0eOIUheOZe3eOnx2+Ovx0xOQJxBO4JxzFdIShOMJwAUcJ0YUCJxFWLJzpOdIT5OmJ2zFIq0lOsoW5O3YrlCmJ1JOo4vnFIqxpOS4sZOzJxaOrJ37F7J3hOnJ3xOXRx5OfJ0FOwp0xOYpwlOmJ2lOspxFWCp2paSpwQ0Kp0YU6IqXkmpxcEOpz1OhCQNOSZyzsZpwtOVpxtOdpwdO6x2dOrp3dOnpz2O3p19Otwtz2qwr5WIq1DOGmgjOUZ1jOCZyTOrjWLUqZ3dOmZxwsuZ3zOhZxLOgUnLOVZ2nOIq3rOjZ2bOzgjbOHZ27OvZwHOw51HO45ynOtornOKt120atw1uK5xcEa5z8EQQi3Outx3O/Bz3OiQBu0h52YkD2nL4/MjPOO3CO4V51kgN5w+095yUgj5we4z5zvcr5xaErty/OvAB/Oj3D/OuXF9uYF39uEF1MoQdwDuxktDuGvIG0gfCF2SED64sQCzp5AmsgqqnAEp4JSARGDH4NeCHgX9Mz4sPEDg2khDkp8jDkCsgjkN9lv4YwH5kj/DYEqXCmAO3AQQPAki4GXCEE2vFEE9QH74+kmoEAUroEIAGClUcjClMcgil7AhS40Uu24sUo/4CUr/OskFEEbktzEnhCWYz+HvwHWGqwU7BFoz8CeYdwC3A24HKB3rEkQ68AWg7UoFA7PK6lvrEXIPUp6wuhEtoCAFdEElHJo0DDtoVNFml8DF2YCbFoIouGiY+VFiYe6HiYL7H7ooxCzY+lBzYz1AIYT8AEQmwlMIHeFwopDBalY0o9wq9DXI3UpDgKhGBwu9BGo4OB9Q+8AelMhDPoWtECol0tOlB7AHkeACfIMEEREthB6EuNCRY2QECI40vjwU0rPYe1EYwoTBbI2lBOowuHOYKDHvYqbG7oT7AzY20t0odLFrwRnADoQnHrQx0uoujIw+YnYiKwDVFLYF0pJl4Mopln1DPoN0rIoeiHuldMvywDUqelrbDulS7DZlkMuw4F9G0YxMrelvMo5ledEzQWFCxwniDJQEPDHgoXBllVgmQAxkmrgXhHfovhBplS5DdY8sEeAiwHZAhTCOlGssbY2st1lAsszop5D+lR1H8YCVGtokbFtoTdARl5BAWlyMsTYUTE7oGMvWl2JGfY6eDxISTD2lH7EJlbbDNlwHGFo6svfwS7Cg4TMual8srdYzbFulXMtLQlWGrYX0vYor0tDlRHG+IEgmTQeODGAaaAzQAcAPkGABsADPFcwhclAAGsjfo+MtCQ/stuApnCJlYIHzlVQCLleWBEIVUGrldnGFoZYArANYHrlhcuBlz6FbA7YBNlXcvMpDct7lqGEMYnMC9AJSDKQQ8ojwI8pJwz6AnlDSA8ATSBzAt+GFa6GXugEcHo4NYDCA/MAyQ5qECou8o3lsoEUYj+CwIjsrpoExD9l/+FIYR8vngDWBXIh8vXl98tFlKNGI49LAroOpGhlEbFrowTAvYzZAdl17CtIEFFdoq0uZoj7A2lnsrlwO0rfYvsoJlI9DbYd8rfAXFDOlJDCuYuwCQVsoBQV1TFul4sEwVMIGwVLTCTozzGAg+CrOAhCrnwQ0rIVZDDvoh7HSlx7G/lp7BtlM0rtlsbCvYClEQY9NCTY26Fdl6lAgVHsuxl3st2lx2H2lL1FJle8teQBTB3lz8o9QlDFwVSiGoVMcrIoccoUVMisPgn0ozIycowVaitfgYspI4R8qrpSgG9ym8ooA+0pFoBivbpxivHAB8q0VYIAsVrQwVGTaBDYn8rEojCtHQv8vPY8MrYVYTA4VezBRlt7B4VKbD4VTBAwYUCp0oiFD0oIiuvlubDwV68sMVjiskV50vQVdiriVlivUksis6oQNBSV/MHiVVit0V0+BbYgpAYYpCtSVDiryVgaFhomitkY2SuEAuSvSV6ivNlEstPouECaVbgH/sFOGRQ6pFql/MAWAR8v0EM22tElOGtEiEkm5oYjowX+VywkwHLlU6ktR/AC8YfkoclKUsP4Okl6IEaCo4Kyt741+EQAwXCGA1cBAAmW0X4i/E5kNgFmVydIcgFEgOVhyq0E/EAmVxtSZYVMG3lsSv5grUqxAvYASQ7qmeCOoF/oqiueVmSHuA7ytxAeYC+VFSH/AygDogmdCPlaBDBV9wCdAT8ueVo0tOlolACY21GYVf8q8Vl7B8VSMsvlzspWlvCslwISqxluJAHowiqvl8CpiVPyvL4V0rDowcuSV4ispVv0u3gtbFNAkKqpVBStjlRSsQV68velehEoVW7DpV3Krvo/0uLI1hBTQOcsJwNhHYyFOGBl1OAclDhGoAcoh6VEcD6VEcHdRvcEGViImGVvgFGVtHBroPBUmVWgGmVTFlOV8ypKmVAl0kqUrIE66DWVlqvII0RG2VpZD2VlysOVxyu20U/POVOgCdVRypuVTslwK9AH1VodHNIxAAsEF6D1V6HHlQtyvuKjUrMVpDATEaAEOAkKvlgfnEtWmdFjV8aq5VSaoFAg8pVgjhDTV8KvflRdEz4kCGsAVrHLlTksRorku6AadFlwjyqUQIdC0YmdDrVCKqEIUMu/I7ioNIniodl9sqzwviqWl1pBdlQSvxVvZC0ofdCEVsCqiVZKoOlRlFNAdatZVzcpA4tKpnVDKrkIMHF2Ai6ubVnMo5VNYDXVqhH5lQ0u3Vj0r0VlatDga1BbQ2ekRVxNDDYbisaIf5Hro9tHmlQCudo/avRlwSqHVvdCwYr7EiVpKsrlCCq3V1gCQw3MgPVqCuplC6r/VeKAA1H0pwVzMtrVoGtbQ4GvjIdDE3V4sDrVYGqXVKtD3VMGrPV66sPVbonuwwqskAAcBDoc/FAAYCBDoLSrKglMEt4dsh0AbMsdkI4h0AgAArjQAAKwSAhKNRCINRLRrveNB5AAIAGfEFzQTUtIYIdEPA9at/Vh+jAgtmGXghICO6O4BE1QmrpAkmuUA0mroVSKqtlMMtRVHaphI3isRlmVGxVy0s7IYCofYBKsgVgiuJVY6q/VT1DEVgmobAQctno0GtE1GSug48iuAglmodQCGsTITmusAQmqg4ScuqV8kg81VmvYYmUpo1Nyqzk5+GMEjEAQgxzHGUUauiVIAA5AeID1lvmrs1WCpC1vnA8A8WvRAE8prlbbGc1yWvGUc6rjAWWqzVtmqE1akDy1zaCJwWrExYCwHcYnjEmQNrFsViWqE1crA9Y4msnVLcsK1SGr81b4Ga1+WtblwGruABrBk1DYB614rEgItUukIfaGwIpNGrosMujY6KoAV3aqxVrdC4VT6rUog6tgoxmpgVn6vKoE6os1XWtlAPWvBl+Wps17mqS1MIEO1ZMqKAkGpFoOWvO1lWvlYR2qIVe9DaYxWuG192teIj2t5VgVFu1ZwAu1E2vNlcgHzgskHZEMVBLlU2ogYPSBro7arhlnas01gCp7VN7G4VTNAM1r6s2lXspM122tVln7Gy1+2ru1GLHlYYVFQwUis61Z2t+172v6oRCPBYy6sc106tx1ZOvx1rxEJ1w0Fc1KHFXVdOs1YDOop15lD7lX2oa1P2o512rEZ1oOrHlVREB1+UGB1tiBC1ziCl1+0H5Ewusi1KBGi1E6s/oKWvlgmWrblqSBS16uu+ogVFK1AhB6wfsAV1KAChl0EjZwUOqkoc2th1GKq01x1B01fatxVA6u3Q7sr7It1BxlESrxlI5CnVhDBS1hupC1M9DnIrDB910gCN1MdBXVYID11qBF91UWo3VbmsD1eWqj1iut3VfKoj1ewGD1fuvYYkzFOwkAhpwGpGsAobC/lrauvVUbFvVc0rjYCOuAVqMrvYa2qd1/Cpd1I6ox1HuqnYYipT1udCA186sDI4epS1reuu1pDBb1VarZVyisQ1FyC71/ev8oGdE11eWu71PWEz1oaGmYbsHtg72snY+0t11KWp6148tuQfWtrlVFFX15Ou11zUCIwS+BGAymum1P8uh1luo011uvh1S2s4V/iqR1btDdlteuHV76rd191CHoMWub1O+s512+BGAx2oD13ury1PWu/1hxEZVYeu31ABvJ1QBteIT2uelQpE714Bq/1h+uANvOp81KesANiBpa13xAj1eGoDghOpN1cfDN1s2pL1TGHvV5esfVDuufV62s9oYSuwYJKp2136vJVMKBS1uBqpl7eoS1KeuYNK9AjINOv/1AhA4NA+too59FBQTBuF1mtCqVgsrgNvBpEN7DDF1owAl1OyvdEe/lo4WsktAAQS1Y1WsZY8qA8I8qA1ESvAqY/iECQSuvoN/LGcYOgEBUihqRonLAWgg2tPgVYDJAYwDMN38GBgewEsN1oFsNirGVYZjDVY9htxM5hucNWrB2AurH1YJhtPgfnFc47nE84vwCXlK8pLQboiFCgWD8NxAAWgoRoC4ERsnljSDKQw4BI4/LTVkoADtVuNFfoxghl4moill/0vLlp5DKNn2HLlCtDg15cqPlNRvtVdcD0NazArVq4iQgRRrxYJRtTQaHAVlPxHwADkTl4uRq2V6okw4AyF/lAcHdRFWHSlaNGwKkxpXQIOt0ybRsnEHRuLgAWA7I/aHP+VgmwQXGBEkUqsZ4jomIAXSGB1sgFxQUwAzQ4XCP+N+HtgDQEEmXksxo38AiwqaEp+AIGuNA3CmVkqFz1Y3kqNDRtI1EcFCSCgC4cgQBKEEvHUAyqhrwR8tcwAJocgvAGBNxKG04syFYOkMGLV5BAYAWUCXiHtTmNycHGUCwEgAIJrhNFcCWY3njCQ64lMNx0vRAdbjVkIAHkkcZDQEFciS4qXHS4WXBy4uAhr4BAlAQKUApN6IAsh5cp4Ak9EiAJvC1kVXFpNmAgZNOAny4eAhK4ZXHZEVkG9qOgCpNDUHQEdJqwEjJty4YppZNZXE4A723LlxNIWAxJvII5JtlN6IDRoHJs4AXJu+NcEG6E/JqlNWrQKaBpo1NoWEuNUECAAA="></div>
-      
-      <script type=text/javascript src=https://b-gold-cdn.xitu.io/v3/static/js/runtime.ec1a77ef2389bc893a16.js></script><script type=text/javascript src=https://b-gold-cdn.xitu.io/v3/static/js/0.a0e5ee138f4ee0ee67c4.js></script><script type=text/javascript src=https://b-gold-cdn.xitu.io/v3/static/js/1.b159d298ddfbcbf57b33.js></script></body></html>
-    
