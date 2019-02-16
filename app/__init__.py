@@ -5,6 +5,11 @@ app = Flask(__name__,static_folder="static")
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = timedelta(seconds=2)
 
 # type
+@app.route('/categories/archives')
+def typeArchives_mehtod():
+    return send_file("static/html/Categories/typeOC.html")
+
+
 @app.route('/categories/oc')
 def typeOc_mehtod():
     return send_file("static/html/Categories/typeOC.html")

@@ -2350,7 +2350,7 @@ body {
   text-align: left;
   line-height: inherit;
   transition-property: background-color;
-  transition-duration: 0.2s;
+  transition-duration: 0.1s;
   transition-timing-function: ease-in-out;
   transition-delay: 0s;
 }
