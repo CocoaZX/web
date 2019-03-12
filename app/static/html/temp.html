@@ -1,421 +1,1023 @@
+<!DOCTYPE html>
 
-<!DOCTYPE html><html lang=zh-CN data-vue-meta-server-rendered><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge,chrome=1"><meta name=viewport content="width=device-width,initial-scale=1,user-scalable=no,viewport-fit=cover"><meta name=google-site-verification content=cCHsgG9ktuCTgWgYfqCJql8AeR4gAne4DTZqztPoirE><meta name=apple-itunes-app content="app-id=987739104"><meta name=baidu-site-verification content=qiK2a1kcFc><meta name=360-site-verification content=4c3c7d57d59f0e1a308462fbc7fd7e51><meta name=sogou_site_verification content=c49WUDZczQ><style>body {
-        font-size: 16px;
-        line-height: 2;
+
+
+
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css">
+
+
+  <meta name="keywords" content="iOS,框架,ReactNative,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="雪峰的blog" type="application/atom+xml">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.2">
+
+
+
+
+
+
+<meta name="description" content="本文通过分析源码，逐步解析 ReactNative 中 JS to Native 的通信机制。">
+<meta name="keywords" content="iOS,框架,ReactNative">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ReactNative源码解析——通信机制详解(1&#x2F;2)">
+<meta property="og:url" content="http://zxfcumtcs.github.io/2017/10/08/ReactNativeCommunicationMechanism/index.html">
+<meta property="og:site_name" content="雪峰的blog">
+<meta property="og:description" content="本文通过分析源码，逐步解析 ReactNative 中 JS to Native 的通信机制。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://zxfcumtcs.github.io/img/RNLanguageComposition.jpeg">
+<meta property="og:image" content="http://zxfcumtcs.github.io/img/ReactReactCommon.png">
+<meta property="og:image" content="http://zxfcumtcs.github.io/img/BatchedBridgePath.jpg">
+<meta property="og:image" content="http://zxfcumtcs.github.io/img/RNClassDiagram.png">
+<meta property="og:image" content="http://zxfcumtcs.github.io/img/RNTimingDiagram.png">
+<meta property="og:image" content="http://zxfcumtcs.github.io/img/RCTCxxBrigdeInitModulesWithDispatchGroup.png">
+<meta property="og:image" content="http://zxfcumtcs.github.io/img/JSCExecutor.png">
+<meta property="og:image" content="http://zxfcumtcs.github.io/img/NativeModuleClassDiagram.png">
+<meta property="og:image" content="http://zxfcumtcs.github.io/img/NativeModuleConfig.jpg">
+<meta property="og:image" content="http://zxfcumtcs.github.io/img/RCTNativeModuleinvoke.jpg">
+<meta property="og:image" content="http://zxfcumtcs.github.io/img/RCTModuleMethodinvokeWithBridge.jpg">
+<meta property="og:image" content="http://zxfcumtcs.github.io/img/JSToNativeCallTimingDiagram.png">
+<meta property="og:updated_time" content="2018-12-08T08:41:32.862Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ReactNative源码解析——通信机制详解(1&#x2F;2)">
+<meta name="twitter:description" content="本文通过分析源码，逐步解析 ReactNative 中 JS to Native 的通信机制。">
+<meta name="twitter:image" content="http://zxfcumtcs.github.io/img/RNLanguageComposition.jpeg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://zxfcumtcs.github.io/2017/10/08/ReactNativeCommunicationMechanism/">
+
+
+
+
+
+  <title>ReactNative源码解析——通信机制详解(1/2) | 雪峰的blog</title>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+
+
+
+
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">雪峰的blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+
+        <p class="site-subtitle">善于总结, 乐于分享</p>
+
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+
+
+
+    <ul id="menu" class="menu">
+
+
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+
+            首页
+          </a>
+        </li>
+
+
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+
+            关于
+          </a>
+        </li>
+
+
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+
+            归档
+          </a>
+        </li>
+
+
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+
+            标签
+          </a>
+        </li>
+
+
+
+    </ul>
+
+
+
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+
+
+  <div id="posts" class="posts-expand">
+
+
+
+
+
+
+
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+
+
+
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zxfcumtcs.github.io/2017/10/08/ReactNativeCommunicationMechanism/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="赵雪峰">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/img/author.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="雪峰的blog">
+    </span>
+
+
+      <header class="post-header">
+
+
+
+          <h1 class="post-title" itemprop="name headline">ReactNative源码解析——通信机制详解(1/2)</h1>
+
+
+        <div class="post-meta">
+          <span class="post-time">
+
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+
+                <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-08T19:19:59+08:00">
+                2017-10-08
+              </time>
+
+
+
+
+
+          </span>
+
+
+
+
+
+
+
+
+
+             <span id="/2017/10/08/ReactNativeCommunicationMechanism/" class="leancloud_visitors" data-flag-title="ReactNative源码解析——通信机制详解(1/2)">
+
+             </span>
+
+
+
+
+
+
+            <div class="post-wordcount">
+
+
+                  <span class="post-meta-divider">|</span>
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+
+                  <span class="post-meta-item-text">字数统计</span>
+
+                <span title="字数统计">
+                  3,836
+                </span>
+
+
+
+                <span class="post-meta-divider">|</span>
+
+
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+
+                  <span class="post-meta-item-text">阅读时长</span>
+
+                <span title="阅读时长">
+                  17
+                </span>
+
+            </div>
+
+
+
+
+        </div>
+      </header>
+
+
+
+
+
+    <div class="post-body" itemprop="articleBody">
+
+
+
+
+
+        <p>本文通过分析源码，逐步解析 ReactNative 中 JS to Native 的通信机制。<br><a id="more"></a><br>©原创文章，转载请注明出处！</p>
+<h1 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h1><hr>
+<p>本文详细分析了 JS to Native 的调用过程，包括：ReactNative 的初始化、native module 注册、JS 获取 native module 信息、JS 调用 native module。</p>
+<blockquote>
+<p>本文分析的源码基于 ReactNative 0.47，为了叙述方便后文将 ReactNative 简称为 RN。<br>另外，为了精减篇幅聚焦重点，文中所列源码均做过简化，删除非关键代码。<br>由于本文具体分析的是 iOS 侧的实现，故后文所有内容都是针对 iOS 平台(其中有一大部分是共用的)。</p>
+</blockquote>
+<h1 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h1><hr>
+<blockquote>
+<p>阅读源码大概有两类目的，一是想通过源码了解某个实现细节；二是想了解其实现的整体结构、原理。对于第一种情形可以直接深入源码，快速抓住关注点；而后者如果也一股脑扎入源码，很容易陷入各种实现细节而迷失方向(尤其是大型源码)。此时，应先了解代码整体结构，抓住关键路径，必要时辅以类图。</p>
+</blockquote>
+<p>本文讨论的 RN 通信机制是整个 RN 的核心，贯穿始末，涉及<code>Objective-C</code>/<code>Java</code>、<code>C++</code>、<code>JavaScript</code>间的交互。因此，在深入分析前有必要先了解一下 RN 整体结构以及关键类的类图。<br><img src="/img/RNLanguageComposition.jpeg" alt=""><br>RN 最大的优势在于<strong><em>跨平台、热更新</em></strong>。因此，RN 库本身也需要在多个平台(iOS、Android)上运行，从上图可知，在 RN 中 <code>C++</code>与<code>JS</code>部分的实现为多平台共用，在此基础上再分化为各平台实现。其中，iOS 平台特有的实现(<code>Objective-C</code>、<code>C++</code>)主要集中在 React 下，以<code>C++</code>语言实现的共有部分在 ReactCommon 下：<br><img src="/img/ReactReactCommon.png" alt=""><br>JS侧与本文关系紧密的内容主要集中在：<br><img src="/img/BatchedBridgePath.jpg" alt="">下的<code>BatchedBridge.js</code>、<code>MessageQueue.js</code>以及<code>NativeModules.js</code>中。</p>
+<p>我们先大概了解几个关键类及其间的关系，对整体结构有个大致印象：<br><img src="/img/RNClassDiagram.png" alt=""><br>如上图：</p>
+<ul>
+<li><code>RCTBridge</code>与<code>RCTCxxBridge</code>属于 iOS 平台特有，前者是 RN 对业务层接口(图中其他类都属于内部类，业务层无感知)，具体工作在其子类<code>RCTCxxBridge</code>中完成；</li>
+<li>整个 RN 的核心在跨平台的 C++层，其中很多类的功能从其名称即可略知一二，后文也会有详细的描述；</li>
+<li>在 RN 中肯定少不了 JS 的支持，从上图可知，JS 与 Native 的通信发生在 <code>JavaScript</code> 与 <code>C++</code>间，这也是本文分析的重点。</li>
+</ul>
+<p>说到通信，无外乎 JS to Native、Native to JS，本篇我们重点分析JS to Native。</p>
+<h1 id="JavaScript—-gt-Native"><a href="#JavaScript—-gt-Native" class="headerlink" title="JavaScript—&gt;Native"></a>JavaScript—&gt;Native</h1><hr>
+<p>通过 Apple 推出的 <code>JavaScriptCore</code>，要实现 JS to Native 的通信并非难事，主要有两条途径：</p>
+<ul>
+<li><code>block</code>——在 RN 这样复杂的应用场景中<code>block</code>显得有些力不从心；</li>
+<li><code>JSExport</code>协议——通过实现该协议可以向 JS 曝露 Native 接口(但不具备跨平台能力)。</li>
+</ul>
+<p>因此，RN 并没有使用 <code>JavaScriptCore</code>提供的这两种方式，而是自己实现了一套通信机制。<br>我们先从一个简单的例子入手：<code>CalendarManager</code>封装了 iOS 平台的日历控件，供 JS 调用。<br><figure class="highlight mm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// CalendarManager.h</span></span><br><span class="line"><span class="meta">#import <span class="meta-string">&lt;React/RCTBridgeModule.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">CalendarManager</span> : <span class="title">NSObject</span> &lt;<span class="title">RCTBridgeModule</span>&gt;</span></span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure></p>
+<figure class="highlight mm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// CalendarManager.m</span></span><br><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">CalendarManager</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// To export a module named CalendarManager</span></span><br><span class="line">RCT_EXPORT_MODULE();</span><br><span class="line"></span><br><span class="line">RCT_EXPORT_METHOD(addEvent:(<span class="built_in">NSString</span> *)name location:(<span class="built_in">NSString</span> *)location) &#123;</span><br><span class="line">    RCTLogInfo(<span class="string">@"Pretending to create an event %@ at %@"</span>, name, location);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+<p>我们知道，要将 Native module(类、接口)曝露给 JS，module需要实现<code>RCTBridgeModule</code>协议，并且在实现中要插入<code>RCT_EXPORT_MODULE</code>宏。具体曝露的方法也需要通过<code>RCT_EXPORT_METHOD</code>宏定义。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// JS</span></span><br><span class="line"><span class="keyword">import</span> &#123; NativeModules &#125; <span class="keyword">from</span> <span class="string">'react-native'</span>;</span><br><span class="line"><span class="keyword">var</span> CalendarManager = NativeModules.CalendarManager;</span><br><span class="line">CalendarManager.addEvent(<span class="string">'Birthday Party'</span>, <span class="string">'4 Privet Drive, Surrey'</span>);</span><br></pre></td></tr></table></figure></p>
+<p>此时，在 JS 中就可以通过<code>NativeModules.CalendarManager.addEvent(...)</code>方式调用 Native 接口了。<br>下面将对这一过程逐一分析，先来了解上面提到的两个关键的宏：</p>
+<h2 id="RCT-EXPORT-MODULE"><a href="#RCT-EXPORT-MODULE" class="headerlink" title="RCT_EXPORT_MODULE"></a>RCT_EXPORT_MODULE</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> RCT_EXPORT_MODULE(js_name) \</span></span><br><span class="line"><span class="function">RCT_EXTERN <span class="keyword">void</span> <span class="title">RCTRegisterModule</span><span class="params">(Class)</span></span>; \</span><br><span class="line">+ (NSString *)moduleName &#123; <span class="keyword">return</span> @#js_name; &#125; \</span><br><span class="line">+ (<span class="keyword">void</span>)load &#123; RCTRegisterModule(self); &#125;</span><br></pre></td></tr></table></figure>
+<p>可以看到，添加<code>RCT_EXPORT_MODULE</code>宏，相当定义了<code>load</code>、<code>moduleName</code>方法。正是在<code>load</code>方法中调用了<code>RCTRegisterModule</code>方法注册 Module(会影响 App 启动速度^_^)。<br><figure class="highlight mm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> RCTRegisterModule(Class moduleClass) &#123;</span><br><span class="line">    <span class="keyword">static</span> <span class="built_in">dispatch_once_t</span> onceToken;</span><br><span class="line">    <span class="built_in">dispatch_once</span>(&amp;onceToken, ^&#123;</span><br><span class="line">        RCTModuleClasses = [<span class="built_in">NSMutableArray</span> new];</span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="comment">// Register module</span></span><br><span class="line">    [RCTModuleClasses addObject:moduleClass];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p><code>RCTRegisterModule</code>只是简单收集所有需要曝露给 JS 的类。</p>
+</blockquote>
+<h2 id="RCT-EXPORT-METHOD"><a href="#RCT-EXPORT-METHOD" class="headerlink" title="RCT_EXPORT_METHOD"></a>RCT_EXPORT_METHOD</h2><p>曝露给 JS 的接口需要通过<code>RCT_EXPORT_METHOD</code>宏来定义，上文中：<br><figure class="highlight mm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">RCT_EXPORT_METHOD(addEvent:(<span class="built_in">NSString</span> *)name location:(<span class="built_in">NSString</span> *)location) &#123;</span><br><span class="line">    RCTLogInfo(<span class="string">@"Pretending to create an event %@ at %@"</span>, name, location);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>最终展开后的样子(由于篇幅关系具体的展开过程不作描述)：<br><figure class="highlight mm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">+ (<span class="built_in">NSArray</span> *)__rct_export__531 &#123;</span><br><span class="line">    <span class="keyword">return</span> @[<span class="string">@""</span>, <span class="string">@"addEvent:(NSString *)name location:(NSString *)location"</span>, @NO];</span><br><span class="line">&#125;</span><br><span class="line">- (<span class="keyword">void</span>)addEvent:(<span class="built_in">NSString</span> *)name location:(<span class="built_in">NSString</span> *)location &#123;</span><br><span class="line">    RCTLogInfo(<span class="string">@"Pretending to create an event %@ at %@"</span>, name, location);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>可以看到通过宏添加了一个新方法，其命名规则：<code>__rct_export__</code>+<code>__LINE__</code>+<code>__COUNTER__</code>。同时注意到，所有曝露给 JS 的方法返回值都是 <code>void</code>，要返回结果时，需通过 callback 方式实现。</p>
+<blockquote>
+<p>优雅、巧妙地使用宏充满技巧。</p>
+</blockquote>
+<p>上面介绍的<code>RCT_EXPORT_MODULE</code>以及<code>RCT_EXPORT_METHOD</code>宏属于编译阶段的处理，下面我们从执行角度一步一步进行分析。<br><img src="/img/RNTimingDiagram.png" alt=""><br>上图是RN 初始化过程的时序图，我们将沿着图中的步骤逐步分析。</p>
+<h2 id="注册NativeModule"><a href="#注册NativeModule" class="headerlink" title="注册NativeModule"></a>注册NativeModule</h2><p><img src="/img/RCTCxxBrigdeInitModulesWithDispatchGroup.png" alt=""><br>通过上述坐标，最终定位到<code>RCTCxxBridge._initModulesWithDispatchGroup</code>：<br><figure class="highlight mm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)_initModulesWithDispatchGroup:(dispatch_group_t)dispatchGroup</span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">NSMutableArray</span>&lt;Class&gt; *moduleClassesByID = [<span class="built_in">NSMutableArray</span> new];</span><br><span class="line">    <span class="built_in">NSMutableArray</span>&lt;RCTModuleData *&gt; *moduleDataByID = [<span class="built_in">NSMutableArray</span> new];</span><br><span class="line">    <span class="built_in">NSMutableDictionary</span>&lt;<span class="built_in">NSString</span> *, RCTModuleData *&gt; *moduleDataByName = [<span class="built_in">NSMutableDictionary</span> new];</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Set up moduleData for automatically-exported modules</span></span><br><span class="line">    <span class="keyword">for</span> (Class moduleClass <span class="keyword">in</span> RCTGetModuleClasses()) &#123;</span><br><span class="line">        <span class="built_in">NSString</span> *moduleName = RCTBridgeModuleNameForClass(moduleClass);</span><br><span class="line">        moduleData = [[RCTModuleData alloc] initWithModuleClass:moduleClass bridge:<span class="keyword">self</span>];</span><br><span class="line">       </span><br><span class="line">        moduleDataByName[moduleName] = moduleData;</span><br><span class="line">        [moduleClassesByID addObject:moduleClass];</span><br><span class="line">        [moduleDataByID addObject:moduleData];       </span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Store modules</span></span><br><span class="line">    _moduleDataByID = [moduleDataByID <span class="keyword">copy</span>];</span><br><span class="line">    _moduleDataByName = [moduleDataByName <span class="keyword">copy</span>];</span><br><span class="line">    _moduleClassesByID = [moduleClassesByID <span class="keyword">copy</span>];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<ul>
+<li>上述代码第<code>8</code>行<code>RCTGetModuleClasses()</code>即是获取通过<code>RCTRegisterModule</code>注册的 module 类(即所有曝露给 JS 的类)；</li>
+<li>通过<code>RCTRegisterModule</code>注册的 module 默认使用<code>init</code>方法进行初始化，若某个 module 的初始化需要参数，可通过<code>RCTBridgeDelegate</code>-&gt;<code>extraModulesForBridge</code>或<code>moduleProvider</code>提供已初始化的 module 实例。</li>
+</ul>
+<p>至此，所有需要曝露给 JS 的 module 都已注册完成，并以<code>RCTModuleData</code>格式存储在<code>RCTCxxBridge</code>中。</p>
+<blockquote>
+<p>大部分 module 都是懒加载，只有那些需要在主线程完成初始化以及有常量需要导出的 module才会在注册时实例化。</p>
+</blockquote>
+<h2 id="Instance"><a href="#Instance" class="headerlink" title="Instance"></a>Instance</h2><p><img src="/img/JSCExecutor.png" alt=""><br>坐标定位到<code>RCTCxxBridge._initializeBridge</code>方法中：<br><figure class="highlight mm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)_initializeBridge:(std::shared_ptr&lt;JSExecutorFactory&gt;)executorFactory</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> (_reactInstance) &#123;</span><br><span class="line">        _reactInstance-&gt;initializeBridge(</span><br><span class="line">          std::unique_ptr&lt;RCTInstanceCallback&gt;(new RCTInstanceCallback(<span class="keyword">self</span>)),</span><br><span class="line">          executorFactory,</span><br><span class="line">          _jsMessageThread,</span><br><span class="line">          [<span class="keyword">self</span> _buildModuleRegistry]);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><code>_initializeBridge</code>方法做的最重要的事情就是初始化<code>Instance</code>实例<code>_reactInstance</code>，此过程将所有曝露给 JS 的 module 由<code>RCTModuleData</code>格式转化为<code>ModuleRegistry</code>格式传入<code>Instance</code>。<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="built_in">std</span>::<span class="built_in">shared_ptr</span>&lt;ModuleRegistry&gt;)_buildModuleRegistry</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">auto</span> registry = <span class="built_in">std</span>::make_shared&lt;ModuleRegistry&gt;(createNativeModules(_moduleDataByID, self, _reactInstance));</span><br><span class="line">    <span class="keyword">return</span> registry;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>此时，有必要介绍与 NativeModule 有关的几个类：<br><img src="/img/NativeModuleClassDiagram.png" alt=""></p>
+<ul>
+<li><code>JSCNativeModules</code>——<code>C++</code>类，在<code>JSCExecutor</code>中使用；</li>
+<li><code>ModuleRegistry</code>——<code>C++</code>类，是<code>NativeModule</code>的集合；</li>
+<li><code>NativeModule</code>——<code>C++</code>抽象类，定义了与 NativeModule 有关的接口；</li>
+<li><code>RCTNativeModule</code>——实现了<code>NativeModule</code>中定义的接口；</li>
+<li><code>RCTModuleData</code>——<code>OC</code>类，是存储曝露的moudle 的数据结构；</li>
+<li><code>RCTBridgeMethod</code>——<code>OC</code>类，是存储曝露给 JS 接口(方法)的数据结构。</li>
+</ul>
+<p><code>Instance</code>是一个中转类，没有做太多的事情，我们继续向前。</p>
+<h2 id="NativeToJsBridge"><a href="#NativeToJsBridge" class="headerlink" title="NativeToJsBridge"></a>NativeToJsBridge</h2><p>此时，来到<code>Instance::initializeBridge</code>-&gt;<code>NativeToJsBridge::NativeToJsBridge</code>，很明显<code>NativeToJsBridge</code>是 Native to JS 的桥接。<br>所有从 Native 到 JS 的调用都是从<code>NativeToJsBridge</code>中的接口发出去的。<br>在其构造函数中会初始化两个成员变量：</p>
+<ul>
+<li><code>m_executor</code>—<code>JSExecutor</code>类型的指针，从上文可知<code>JSExecutor</code>是个 <code>C++</code>抽象类，<code>m_executor</code>实际指向<code>JSCExecutor</code>的实例，作为 JS 的引擎，无论是 Native to JS 还是 JS to Native 最终都需要该类来处理，后面我们会逐一分析；</li>
+<li><code>m_delegate</code>—<code>JsToNativeBridge</code>类型的指针，顾名思义，JS to Native 的桥接，该成员变量仅用于初始化<code>JSCExecutor</code>实例。</li>
+</ul>
+<h2 id="JSCExecutor"><a href="#JSCExecutor" class="headerlink" title="JSCExecutor"></a>JSCExecutor</h2><p>坐标定位到<code>NativeToJsBridge::NativeToJsBridge</code>-&gt;<code>JSCExecutor::JSCExecutor</code>：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">JSCExecutor::JSCExecutor(<span class="built_in">std</span>::<span class="built_in">shared_ptr</span>&lt;ExecutorDelegate&gt; delegate,</span><br><span class="line">                         <span class="built_in">std</span>::<span class="built_in">shared_ptr</span>&lt;MessageQueueThread&gt; messageQueueThread,</span><br><span class="line">                         <span class="keyword">const</span> folly::dynamic&amp; jscConfig) <span class="keyword">throw</span>(JSException) :</span><br><span class="line">                         m_delegate(delegate),</span><br><span class="line">                         m_messageQueueThread(messageQueueThread),</span><br><span class="line">                         m_nativeModules(delegate ? delegate-&gt;getModuleRegistry() : <span class="literal">nullptr</span>),</span><br><span class="line">                         m_jscConfig(jscConfig) &#123;</span><br><span class="line">    initOnJSVMThread();</span><br><span class="line">    installGlobalProxy(m_context, <span class="string">"nativeModuleProxy"</span>,</span><br><span class="line">                       exceptionWrapMethod&lt;&amp;JSCExecutor::getNativeModule&gt;());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><code>JSCExecutor</code>的构造函数做了一条非常重要的事情：<strong><em>在 JS Context 中设置了一个全局代理<code>nativeModuleProxy</code>，其最终指向<code>JSCExecutor</code>类的<code>getNativeModule</code>方法</em></strong>。<br>至于说<code>nativeModuleProxy</code>为什么非常重要，留个悬念，后文再解，我们先看看<code>installGlobalProxy</code>。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">installGlobalProxy</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">    JSGlobalContextRef ctx,</span></span></span><br><span class="line"><span class="function"><span class="params">    <span class="keyword">const</span> <span class="keyword">char</span>* name,</span></span></span><br><span class="line"><span class="function"><span class="params">    JSObjectGetPropertyCallback callback)</span> </span>&#123;</span><br><span class="line">  JSClassDefinition proxyClassDefintion = kJSClassDefinitionEmpty;</span><br><span class="line">  proxyClassDefintion.attributes |= kJSClassAttributeNoAutomaticPrototype;</span><br><span class="line">  proxyClassDefintion.getProperty = callback;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> <span class="keyword">bool</span> isCustomJSC = isCustomJSCPtr(ctx);</span><br><span class="line">  JSClassRef proxyClass = JSC_JSClassCreate(isCustomJSC, &amp;proxyClassDefintion);</span><br><span class="line">  JSObjectRef proxyObj = JSC_JSObjectMake(ctx, proxyClass, <span class="literal">nullptr</span>);</span><br><span class="line">  JSC_JSClassRelease(isCustomJSC, proxyClass);</span><br><span class="line"></span><br><span class="line">  Object::getGlobalObject(ctx).setProperty(name, Value(ctx, proxyObj));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>结合上面两段代码总结一下：</p>
+<ul>
+<li><code>nativeModuleProxy</code>在JS Context 中是一个具有<code>JSObjectGetPropertyCallback</code>属性的对象(object)；</li>
+<li><code>JSObjectGetPropertyCallback</code>非常神奇，其特点是在 JS 中访问对象属性(object.propertyName)时会触发 callback；</li>
+<li><code>nativeModuleProxy</code>对应的 callback 最终会调用<code>JSCExecutor::getNativeModule</code>。</li>
+</ul>
+<p>在<code>JSCExecutor</code>构造函数中还调用了<code>initOnJSVMThread</code>方法：<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> JSCExecutor::initOnJSVMThread()  &#123;</span><br><span class="line">    installNativeHook&lt;&amp;JSCExecutor::nativeFlushQueueImmediate&gt;(<span class="string">"nativeFlushQueueImmediate"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><code>initOnJSVMThread</code>方法中有个值得关注的点：在 JS Context 中 hook 了<code>JSCExecutor::nativeFlushQueueImmediate</code>。<br>简单讲，hook 后，在 JS 中调用<code>global.nativeFlushQueueImmediate(...)</code>，实际调用 Native 的<code>JSCExecutor::nativeFlushQueueImmediate</code>方法。<br>另外，在构造函数中也将native module 注册信息转换为<code>JSCNativeModules</code>格式存储了下来。</p>
+<h2 id="JsToNativeBridge"><a href="#JsToNativeBridge" class="headerlink" title="JsToNativeBridge"></a>JsToNativeBridge</h2><p>坐标定位到<code>NativeToJsBridge::NativeToJsBridge</code>-&gt;<code>JsToNativeBridge::JsToNativeBridge</code>：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">JsToNativeBridge(<span class="built_in">std</span>::<span class="built_in">shared_ptr</span>&lt;ModuleRegistry&gt; registry,</span><br><span class="line">                 <span class="built_in">std</span>::<span class="built_in">shared_ptr</span>&lt;InstanceCallback&gt; callback)</span><br><span class="line">  : m_registry(registry)</span><br><span class="line">  , m_callback(callback) &#123;&#125;</span><br></pre></td></tr></table></figure></p>
+<p>沿着调用链一路下来，最终 module 注册信息传入<code>JsToNativeBridge</code>，随后 JS to Native 的调用将用到这份信息。<br>至此，RN 初始化过程中与本文讨论的通信机制相关的内容基本结束。总结下来大概有几点：</p>
+<ul>
+<li>收集了所有曝露给 JS 的 module(也可称之为生成了一份 native module 注册表)；</li>
+<li>在 JS Context 中设置了<code>nativeModuleProxy</code>以及<code>nativeFlushQueueImmediate</code>；</li>
+<li>初始化了相关的类，如：<code>NativeToJsBridge</code>、<code>JsToNativeBridge</code>以及<code>JSCExecutor</code>等。</li>
+</ul>
+<p>现在可以说是『万事具备，只欠东风』——由 JS 发起对 Native 的调用了。<br>下面我们沿着调用路径继续往下分析。</p>
+<h2 id="JS-NativeModules"><a href="#JS-NativeModules" class="headerlink" title="JS NativeModules"></a>JS NativeModules</h2><blockquote>
+<p>这小节我们在 JS 中^-^</p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// JS</span></span><br><span class="line"><span class="keyword">import</span> &#123; NativeModules &#125; <span class="keyword">from</span> <span class="string">'react-native'</span>;</span><br><span class="line"><span class="keyword">var</span> CalendarManager = NativeModules.CalendarManager;</span><br><span class="line">CalendarManager.addEvent(<span class="string">'Birthday Party'</span>, <span class="string">'4 Privet Drive, Surrey'</span>);</span><br></pre></td></tr></table></figure>
+<p>回到之前那个例子，其调用的是<code>CalendarManager</code>module 的<code>addEvent:location:</code>方法。<br>展开上面的调用，最终的形式是：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">NativeModules.CalendarManager.addEvent(<span class="string">'Birthday Party'</span>, <span class="string">'4 Privet Drive, Surrey'</span>)</span><br></pre></td></tr></table></figure></p>
+<p><code>NativeModules</code>定义在node_modules-&gt;react-native-&gt;Libraries-&gt;BatchedBridge-&gt;NativeModules.js。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> NativeModules : &#123;[moduleName: string]: <span class="built_in">Object</span>&#125; = &#123;&#125;;</span><br><span class="line"><span class="keyword">if</span> (global.nativeModuleProxy) &#123;</span><br><span class="line">  NativeModules = global.nativeModuleProxy;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><code>nativeModuleProxy</code>正是上文提到的，由 Native 注入 JS 的具有<code>JSObjectGetPropertyCallback</code>属性的 object。<br>因此，JS 中的<code>NativeModules.CalendarManager</code>(取属性值)等价于调用：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">JSCExecutor::getNativeModule(NativeModules, `CalendarManager`)</span><br></pre></td></tr></table></figure></p>
+<p>格式化：<br>JS中<code>NativeModules.moduleName</code> 等价于 Native 的：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">JSCExecutor::getNativeModule(NativeModules, `moduleName`)</span><br></pre></td></tr></table></figure></p>
+<p>也这是为什么说<code>nativeModuleProxy</code>非常重要的原因，所有从 JS to Native 的调用都需要其作为中间代理。<br>此时，又要切入 Native 环境了。</p>
+<h2 id="ModuleRegistry-getConfig"><a href="#ModuleRegistry-getConfig" class="headerlink" title="ModuleRegistry::getConfig"></a>ModuleRegistry::getConfig</h2><p>由于接下来马上要用到 nativemodule 的信息，在此先提前准备好。<br>定位到<code>ModuleRegistry::getConfig</code>，通过上文可知在<code>ModuleRegistry</code>中存储了 nativemodule 的信息，<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">folly::Optional&lt;ModuleConfig&gt; ModuleRegistry::getConfig(<span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">string</span>&amp; name) &#123;</span><br><span class="line">    <span class="keyword">auto</span> it = modulesByName_.find(name);</span><br><span class="line">    NativeModule* <span class="keyword">module</span> = modules_[it-&gt;second].get();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// string name, object constants, array methodNames (methodId is index), [array promiseMethodIds], [array syncMethodIds]</span></span><br><span class="line">    folly::dynamic config = folly::dynamic::<span class="built_in">array</span>(name);</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;MethodDescriptor&gt; methods = <span class="keyword">module</span>-&gt;getMethods();</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span>&amp; descriptor : methods) &#123;</span><br><span class="line">        methodNames.push_back(<span class="built_in">std</span>::move(descriptor.name));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (!methodNames.empty()) &#123;</span><br><span class="line">        config.push_back(<span class="built_in">std</span>::move(methodNames));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> ModuleConfig(&#123;it-&gt;second, config&#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><code>getConfig</code>方法最终将 native module 信息组装成一个数组，其格式：<br>[modulename, module 导出的 constants, [methodNames], [promiseMethodIds], [syncMethodIds]]<br>下面是<code>RCTWebSocketModule</code>导出的信息：<br><img src="/img/NativeModuleConfig.jpg" alt=""></p>
+<p>在这过程中<code>RCTModuleData.methods</code>起到关键作用：<br>ModuleRegistry::getConfig-&gt;RCTNativeModule::getMethods-&gt;RCTModuleData.methods<br><figure class="highlight mm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// RCTModuleData.m</span></span><br><span class="line">- (<span class="built_in">NSArray</span>&lt;<span class="keyword">id</span>&lt;RCTBridgeMethod&gt;&gt; *)methods</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> (!_methods) &#123;</span><br><span class="line">        <span class="built_in">NSMutableArray</span>&lt;<span class="keyword">id</span>&lt;RCTBridgeMethod&gt;&gt; *moduleMethods = [<span class="built_in">NSMutableArray</span> new];</span><br><span class="line">        <span class="keyword">unsigned</span> <span class="keyword">int</span> methodCount;</span><br><span class="line">        Class cls = _moduleClass;</span><br><span class="line">        <span class="keyword">while</span> (cls &amp;&amp; cls != [<span class="built_in">NSObject</span> <span class="keyword">class</span>] &amp;&amp; cls != [<span class="built_in">NSProxy</span> <span class="keyword">class</span>]) &#123;</span><br><span class="line">            Method *methods = class_copyMethodList(object_getClass(cls), &amp;methodCount);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">unsigned</span> <span class="keyword">int</span> i = <span class="number">0</span>; i &lt; methodCount; i++) &#123;</span><br><span class="line">                Method method = methods[i];</span><br><span class="line">                SEL selector = method_getName(method);</span><br><span class="line">                <span class="keyword">if</span> ([<span class="built_in">NSStringFromSelector</span>(selector) hasPrefix:<span class="string">@"__rct_export__"</span>]) &#123;</span><br><span class="line">                    IMP imp = method_getImplementation(method);</span><br><span class="line">                    <span class="built_in">NSArray</span> *entries = ((<span class="built_in">NSArray</span> *(*)(<span class="keyword">id</span>, SEL))imp)(_moduleClass, selector);</span><br><span class="line">                    <span class="keyword">id</span>&lt;RCTBridgeMethod&gt; moduleMethod =</span><br><span class="line">                    [[RCTModuleMethod alloc] initWithMethodSignature:entries[<span class="number">1</span>]</span><br><span class="line">                                                JSMethodName:entries[<span class="number">0</span>]</span><br><span class="line">                                                      isSync:((<span class="built_in">NSNumber</span> *)entries[<span class="number">2</span>]).boolValue</span><br><span class="line">                                                 moduleClass:_moduleClass];</span><br><span class="line"></span><br><span class="line">                    [moduleMethods addObject:moduleMethod];</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> _methods;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><code>__rct_export__</code>是不是很熟悉，<code>RCTModuleData.methods</code>会遍历所有以<code>__rct_export__</code>为前缀的方法并执行以导出曝露给 JS 的接口。</p>
+<h2 id="JSCNativeModules-createModule"><a href="#JSCNativeModules-createModule" class="headerlink" title="JSCNativeModules::createModule"></a>JSCNativeModules::createModule</h2><p>书接前文，JS to Native<br>NativeModules.moduleName(JS)-&gt;JSCExecutor::getNativeModule-&gt;JSCNativeModules::getModule-&gt;JSCNativeModules::createModule<br>沿调用链来到<code>JSCNativeModules::createModule</code>:<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">folly::Optional&lt;Object&gt; JSCNativeModules::createModule(<span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">string</span>&amp; name, JSContextRef context) &#123;</span><br><span class="line">  <span class="keyword">if</span> (!m_genNativeModuleJS) &#123;</span><br><span class="line">    <span class="keyword">auto</span> global = Object::getGlobalObject(context);</span><br><span class="line">    m_genNativeModuleJS = global.getProperty(<span class="string">"__fbGenNativeModule"</span>).asObject();</span><br><span class="line">    m_genNativeModuleJS-&gt;makeProtected();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">auto</span> result = m_moduleRegistry-&gt;getConfig(name);</span><br><span class="line">  Value moduleInfo = m_genNativeModuleJS-&gt;callAsFunction(&#123;</span><br><span class="line">    Value::fromDynamic(context, result-&gt;config),</span><br><span class="line">    Value::makeNumber(context, result-&gt;index)</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  folly::Optional&lt;Object&gt; <span class="keyword">module</span>(moduleInfo.asObject().getProperty(<span class="string">"module"</span>).asObject());</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">module</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p> 在<code>createModule</code>方法中，通过<code>ModuleRegistry::getConfig</code>(第<code>8</code>行)拿到了要调用的 native module 的信息(包括导出的常量、曝露的接口等)。<br>同时获取了 JS Context 中名为<code>__fbGenNativeModule</code>的属性(第<code>4</code>行)，从名称可知其作用是生成 JS 端的 Native Module 信息。<br><code>__fbGenNativeModule</code>定义在<code>NativeModules.js</code>中<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// export this method as a global so we can call it from native</span></span><br><span class="line">global.__fbGenNativeModule = genModule;</span><br></pre></td></tr></table></figure></p>
+<h2 id="NativeModules-genModule"><a href="#NativeModules-genModule" class="headerlink" title="NativeModules.genModule"></a>NativeModules.genModule</h2><p>NativeModules.moduleName(JS)-&gt;JSCExecutor::getNativeModule-&gt;JSCNativeModules::getModule-&gt;JSCNativeModules::createModule-&gt;NativeModules. genModule(JS)<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">genModule</span>(<span class="params">config: ?ModuleConfig, moduleID: number</span>): ?</span>&#123;name: string, <span class="built_in">module</span>?: <span class="built_in">Object</span>&#125; &#123;</span><br><span class="line">    <span class="keyword">const</span> [moduleName, constants, methods, promiseMethods, syncMethods] = config;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> <span class="built_in">module</span> = &#123;&#125;;</span><br><span class="line">    methods &amp;&amp; methods.forEach(<span class="function">(<span class="params">methodName, methodID</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">const</span> methodType = isPromise ? <span class="string">'promise'</span> : isSync ? <span class="string">'sync'</span> : <span class="string">'async'</span>;</span><br><span class="line">        <span class="built_in">module</span>[methodName] = genMethod(moduleID, methodID, methodType);</span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="built_in">Object</span>.assign(<span class="built_in">module</span>, constants);</span><br><span class="line">    <span class="keyword">return</span> &#123; <span class="attr">name</span>: moduleName, <span class="built_in">module</span> &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><code>genModule</code>会遍历传入的<code>methods</code>数组，分别调用<code>genMethod</code>生成 JS 侧的方法：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">genMethod</span>(<span class="params">moduleID: number, methodID: number, type: MethodType</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> fn = <span class="literal">null</span>;</span><br><span class="line">    fn = <span class="function"><span class="keyword">function</span>(<span class="params">...args: Array&lt;any&gt;</span>) </span>&#123;</span><br><span class="line">        args = args.slice(<span class="number">0</span>, args.length - callbackCount);</span><br><span class="line">        BatchedBridge.enqueueNativeCall(moduleID, methodID, args, onFail, onSuccess);</span><br><span class="line">    &#125;;</span><br><span class="line">    fn.type = type;</span><br><span class="line">    <span class="keyword">return</span> fn;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><code>genMethod</code>生成的函数非常简单，只是将对 native 的调用信息入队。<br>至此，由<code>NativeModules.moduleName</code>发起的调用链终于结束，最终返回结果：以 <code>methodName</code> 为 key，<code>genMethod</code> 生成的 function 为 value 的 JS object。即<code>NativeModules.moduleName</code>等价于<code>{methodName: fn}</code>。</p>
+<blockquote>
+<p>JS 中的 moduleID、methodID 对应 native moudle注册表中的数组下标。</p>
+</blockquote>
+<p>当然，事情并没有结束，继续扩展<code>NativeModules.moduleName.methodName(args)</code>。<br>通过上述分析，可知：<br><code>NativeModules.moduleName.methodName(args)</code>等价于：<br><code>BatchedBridge.enqueueNativeCall(moduleID, methodID, args, onFail, onSuccess)</code></p>
+<h2 id="MessageQueue-enqueueNativeCall"><a href="#MessageQueue-enqueueNativeCall" class="headerlink" title="MessageQueue.enqueueNativeCall"></a>MessageQueue.enqueueNativeCall</h2><p><code>NativeModules.moduleName.methodName</code>-&gt;<code>BatchedBridge.enqueueNativeCall</code><br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> MessageQueue = <span class="built_in">require</span>(<span class="string">'MessageQueue'</span>);</span><br><span class="line"><span class="keyword">const</span> BatchedBridge = <span class="keyword">new</span> MessageQueue();</span><br></pre></td></tr></table></figure></p>
+<p>可以看到<code>BatchedBridge</code>就是<code>MessageQueue</code><br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">  enqueueNativeCall(moduleID: number, <span class="attr">methodID</span>: number, <span class="attr">params</span>: <span class="built_in">Array</span>&lt;any&gt;, <span class="attr">onFail</span>: ?<span class="built_in">Function</span>, <span class="attr">onSucc</span>: ?<span class="built_in">Function</span>) &#123;</span><br><span class="line">    <span class="keyword">this</span>._queue[MODULE_IDS].push(moduleID);</span><br><span class="line">    <span class="keyword">this</span>._queue[METHOD_IDS].push(methodID);</span><br><span class="line">    <span class="keyword">this</span>._queue[PARAMS].push(params);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">const</span> now = <span class="keyword">new</span> <span class="built_in">Date</span>().getTime();</span><br><span class="line">    <span class="keyword">if</span> (global.nativeFlushQueueImmediate &amp;&amp;</span><br><span class="line">        (now - <span class="keyword">this</span>._lastFlush &gt;= MIN_TIME_BETWEEN_FLUSHES_MS ||</span><br><span class="line">         <span class="keyword">this</span>._inCall === <span class="number">0</span>)) &#123;</span><br><span class="line">        <span class="keyword">var</span> queue = <span class="keyword">this</span>._queue;</span><br><span class="line">        <span class="keyword">this</span>._queue = [[], [], [], <span class="keyword">this</span>._callID];</span><br><span class="line">        <span class="keyword">this</span>._lastFlush = now;</span><br><span class="line">        global.nativeFlushQueueImmediate(queue);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>在<code>enqueueNativeCall</code>方法中将调用信息(moduleID、methodID、params等入队)，若离上一次 flush queue 的时间超过5ms(<code>MIN_TIME_BETWEEN_FLUSHES_MS</code>)则立即 flush queue(出于性能考虑)。<br>对<code>nativeFlushQueueImmediate</code>是否还有影像？(在<code>JSCExecutor</code>构造函数中讲过了^_^)<br><code>global.nativeFlushQueueImmediate(queue)</code>等价于<code>JSCExecutor::nativeFlushQueueImmediate(queue)</code></p>
+<h2 id="JsToNativeBridge-callNativeModules"><a href="#JsToNativeBridge-callNativeModules" class="headerlink" title="JsToNativeBridge::callNativeModules"></a>JsToNativeBridge::callNativeModules</h2><p><code>JSCExecutor::nativeFlushQueueImmediate</code>-&gt;<code>JSCExecutor::flushQueueImmediate</code>-&gt;<code>JsToNativeBridge::callNativeModules</code><br>沿着调用链，定位到<code>JsToNativeBridge::callNativeModules</code>。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">callNativeModules</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">    JSExecutor&amp; executor, folly::dynamic&amp;&amp; calls, <span class="keyword">bool</span> isEndOfBatch)</span> override </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">auto</span>&amp; call : parseMethodCalls(<span class="built_in">std</span>::move(calls))) &#123;</span><br><span class="line">        m_registry-&gt;callNativeMethod(call.moduleId, call.methodId, <span class="built_in">std</span>::move(call.arguments), call.callId);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">`callNativeModules`会逐个解析从 JS 传过来的 call <span class="built_in">queue</span> 中的每个调用。</span><br><span class="line">```cpp</span><br><span class="line"><span class="keyword">void</span> ModuleRegistry::callNativeMethod(<span class="keyword">unsigned</span> <span class="keyword">int</span> moduleId, <span class="keyword">unsigned</span> <span class="keyword">int</span> methodId, folly::dynamic&amp;&amp; params, <span class="keyword">int</span> callId) &#123;</span><br><span class="line">    modules_[moduleId]-&gt;invoke(methodId, <span class="built_in">std</span>::move(params), callId);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>沿着调用链后面还有一些细节问题，由于篇幅关系，不再展开，主要如下：<br><img src="/img/RCTNativeModuleinvoke.jpg" alt=""><br><img src="/img/RCTModuleMethodinvokeWithBridge.jpg" alt=""><br>最终在<code>RCTModuleMethod.invokeWithBridge</code>中执行了调用<code>[_invocation invokeWithTarget:module];</code><br>至此，从 JS to Native 的调用结束！</p>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>JS to Native 的调用时序图：<br><img src="/img/JSToNativeCallTimingDiagram.png" alt=""><br>整个过程大概分为两个阶段：</p>
+<ul>
+<li>NativeModules.moduleName — 该过程主要是获取 native module 的信息(moduleID、methodID)，最终封装为 JS object ({methodName: fn})；</li>
+<li>NativeModules.moduleName.methodName(params) — 执行调用。</li>
+</ul>
+<p>今天就到这了，下篇我们将分析 Native to JS。</p>
+
+
+    </div>
+
+
+
+
+
+
+
+
+
+
+    <footer class="post-footer">
+
+        <div class="post-tags">
+
+            <a href="/tags/iOS/" rel="tag"># iOS</a>
+
+            <a href="/tags/框架/" rel="tag"># 框架</a>
+
+            <a href="/tags/ReactNative/" rel="tag"># ReactNative</a>
+
+        </div>
+
+
+
+
+
+
+
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+
+              <a href="/2017/05/07/Multithreading-Traps/" rel="next" title="Multithreading Traps">
+                <i class="fa fa-chevron-left"></i> Multithreading Traps
+              </a>
+
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+
+              <a href="/2017/10/12/ReactNativeCommunicationMechanism2/" rel="prev" title="ReactNative源码解析——通信机制详解(2/2)">
+                ReactNative源码解析——通信机制详解(2/2) <i class="fa fa-chevron-right"></i>
+              </a>
+
+          </div>
+        </div>
+
+
+
+
+    </footer>
+  </div>
+
+
+
+  </article>
+
+
+
+    <div class="post-spread">
+
+    </div>
+  </div>
+
+
+          </div>
+
+
+
+
+  <div class="comments" id="comments">
+
+      <div id="gitalk-container"></div>
+
+  </div>
+
+
+        </div>
+
+
+
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+
+    <div class="sidebar-inner">
+
+
+
+
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image" src="/img/author.jpg" alt="赵雪峰">
+          <p class="site-author-name" itemprop="name">赵雪峰</p>
+
+              <p class="site-description motion-element" itemprop="description">记录技术点滴</p>
+
+        </div>
+        <nav class="site-state motion-element">
+
+
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">41</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+
+
+
+
+
+
+
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+
+
+        </nav>
+
+
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+
+
+        <div class="links-of-author motion-element">
+
+
+              <span class="links-of-author-item">
+                <a href="https://github.com/zxfcumtcs" target="_blank" title="GitHub">
+
+                    <i class="fa fa-fw fa-github"></i>
+
+
+                      GitHub
+
+                </a>
+              </span>
+
+              <span class="links-of-author-item">
+                <a href="zxfcumtcs@gmail.com" target="_blank" title="E-Mail">
+
+                    <i class="fa fa-fw fa-envelope"></i>
+
+
+                      E-Mail
+
+                </a>
+              </span>
+
+
+        </div>
+
+
+
+
+
+
+
+
+
+
+      </section>
+
+
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+
+
+
+
+
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Overview"><span class="nav-number">1.</span> <span class="nav-text">Overview</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#准备工作"><span class="nav-number">2.</span> <span class="nav-text">准备工作</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#JavaScript—-gt-Native"><span class="nav-number">3.</span> <span class="nav-text">JavaScript—&gt;Native</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#RCT-EXPORT-MODULE"><span class="nav-number">3.1.</span> <span class="nav-text">RCT_EXPORT_MODULE</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RCT-EXPORT-METHOD"><span class="nav-number">3.2.</span> <span class="nav-text">RCT_EXPORT_METHOD</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#注册NativeModule"><span class="nav-number">3.3.</span> <span class="nav-text">注册NativeModule</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Instance"><span class="nav-number">3.4.</span> <span class="nav-text">Instance</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#NativeToJsBridge"><span class="nav-number">3.5.</span> <span class="nav-text">NativeToJsBridge</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JSCExecutor"><span class="nav-number">3.6.</span> <span class="nav-text">JSCExecutor</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JsToNativeBridge"><span class="nav-number">3.7.</span> <span class="nav-text">JsToNativeBridge</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JS-NativeModules"><span class="nav-number">3.8.</span> <span class="nav-text">JS NativeModules</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ModuleRegistry-getConfig"><span class="nav-number">3.9.</span> <span class="nav-text">ModuleRegistry::getConfig</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JSCNativeModules-createModule"><span class="nav-number">3.10.</span> <span class="nav-text">JSCNativeModules::createModule</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#NativeModules-genModule"><span class="nav-number">3.11.</span> <span class="nav-text">NativeModules.genModule</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MessageQueue-enqueueNativeCall"><span class="nav-number">3.12.</span> <span class="nav-text">MessageQueue.enqueueNativeCall</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JsToNativeBridge-callNativeModules"><span class="nav-number">3.13.</span> <span class="nav-text">JsToNativeBridge::callNativeModules</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#小结"><span class="nav-number">3.14.</span> <span class="nav-text">小结</span></a></li></ol></li></ol></div>
+
+
+          </div>
+        </section>
+      <!--/noindex-->
+
+
+
+
+    </div>
+  </aside>
+
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">
+
+  &copy;
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">赵雪峰</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+
+
+
+      </div>
+    </footer>
+
+
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+
+      </div>
+
+
+  </div>
+
+
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+
+
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.2"></script>
+
+
+
+
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+  <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+   <script type="text/javascript">
+        var gitalk = new Gitalk({
+          clientID: 'aec121637fcf733c4299',
+          clientSecret: '551b5a3eb4e49773816880f1a6c4ffd8c8893464',
+          repo: 'zxfcumtcs.github.io',
+          owner: 'zxfcumtcs',
+          admin: ['zxfcumtcs'],
+          id: location.pathname,
+          distractionFreeMode: 'true'
+        })
+        gitalk.render('gitalk-container')
+       </script>
+
+
+
+
+
+
+
+
+
+
+
+
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("bdhTYmQjzWTTLjKn66BIYj5E-gzGzoHsz", "6Lc7jOOONeLP6mUTb7x5NzVf");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
       }
-      a, button, input {
-        margin: 1rem 1.5rem;
-      }
-      img {
-        width: 0;
-        height: 0;
-      }
-      #juejin {
-        overflow-x: hidden;
-      }</style><meta data-vue-meta="true" data-vmid="keywords" name="keywords" content="iOS,C++,稀土,ReactiveCocoa"/><meta data-vue-meta="true" data-vmid="description" name="description" content="面试题 block的原理是怎样的？本质是什么？ __block的作用是什么？有什么使用注意点？ block的属性修饰词为什么是copy？使用block有哪些使用注意？ block在修改NSMutableArray，需不需要添加__block？ 首先对blo"/><title data-vue-meta="true">iOS底层原理总结 - 探寻block的本质（一） - 掘金</title><link rel=apple-touch-icon sizes=180x180 href=https://b-gold-cdn.xitu.io/favicons/v2/apple-touch-icon.png><link rel=icon type=image/png sizes=32x32 href=https://b-gold-cdn.xitu.io/favicons/v2/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=https://b-gold-cdn.xitu.io/favicons/v2/favicon-16x16.png><link rel=manifest href=https://b-gold-cdn.xitu.io/favicons/v2/manifest.json><link rel=mask-icon href=https://b-gold-cdn.xitu.io/favicons/v2/safari-pinned-tab.svg color=#5bbad5><link rel="shortcut icon" href=https://b-gold-cdn.xitu.io/favicons/v2/favicon.ico><meta name=msapplication-config content=https://b-gold-cdn.xitu.io/favicons/v2/browserconfig.xml><meta name=theme-color content=#ffffff><link rel=search title=掘金 href=https://b-gold-cdn.xitu.io/conf/search.xml type=application/opensearchdescription+xml><link rel=stylesheet href=https://b-gold-cdn.xitu.io/ionicons/2.0.1/css/ionicons.min.css><link rel=stylesheet href=https://b-gold-cdn.xitu.io/asset/fw-icon/1.0.9/iconfont.css><link href=https://b-gold-cdn.xitu.io/v3/static/css/0.f740cb24e3cf54c34f12.css rel=stylesheet></head><body><div id="juejin" data-server-rendered="true" data-v-451ed118><div class="global-component-box" data-v-451ed118><!----><!----><!----><!----><!----><div class="emoji-barrage" data-v-16f36faa data-v-451ed118><!----></div><div class="book-new-user-award-popup" style="display:none;" data-v-d67aa8f4 data-v-451ed118><div class="content-box" style="display:;" data-v-d67aa8f4><div class="close ion-close-round" data-v-d67aa8f4></div><div class="header" data-v-d67aa8f4><div class="icon" data-v-d67aa8f4><img src="https://b-gold-cdn.xitu.io/v3/static/img/icon.a87e5ae.svg" data-v-d67aa8f4></div><div class="txt" data-v-d67aa8f4>新人专享好礼</div></div><div class="desc" data-v-d67aa8f4>凡未购买过小册的用户，均可领取三张 5 折新人专享券，购买小册时自动使用专享券，最高可节省 45 元。</div><div class="tickets" data-v-d67aa8f4><div class="ticket" data-v-d67aa8f4><div class="ticket__inner" data-v-d67aa8f4><div class="enjoy" data-v-d67aa8f4><span class="new-title" data-v-d67aa8f4>小册新人 5 折券</span></div><div class="sale" data-v-d67aa8f4>最高可省 15 元</div></div></div><div class="ticket" data-v-d67aa8f4><div class="ticket__inner" data-v-d67aa8f4><div class="enjoy" data-v-d67aa8f4><span class="new-title" data-v-d67aa8f4>小册新人 5 折券</span></div><div class="sale" data-v-d67aa8f4>最高可省 15 元</div></div></div><div class="ticket" data-v-d67aa8f4><div class="ticket__inner" data-v-d67aa8f4><div class="enjoy" data-v-d67aa8f4><span class="new-title" data-v-d67aa8f4>小册新人 5 折券</span></div><div class="sale" data-v-d67aa8f4>最高可省 15 元</div></div></div></div><div class="remark" data-v-d67aa8f4>注：专享券的使用期限在领券的七天内。</div><div class="submit-btn" data-v-d67aa8f4>一键领取</div></div><div class="model success" style="display:none;" data-v-d67aa8f4><div class="heading" data-v-d67aa8f4>领取成功</div><div class="content-text" data-v-d67aa8f4>购买小册时自动使用专享券</div><div class="btn-success-footer" data-v-d67aa8f4><div class="btn-ok" data-v-d67aa8f4>知道了</div><div class="btn-ok btn-link" data-v-d67aa8f4>前往小册首页</div></div></div><div class="model fail" style="display:none;" data-v-d67aa8f4><div class="heading" data-v-d67aa8f4>领取失败</div><div class="content-text" data-v-d67aa8f4>本活动仅适用于小册新用户</div><div class="btn-ok" data-v-d67aa8f4>知道了</div></div></div><!----></div><!----><div class="view-container" data-v-69e9ff1f data-v-6e64932e data-v-451ed118><div class="main-header-box" data-v-69e9ff1f><header class="main-header main-header unauthorized visible" data-v-960e9a72 data-v-69e9ff1f><div class="container" data-v-960e9a72><a href="/" class="logo" data-v-960e9a72><img src="https://b-gold-cdn.xitu.io/v3/static/img/logo.a7995ad.svg" alt="掘金" class="logo-img" data-v-960e9a72></a><nav role="navigation" class="main-nav" data-v-960e9a72><ul class="nav-list" data-v-960e9a72><li class="main-nav-list" data-v-960e9a72><div class="phone-show-menu" data-v-960e9a72><span data-v-960e9a72>首页</span><div class="icon ion-arrow-down-b" data-v-960e9a72></div></div><ul class="phone-hide" data-v-960e9a72><li class="nav-item link-item route-active" data-v-960e9a72><a href="/" data-v-960e9a72>首页</a></li><li class="nav-item link-item activities" data-v-960e9a72><a href="/activities" data-v-960e9a72>动态</a></li><li class="nav-item link-item" data-v-960e9a72><a href="/topics" data-v-960e9a72>话题</a></li><li class="nav-item link-item book" data-v-960e9a72><a href="/books" data-v-960e9a72>小册</a></li><li class="nav-item link-item" data-v-960e9a72><a href="/events/all" data-v-960e9a72>活动</a></li><li class="nav-item link-item juejin-2018" data-v-960e9a72><a title="2018掘金年度回顾" target="_blank" href="https://2018.juejin.im/" data-v-960e9a72><img src="https://b-gold-cdn.xitu.io/v3/static/img/juejin-2018.7b9d1ea.png" alt="2018掘金年度回顾" class="juejin-2018-icon" data-v-960e9a72></a></li></ul></li><li class="nav-item search" data-v-960e9a72><form role="search" class="search-form" data-v-960e9a72><input maxlength="32" placeholder="搜索掘金" value="" class="search-input" data-v-960e9a72><img src="https://b-gold-cdn.xitu.io/v3/static/img/juejin-search-icon.6f8ba1b.svg" alt="搜索" class="search-icon" data-v-960e9a72></form></li><!----><!----><!----><li class="nav-item submit" data-v-960e9a72><img src="https://b-gold-cdn.xitu.io/v3/static/img/submit-icon.53f4253.svg" class="icon" data-v-960e9a72><span data-v-960e9a72>写文章</span><!----></li><li class="nav-item auth" data-v-960e9a72><span class="login" data-v-960e9a72>登录</span><span class="register" data-v-960e9a72>注册</span></li></ul></nav></div></header></div><main class="container main-container" style="max-width:;" data-v-69e9ff1f><div class="view column-view" data-v-69e9ff1f data-v-6e64932e><div class="main-area article-area shadow" data-v-69e9ff1f data-v-6e64932e><article itemscope="itemscope" itemtype="http://schema.org/Article" class="article" data-v-6e64932e><meta itemprop="url" content="https://juejin.im/post/5b0181e15188254270643e88"><meta itemprop="headline" content="iOS底层原理总结 - 探寻block的本质（一）"><meta itemprop="keywords" content="iOS,C++,稀土,ReactiveCocoa"><meta itemprop="datePublished" content="2018-05-20T14:14:31.571Z"><meta itemprop="image" content="https://b-gold-cdn.xitu.io/icon/icon-128.png"><div itemprop="author" itemscope="itemscope" itemtype="http://schema.org/Person"><meta itemprop="name" content="xx_cc"><meta itemprop="url" content="https://juejin.im/user/5795c0a48ac247005f2fb14a"></div><div itemprop="publisher" itemscope="itemscope" itemtype="http://schema.org/Organization"><meta itemprop="name" content="掘金"><div itemprop="logo" itemscope="itemscope" itemtype="https://schema.org/ImageObject"><meta itemprop="url" content="https://b-gold-cdn.xitu.io/icon/icon-white-180.png"><meta itemprop="width" content="180"><meta itemprop="height" content="180"></div></div><div class="author-info-block" data-v-6e64932e><a href="/post/5b0181e15188254270643e88" target="_blank" rel="" class="avatar-link" data-v-6e64932e><div data-src="https://b-gold-cdn.xitu.io/v3/static/img/default-avatar.e30559a.svg" class="lazy avatar avatar" style="background-image:none;" data-v-193aeca6 data-v-36ba04ba data-v-6e64932e></div></a><div class="author-info-box" data-v-6e64932e><a href="/post/5b0181e15188254270643e88" target="_blank" rel="" class="username ellipsis" data-v-6e64932e></a><div class="meta-box" data-v-6e64932e><time datetime="2018-05-20T14:14:31.571Z" title="Sun May 20 2018 22:14:31 GMT+0800 (CST)" class="time" data-v-6e64932e>2018年05月20日</time><span class="views-count" data-v-6e64932e>阅读 3462</span><!----></div></div></div><!----><h1 class="article-title" data-v-6e64932e>iOS底层原理总结 - 探寻block的本质（一）</h1><div data-id="5b0182c76fb9a07acd4e0236" itemprop="articleBody" class="article-content" data-v-6e64932e><h2 class="heading" data-id="heading-0">面试题</h2>
-<ol>
-<li>block的原理是怎样的？本质是什么？</li>
-<li>__block的作用是什么？有什么使用注意点？</li>
-<li>block的属性修饰词为什么是copy？使用block有哪些使用注意？</li>
-<li>block在修改NSMutableArray，需不需要添加__block？</li>
-</ol>
-<p>首先对block有一个基本的认识</p>
-<p><strong>block本质上也是一个oc对象，他内部也有一个isa指针。block是封装了函数调用以及函数调用环境的OC对象。</strong></p>
-<h2 class="heading" data-id="heading-1">探寻block的本质</h2>
-<p>首先写一个简单的block</p>
-<pre><code class="hljs bash copyable" lang="bash">int main(int argc, const char * argv[]) {
-    @autoreleasepool {
-        int age = 10;
-        void(^block)(int ,int) = ^(int a, int b){
-            NSLog(@<span class="hljs-string">"this is block,a = %d,b = %d"</span>,a,b);
-            NSLog(@<span class="hljs-string">"this is block,age = %d"</span>,age);
-        };
-        block(3,5);
-    }
-    <span class="hljs-built_in">return</span> 0;
-}
-<span class="copy-code-btn">复制代码</span></code></pre><p>使用命令行将代码转化为c++查看其内部结构，与OC代码进行比较</p>
-<p><strong><code>xcrun -sdk iphoneos clang -arch arm64 -rewrite-objc main.m</code></strong></p>
-<p></p><figure><img alt="c++与oc代码对比" class="lazyload" data-src="https://user-gold-cdn.xitu.io/2018/5/20/1637de3405ecbbfe?imageView2/0/w/1280/h/960/ignore-error/1" data-width="1212" data-height="399"><figcaption></figcaption></figure><p></p>
-<p>上图中将c++中block的声明和定义分别与oc代码中相对应显示。将c++中block的声明和调用分别取出来查看其内部实现。</p>
-<h3 class="heading" data-id="heading-2">定义block变量</h3>
-<pre><code class="hljs bash copyable" lang="bash">// 定义block变量代码
-void(*block)(int ,int) = ((void (*)(int, int))&amp;__main_block_impl_0((void *)__main_block_func_0, &amp;__main_block_desc_0_DATA, age));
-<span class="copy-code-btn">复制代码</span></code></pre><p>上述定义代码中，可以发现，block定义中调用了__main_block_impl_0函数，并且将__main_block_impl_0函数的地址赋值给了block。那么我们来看一下__main_block_impl_0函数内部结构。</p>
-<h4 class="heading" data-id="heading-3">__main_block_imp_0结构体</h4>
-<p></p><figure><img alt="__main_block_imp_0结构体" class="lazyload" data-src="https://user-gold-cdn.xitu.io/2018/5/20/1637de3407608792?imageView2/0/w/1280/h/960/ignore-error/1" data-width="770" data-height="274"><figcaption></figcaption></figure><p></p>
-<p>__main_block_imp_0结构体内有一个同名构造函数__main_block_imp_0，构造函数中对一些变量进行了赋值最终会返回一个结构体。</p>
-<p>那么也就是说最终将一个__main_block_imp_0结构体的地址赋值给了block变量</p>
-<p>__main_block_impl_0结构体内可以发现__main_block_impl_0构造函数中传入了四个参数。(void *)__main_block_func_0、&amp;__main_block_desc_0_DATA、age、flags。其中flage有默认值，也就说flage参数在调用的时候可以省略不传。而最后的 age(_age)则表示传入的_age参数会自动赋值给age成员，相当于age = _age。</p>
-<p>接下来着重看一下前面三个参数分别代表什么。</p>
-<h4 class="heading" data-id="heading-4">(void *)__main_block_func_0</h4>
-<p></p><figure><img alt="__main_block_func_0" class="lazyload" data-src="https://user-gold-cdn.xitu.io/2018/5/20/1637de34087515d4?imageView2/0/w/1280/h/960/ignore-error/1" data-width="1145" data-height="236"><figcaption></figcaption></figure><p></p>
-<p>在__main_block_func_0函数中首先取出block中age的值，紧接着可以看到两个熟悉的NSLog，可以发现这两段代码恰恰是我们在block块中写下的代码。
-那么__main_block_func_0函数中其实存储着我们block中写下的代码。而__main_block_impl_0函数中传入的是(void *)__main_block_func_0，也就说将我们写在block块中的代码封装成__main_block_func_0函数，并将__main_block_func_0函数的地址传入了__main_block_impl_0的构造函数中保存在结构体内。</p>
-<h4 class="heading" data-id="heading-5">&amp;__main_block_desc_0_DATA</h4>
-<p></p><figure><img alt="&amp;__main_block_desc_0_DATA" class="lazyload" data-src="https://user-gold-cdn.xitu.io/2018/5/20/1637de34848052e3?imageView2/0/w/1280/h/960/ignore-error/1" data-width="998" data-height="132"><figcaption></figcaption></figure><p></p>
-<p>我们可以看到__main_block_desc_0中存储着两个参数，reserved和Block_size，并且reserved赋值为0而Block_size则存储着__main_block_impl_0的占用空间大小。最终将__main_block_desc_0结构体的地址传入__main_block_func_0中赋值给Desc。</p>
-<h4 class="heading" data-id="heading-6">age</h4>
-<p>age也就是我们定义的局部变量。因为在block块中使用到age局部变量，所以在block声明的时候这里才会将age作为参数传入，也就说block会捕获age，如果没有在block中使用age，这里将只会传入(void *)__main_block_func_0，&amp;__main_block_desc_0_DATA两个参数。</p>
-<p>这里可以根据源码思考一下为什么当我们在定义block之后修改局部变量age的值，在block调用的时候无法生效。</p>
-<pre><code class="hljs bash copyable" lang="bash">int age = 10;
-void(^block)(int ,int) = ^(int a, int b){
-     NSLog(@<span class="hljs-string">"this is block,a = %d,b = %d"</span>,a,b);
-     NSLog(@<span class="hljs-string">"this is block,age = %d"</span>,age);
-};
-     age = 20;
-     block(3,5);
-     // <span class="hljs-built_in">log</span>: this is block,a = 3,b = 5
-     //      this is block,age = 10
-<span class="copy-code-btn">复制代码</span></code></pre><p>因为block在定义的之后已经将age的值传入存储在__main_block_imp_0结构体中并在调用的时候将age从block中取出来使用，因此在block定义之后对局部变量进行改变是无法被block捕获的。</p>
-<h4 class="heading" data-id="heading-7">此时回过头来查看__main_block_impl_0结构体</h4>
-<p></p><figure><img alt="__main_block_impl_0结构体" class="lazyload" data-src="https://user-gold-cdn.xitu.io/2018/5/20/1637de34141a51d2?imageView2/0/w/1280/h/960/ignore-error/1" data-width="1109" data-height="280"><figcaption></figcaption></figure><p></p>
-<p>首先我们看一下__block_impl第一个变量就是__block_impl结构体。
-来到__block_impl结构体内部</p>
-<p></p><figure><img alt="__block_impl结构体内部" class="lazyload" data-src="https://user-gold-cdn.xitu.io/2018/5/20/1637de3488f55721?imageView2/0/w/1280/h/960/ignore-error/1" data-width="689" data-height="136"><figcaption></figcaption></figure><p></p>
-<p>我们可以发现__block_impl结构体内部就有一个isa指针。因此可以证明block本质上就是一个oc对象。而在构造函数中将函数中传入的值分别存储在__main_block_impl_0结构体实例中，最终将结构体的地址赋值给block。</p>
-<p>接着通过上面对__main_block_impl_0结构体构造函数三个参数的分析我们可以得出结论：</p>
-<p><strong>1. __block_impl结构体中isa指针存储着&amp;_NSConcreteStackBlock地址，可以暂时理解为其类对象地址，block就是_NSConcreteStackBlock类型的。</strong></p>
-<p><strong>2. block代码块中的代码被封装成__main_block_func_0函数，FuncPtr则存储着__main_block_func_0函数的地址。</strong></p>
-<p><strong>3. Desc指向__main_block_desc_0结构体对象，其中存储__main_block_impl_0结构体所占用的内存。</strong></p>
-<h3 class="heading" data-id="heading-8">调用block执行内部代码</h3>
-<pre><code class="hljs bash copyable" lang="bash">// 执行block内部的代码
-((void (*)(__block_impl *, int, int))((__block_impl *)block)-&gt;FuncPtr)((__block_impl *)block, 3, 5);
-<span class="copy-code-btn">复制代码</span></code></pre><p>通过上述代码可以发现调用block是通过block找到FunPtr直接调用，通过上面分析我们知道block指向的是__main_block_impl_0类型结构体，但是我们发现__main_block_impl_0结构体中并不直接就可以找到FunPtr，而FunPtr是存储在__block_impl中的，为什么block可以直接调用__block_impl中的FunPtr呢？</p>
-<p>重新查看上述源代码可以发现，(__block_impl *)block将block强制转化为__block_impl类型的，因为__block_impl是__main_block_impl_0结构体的第一个成员，相当于将__block_impl结构体的成员直接拿出来放在__main_block_impl_0中，那么也就说明__block_impl的内存地址就是__main_block_impl_0结构体的内存地址开头。所以可以转化成功。并找到FunPtr成员。</p>
-<p>上面我们知道，FunPtr中存储着通过代码块封装的函数地址，那么调用此函数，也就是会执行代码块中的代码。并且回头查看__main_block_func_0函数，可以发现第一个参数就是__main_block_impl_0类型的指针。也就是说将block传入__main_block_func_0函数中，便于重中取出block捕获的值。</p>
-<h3 class="heading" data-id="heading-9">如何验证block的本质确实是__main_block_impl_0结构体类型。</h3>
-<p>通过代码证明一下上述内容：
-同样使用之前的方法，我们按照上面分析的block内部结构自定义结构体，并将block内部的结构体强制转化为自定义的结构体，转化成功说明底层结构体确实如我们之前分析的一样。</p>
-<pre><code class="hljs bash copyable" lang="bash">struct __main_block_desc_0 {
-    size_t reserved;
-    size_t Block_size;
-};
-struct __block_impl {
-    void *isa;
-    int Flags;
-    int Reserved;
-    void *FuncPtr;
-};
-// 模仿系统__main_block_impl_0结构体
-struct __main_block_impl_0 {
-    struct __block_impl impl;
-    struct __main_block_desc_0* Desc;
-    int age;
-};
-int main(int argc, const char * argv[]) {
-    @autoreleasepool {
-        int age = 10;
-        void(^block)(int ,int) = ^(int a, int b){
-            NSLog(@<span class="hljs-string">"this is block,a = %d,b = %d"</span>,a,b);
-            NSLog(@<span class="hljs-string">"this is block,age = %d"</span>,age);
-        };
-// 将底层的结构体强制转化为我们自己写的结构体，通过我们自定义的结构体探寻block底层结构体
-        struct __main_block_impl_0 *blockStruct = (__bridge struct __main_block_impl_0 *)block;
-        block(3,5);
-    }
-    <span class="hljs-built_in">return</span> 0;
-}
-<span class="copy-code-btn">复制代码</span></code></pre><p>通过打断点可以看出我们自定义的结构体可以被赋值成功，以及里面的值。</p>
-<p></p><figure><img alt="blockStruct" class="lazyload" data-src="https://user-gold-cdn.xitu.io/2018/5/20/1637de34149c677b?imageView2/0/w/1280/h/960/ignore-error/1" data-width="869" data-height="519"><figcaption></figcaption></figure><p></p>
-<p>接下来断点来到block代码块中，看一下堆栈信息中的函数调用地址。Debuf workflow -&gt; always show Disassembly</p>
-<p></p><figure><img alt="Debuf workflow -> always show Disassembly" class="lazyload" data-src="https://user-gold-cdn.xitu.io/2018/5/20/1637de341209b33b?imageView2/0/w/1280/h/960/ignore-error/1" data-width="865" data-height="595"><figcaption></figcaption></figure><p></p>
-<p>通过上图可以看到地址确实和FuncPtr中的代码块地址一样。</p>
-<h2 class="heading" data-id="heading-10">总结</h2>
-<p>此时已经基本对block的底层结构有了基本的认识，上述代码可以通过一张图展示其中各个结构体之间的关系。</p>
-<p></p><figure><img alt="图示block结构体内部之间的关系" class="lazyload" data-src="https://user-gold-cdn.xitu.io/2018/5/20/1637de343b05ffaa?imageView2/0/w/1280/h/960/ignore-error/1" data-width="989" data-height="582"><figcaption></figcaption></figure><p></p>
-<p>block底层的数据结构也可以通过一张图来展示</p>
-<p></p><figure><img alt="block底层的数据结构" class="lazyload" data-src="https://user-gold-cdn.xitu.io/2018/5/20/1637de34fb2db0ee?imageView2/0/w/1280/h/960/ignore-error/1" data-width="430" data-height="431"><figcaption></figcaption></figure><p></p>
-<h2 class="heading" data-id="heading-11">block的变量捕获</h2>
-<p>为了保证block内部能够正常访问外部的变量，block有一个变量捕获机制。</p>
-<h3 class="heading" data-id="heading-12">局部变量</h3>
-<h4 class="heading" data-id="heading-13">auto变量</h4>
-<p>上述代码中我们已经了解过block对age变量的捕获。
-auto自动变量，离开作用域就销毁，通常局部变量前面自动添加auto关键字。自动变量会捕获到block内部，也就是说block内部会专门新增加一个参数来存储变量的值。
-auto只存在于局部变量中，访问方式为值传递，通过上述对age参数的解释我们也可以确定确实是值传递。</p>
-<h4 class="heading" data-id="heading-14">static变量</h4>
-<p>static 修饰的变量为指针传递，同样会被block捕获。</p>
-<p>接下来分别添加aotu修饰的局部变量和static修饰的局部变量，重看源码来看一下他们之间的差别。</p>
-<pre><code class="hljs bash copyable" lang="bash">int main(int argc, const char * argv[]) {
-    @autoreleasepool {
-        auto int a = 10;
-        static int b = 11;
-        void(^block)(void) = ^{
-            NSLog(@<span class="hljs-string">"hello, a = %d, b = %d"</span>, a,b);
-        };
-        a = 1;
-        b = 2;
-        block();
-    }
-    <span class="hljs-built_in">return</span> 0;
-}
-// <span class="hljs-built_in">log</span> : block本质[57465:18555229] hello, a = 10, b = 2
-// block中a的值没有被改变而b的值随外部变化而变化。
-<span class="copy-code-btn">复制代码</span></code></pre><p>重新生成c++代码看一下内部结构中两个参数的区别。</p>
-<p></p><figure><img alt="局部变量c++代码" class="lazyload" data-src="https://user-gold-cdn.xitu.io/2018/5/20/1637de344ce8c667?imageView2/0/w/1280/h/960/ignore-error/1" data-width="1240" data-height="694"><figcaption></figcaption></figure><p></p>
-<p>从上述源码中可以看出，a,b两个变量都有捕获到block内部。但是a传入的是值，而b传入的则是地址。</p>
-<p>为什么两种变量会有这种差异呢，因为自动变量可能会销毁，block在执行的时候有可能自动变量已经被销毁了，那么此时如果再去访问被销毁的地址肯定会发生坏内存访问，因此对于自动变量一定是值传递而不可能是指针传递了。而静态变量不会被销毁，所以完全可以传递地址。而因为传递的是值得地址，所以在block调用之前修改地址中保存的值，block中的地址是不会变得。所以值会随之改变。</p>
-<h3 class="heading" data-id="heading-15">全局变量</h3>
-<p>我们同样以代码的方式看一下block是否捕获全局变量</p>
-<pre><code class="hljs bash copyable" lang="bash">int a = 10;
-static int b = 11;
-int main(int argc, const char * argv[]) {
-    @autoreleasepool {
-        void(^block)(void) = ^{
-            NSLog(@<span class="hljs-string">"hello, a = %d, b = %d"</span>, a,b);
-        };
-        a = 1;
-        b = 2;
-        block();
-    }
-    <span class="hljs-built_in">return</span> 0;
-}
-// <span class="hljs-built_in">log</span> hello, a = 1, b = 2
-<span class="copy-code-btn">复制代码</span></code></pre><p>同样生成c++代码查看全局变量调用方式</p>
-<p></p><figure><img alt="全局变量c++代码" class="lazyload" data-src="https://user-gold-cdn.xitu.io/2018/5/20/1637de3446bf83fa?imageView2/0/w/1280/h/960/ignore-error/1" data-width="1240" data-height="651"><figcaption></figcaption></figure><p></p>
-<p>通过上述代码可以发现，__main_block_imp_0并没有添加任何变量，因此block不需要捕获全局变量，因为全局变量无论在哪里都可以访问。</p>
-<p><strong>局部变量因为跨函数访问所以需要捕获，全局变量在哪里都可以访问 ，所以不用捕获。</strong></p>
-<p>最后以一张图做一个总结</p>
-<p></p><figure><img alt="block的变量捕获" class="lazyload" data-src="https://user-gold-cdn.xitu.io/2018/5/20/1637de344d83a2f8?imageView2/0/w/1280/h/960/ignore-error/1" data-width="644" data-height="137"><figcaption></figcaption></figure><p></p>
-<p><strong>总结：局部变量都会被block捕获，自动变量是值捕获，静态变量为地址捕获。全局变量则不会被block捕获</strong></p>
-<h4 class="heading" data-id="heading-16">疑问：以下代码中block是否会捕获变量呢？</h4>
-<pre><code class="hljs bash copyable" lang="bash"><span class="hljs-comment">#import "Person.h"</span>
-@implementation Person
-- (void)<span class="hljs-built_in">test</span>
-{
-    void(^block)(void) = ^{
-        NSLog(@<span class="hljs-string">"%@"</span>,self);
-    };
-    block();
-}
-- (instancetype)initWithName:(NSString *)name
-{
-    <span class="hljs-keyword">if</span> (self = [super init]) {
-        self.name = name;
-    }
-    <span class="hljs-built_in">return</span> self;
-}
-+ (void) <span class="hljs-built_in">test</span>2
-{
-    NSLog(@<span class="hljs-string">"类方法test2"</span>);
-}
-@end
-<span class="copy-code-btn">复制代码</span></code></pre><p>同样转化为c++代码查看其内部结构</p>
-<p></p><figure><img alt="c++代码" class="lazyload" data-src="https://user-gold-cdn.xitu.io/2018/5/20/1637de349fc932f5?imageView2/0/w/1280/h/960/ignore-error/1" data-width="1240" data-height="770"><figcaption></figcaption></figure><p></p>
-<p>上图中可以发现，self同样被block捕获，接着我们找到test方法可以发现，test方法默认传递了两个参数self和_cmd。而类方法test2也同样默认传递了类对象self和方法选择器_cmd。</p>
-<p></p><figure><img alt="对象方法和类方法对比" class="lazyload" data-src="https://user-gold-cdn.xitu.io/2018/5/20/1637de349091a972?imageView2/0/w/1280/h/960/ignore-error/1" data-width="1171" data-height="194"><figcaption></figcaption></figure><p></p>
-<p>不论对象方法还是类方法都会默认将self作为参数传递给方法内部，既然是作为参数传入，那么self肯定是局部变量。上面讲到局部变量肯定会被block捕获。</p>
-<p>接着我们来看一下如果在block中使用成员变量或者调用实例的属性会有什么不同的结果。</p>
-<pre><code class="hljs bash copyable" lang="bash">- (void)<span class="hljs-built_in">test</span>
-{
-    void(^block)(void) = ^{
-        NSLog(@<span class="hljs-string">"%@"</span>,self.name);
-        NSLog(@<span class="hljs-string">"%@"</span>,_name);
-    };
-    block();
-}
-<span class="copy-code-btn">复制代码</span></code></pre><p></p><figure><img alt="c++代码" class="lazyload" data-src="https://user-gold-cdn.xitu.io/2018/5/20/1637de34a164f7be?imageView2/0/w/1280/h/960/ignore-error/1" data-width="1240" data-height="416"><figcaption></figcaption></figure><p></p>
-<p>上图中可以发现，即使block中使用的是实例对象的属性，block中捕获的仍然是实例对象，并通过实例对象通过不同的方式去获取使用到的属性。</p>
-<h2 class="heading" data-id="heading-17">block的类型</h2>
-<p>block对象是什么类型的，之前稍微提到过，通过源码可以知道block中的isa指针指向的是_NSConcreteStackBlock类对象地址。那么block是否就是_NSConcreteStackBlock类型的呢？</p>
-<p>我们通过代码用class方法或者isa指针查看具体类型。</p>
-<pre><code class="hljs bash copyable" lang="bash">int main(int argc, const char * argv[]) {
-    @autoreleasepool {
-        // __NSGlobalBlock__ : __NSGlobalBlock : NSBlock : NSObject
-        void (^block)(void) = ^{
-            NSLog(@<span class="hljs-string">"Hello"</span>);
-        };
+    });
+  </script>
 
-        NSLog(@<span class="hljs-string">"%@"</span>, [block class]);
-        NSLog(@<span class="hljs-string">"%@"</span>, [[block class] superclass]);
-        NSLog(@<span class="hljs-string">"%@"</span>, [[[block class] superclass] superclass]);
-        NSLog(@<span class="hljs-string">"%@"</span>, [[[[block class] superclass] superclass] superclass]);
-    }
-    <span class="hljs-built_in">return</span> 0;
-}
-<span class="copy-code-btn">复制代码</span></code></pre><p>打印内容</p>
-<p></p><figure><img alt="block的类型" class="lazyload" data-src="https://user-gold-cdn.xitu.io/2018/5/20/1637de34b42a03d3?imageView2/0/w/1280/h/960/ignore-error/1" data-width="401" data-height="86"><figcaption></figcaption></figure><p></p>
-<p>从上述打印内容可以看出block最终都是继承自NSBlock类型，而NSBlock继承于NSObjcet。那么block其中的isa指针其实是来自NSObject中的。这也更加印证了block的本质其实就是OC对象。</p>
-<h3 class="heading" data-id="heading-18">block的3种类型</h3>
-<p>block有3中类型</p>
-<pre><code class="hljs bash copyable" lang="bash">__NSGlobalBlock__ （ _NSConcreteGlobalBlock ）
-__NSStackBlock__ （ _NSConcreteStackBlock ）
-__NSMallocBlock__ （ _NSConcreteMallocBlock ）
-<span class="copy-code-btn">复制代码</span></code></pre><p>通过代码查看一下block在什么情况下其类型会各不相同</p>
-<pre><code class="hljs bash copyable" lang="bash">int main(int argc, const char * argv[]) {
-    @autoreleasepool {
-        // 1. 内部没有调用外部变量的block
-        void (^block1)(void) = ^{
-            NSLog(@<span class="hljs-string">"Hello"</span>);
-        };
-        // 2. 内部调用外部变量的block
-        int a = 10;
-        void (^block2)(void) = ^{
-            NSLog(@<span class="hljs-string">"Hello - %d"</span>,a);
-        };
-       // 3. 直接调用的block的class
-        NSLog(@<span class="hljs-string">"%@ %@ %@"</span>, [block1 class], [block2 class], [^{
-            NSLog(@<span class="hljs-string">"%d"</span>,a);
-        } class]);
-    }
-    <span class="hljs-built_in">return</span> 0;
-}
-<span class="copy-code-btn">复制代码</span></code></pre><p>通过打印内容确实可以发现block的三种类型</p>
-<p></p><figure><img alt="block的三种类型" class="lazyload" data-src="https://user-gold-cdn.xitu.io/2018/5/20/1637de34a72eb3b8?imageView2/0/w/1280/h/960/ignore-error/1" data-width="691" data-height="31"><figcaption></figcaption></figure><p></p>
-<p>但是我们上面提到过，上述代码转化为c++代码查看源码时却发现block的类型与打印出来的类型不一样，c++源码中三个block的isa指针全部都指向_NSConcreteStackBlock类型地址。</p>
-<p>我们可以猜测runtime运行时过程中也许对类型进行了转变。最终类型当然以runtime运行时类型也就是我们打印出的类型为准。</p>
-<h3 class="heading" data-id="heading-19">block在内存中的存储</h3>
-<p>通过下面一张图看一下不同block的存放区域</p>
-<p></p><figure><img alt="不同类型block的存放区域" class="lazyload" data-src="https://user-gold-cdn.xitu.io/2018/5/20/1637de34c0579805?imageView2/0/w/1280/h/960/ignore-error/1" data-width="744" data-height="567"><figcaption></figcaption></figure><p></p>
-<p>上图中可以发现，根据block的类型不同，block存放在不同的区域中。
-数据段中的<code>__NSGlobalBlock__</code>直到程序结束才会被回收，不过我们很少使用到<code>__NSGlobalBlock__</code>类型的block，因为这样使用block并没有什么意义。</p>
-<p><code>__NSStackBlock__</code>类型的block存放在栈中，我们知道栈中的内存由系统自动分配和释放，作用域执行完毕之后就会被立即释放，而在相同的作用域中定义block并且调用block似乎也多此一举。</p>
-<p><code>__NSMallocBlock__</code>是在平时编码过程中最常使用到的。存放在堆中需要我们自己进行内存管理。</p>
-<h3 class="heading" data-id="heading-20">block是如何定义其类型</h3>
-<p>block是如何定义其类型，依据什么来为block定义不同的类型并分配在不同的空间呢？首先看下面一张图</p>
-<p></p><figure><img alt="block是如何定义其类型" class="lazyload" data-src="https://user-gold-cdn.xitu.io/2018/5/20/1637de34b6966052?imageView2/0/w/1280/h/960/ignore-error/1" data-width="691" data-height="137"><figcaption></figcaption></figure><p></p>
-<p>接着我们使用代码验证上述问题，首先关闭ARC回到MRC环境下，因为ARC会帮助我们做很多事情，可能会影响我们的观察。</p>
-<pre><code class="hljs bash copyable" lang="bash">// MRC环境！！！
-int main(int argc, const char * argv[]) {
-    @autoreleasepool {
-        // Global：没有访问auto变量：__NSGlobalBlock__
-        void (^block1)(void) = ^{
-            NSLog(@<span class="hljs-string">"block1---------"</span>);
-        };
-        // Stack：访问了auto变量： __NSStackBlock__
-        int a = 10;
-        void (^block2)(void) = ^{
-            NSLog(@<span class="hljs-string">"block2---------%d"</span>, a);
-        };
-        NSLog(@<span class="hljs-string">"%@ %@"</span>, [block1 class], [block2 class]);
-        // __NSStackBlock__调用copy ： __NSMallocBlock__
-        NSLog(@<span class="hljs-string">"%@"</span>, [[block2 copy] class]);
-    }
-    <span class="hljs-built_in">return</span> 0;
-}
-<span class="copy-code-btn">复制代码</span></code></pre><p>查看打印内容</p>
-<p></p><figure><img alt="block类型" class="lazyload" data-src="https://user-gold-cdn.xitu.io/2018/5/20/1637de34d2a2ff0f?imageView2/0/w/1280/h/960/ignore-error/1" data-width="587" data-height="54"><figcaption></figcaption></figure><p></p>
-<p>通过打印的内容可以发现正如上图中所示。
-<strong>没有访问auto变量的block是<code>__NSGlobalBlock__</code>类型的，存放在数据段中。
-访问了auto变量的block是<code>__NSStackBlock__</code>类型的，存放在栈中。
-<code>__NSStackBlock__</code>类型的block调用copy成为<code>__NSMallocBlock__</code>类型并被复制存放在堆中。</strong></p>
-<p>上面提到过<code>__NSGlobalBlock__</code>类型的我们很少使用到，因为如果不需要访问外界的变量，直接通过函数实现就可以了，不需要使用block。</p>
-<p>但是<code>__NSStackBlock__</code>访问了aotu变量，并且是存放在栈中的，上面提到过，栈中的代码在作用域结束之后内存就会被销毁，那么我们很有可能block内存销毁之后才去调用他，那样就会发生问题，通过下面代码可以证实这个问题。</p>
-<pre><code class="hljs bash copyable" lang="bash">void (^block)(void);
-void <span class="hljs-function"><span class="hljs-title">test</span></span>()
-{
-    // __NSStackBlock__
-    int a = 10;
-    block = ^{
-        NSLog(@<span class="hljs-string">"block---------%d"</span>, a);
-    };
-}
-int main(int argc, const char * argv[]) {
-    @autoreleasepool {
-        <span class="hljs-built_in">test</span>();
-        block();
-    }
-    <span class="hljs-built_in">return</span> 0;
-}
-<span class="copy-code-btn">复制代码</span></code></pre><p>此时查看打印内容</p>
-<p></p><figure><img alt="打印内容" class="lazyload" data-src="https://user-gold-cdn.xitu.io/2018/5/20/1637de34de510720?imageView2/0/w/1280/h/960/ignore-error/1" data-width="440" data-height="31"><figcaption></figcaption></figure><p></p>
-<p>可以发现a的值变为了不可控的一个数字。为什么会发生这种情况呢？因为上述代码中创建的block是<code>__NSStackBlock__</code>类型的，因此block是存储在栈中的，那么当test函数执行完毕之后，栈内存中block所占用的内存已经被系统回收，因此就有可能出现乱得数据。查看其c++代码可以更清楚的理解。</p>
-<p></p><figure><img alt="c++代码" class="lazyload" data-src="https://user-gold-cdn.xitu.io/2018/5/20/1637de34f3272b47?imageView2/0/w/1280/h/960/ignore-error/1" data-width="1131" data-height="840"><figcaption></figcaption></figure><p></p>
-<p>为了避免这种情况发生，可以通过copy将__NSStackBlock__类型的block转化为__NSMallocBlock__类型的block，将block存储在堆中，以下是修改后的代码。</p>
-<pre><code class="hljs bash copyable" lang="bash">void (^block)(void);
-void <span class="hljs-function"><span class="hljs-title">test</span></span>()
-{
-    // __NSStackBlock__ 调用copy 转化为__NSMallocBlock__
-    int age = 10;
-    block = [^{
-        NSLog(@<span class="hljs-string">"block---------%d"</span>, age);
-    } copy];
-    [block release];
-}
-<span class="copy-code-btn">复制代码</span></code></pre><p>此时在打印就会发现数据正确</p>
-<p></p><figure><img alt="打印内容" class="lazyload" data-src="https://user-gold-cdn.xitu.io/2018/5/20/1637de35060302c1?imageView2/0/w/1280/h/960/ignore-error/1" data-width="388" data-height="30"><figcaption></figcaption></figure><p></p>
-<p>那么其他类型的block调用copy会改变block类型吗？下面表格已经展示的很清晰了。</p>
-<p></p><figure><img alt="不同类型调用copy效果" class="lazyload" data-src="https://user-gold-cdn.xitu.io/2018/5/20/1637de351bcee494?imageView2/0/w/1280/h/960/ignore-error/1" data-width="689" data-height="158"><figcaption></figcaption></figure><p></p>
-<p>所以在平时开发过程中MRC环境下经常需要使用copy来保存block，将栈上的block拷贝到堆中，即使栈上的block被销毁，堆上的block也不会被销毁，需要我们自己调用release操作来销毁。而在ARC环境下系统会自动调用copy操作，使block不会被销毁。</p>
-<h2 class="heading" data-id="heading-21">ARC帮我们做了什么</h2>
-<p>在ARC环境下，编译器会根据情况自动将栈上的block进行一次copy操作，将block复制到堆上。</p>
-<p><strong>什么情况下ARC会自动将block进行一次copy操作？</strong>
-以下代码都在RAC环境下执行。</p>
-<h3 class="heading" data-id="heading-22">1. block作为函数返回值时</h3>
-<pre><code class="hljs bash copyable" lang="bash">typedef void (^Block)(void);
-Block <span class="hljs-function"><span class="hljs-title">myblock</span></span>()
-{
-    int a = 10;
-    // 上文提到过，block中访问了auto变量，此时block类型应为__NSStackBlock__
-    Block block = ^{
-        NSLog(@<span class="hljs-string">"---------%d"</span>, a);
-    };
-    <span class="hljs-built_in">return</span> block;
-}
-int main(int argc, const char * argv[]) {
-    @autoreleasepool {
-        Block block = myblock();
-        block();
-       // 打印block类型为 __NSMallocBlock__
-        NSLog(@<span class="hljs-string">"%@"</span>,[block class]);
-    }
-    <span class="hljs-built_in">return</span> 0;
-}
-<span class="copy-code-btn">复制代码</span></code></pre><p>看一下打印的内容</p>
-<p></p><figure><img alt="打印内容" class="lazyload" data-src="https://user-gold-cdn.xitu.io/2018/5/20/1637de3542a793cc?imageView2/0/w/1280/h/960/ignore-error/1" data-width="423" data-height="51"><figcaption></figcaption></figure><p></p>
-<p><strong>上文提到过，如果在block中访问了auto变量时，block的类型为<code>__NSStackBlock__</code>，上面打印内容发现blcok为<code>__NSMallocBlock__</code>类型的，并且可以正常打印出a的值，说明block内存并没有被销毁。</strong></p>
-<p><strong>上面提到过，block进行copy操作会转化为<code>__NSMallocBlock__</code>类型，来讲block复制到堆中，那么说明RAC在 block作为函数返回值时会自动帮助我们对block进行copy操作，以保存block，并在适当的地方进行release操作。</strong></p>
-<h3 class="heading" data-id="heading-23">2. 将block赋值给__strong指针时</h3>
-<p>block被强指针引用时，RAC也会自动对block进行一次copy操作。</p>
-<pre><code class="hljs bash copyable" lang="bash">int main(int argc, const char * argv[]) {
-    @autoreleasepool {
-        // block内没有访问auto变量
-        Block block = ^{
-            NSLog(@<span class="hljs-string">"block---------"</span>);
-        };
-        NSLog(@<span class="hljs-string">"%@"</span>,[block class]);
-        int a = 10;
-        // block内访问了auto变量，但没有赋值给__strong指针
-        NSLog(@<span class="hljs-string">"%@"</span>,[^{
-            NSLog(@<span class="hljs-string">"block1---------%d"</span>, a);
-        } class]);
-        // block赋值给__strong指针
-        Block block2 = ^{
-          NSLog(@<span class="hljs-string">"block2---------%d"</span>, a);
-        };
-        NSLog(@<span class="hljs-string">"%@"</span>,[block1 class]);
-    }
-    <span class="hljs-built_in">return</span> 0;
-}
-<span class="copy-code-btn">复制代码</span></code></pre><p>查看打印内容可以看出，当block被赋值给__strong指针时，RAC会自动进行一次copy操作。</p>
-<p></p><figure><img alt="打印内容" class="lazyload" data-src="https://user-gold-cdn.xitu.io/2018/5/20/1637de354325f7d7?imageView2/0/w/1280/h/960/ignore-error/1" data-width="392" data-height="74"><figcaption></figcaption></figure><p></p>
-<h3 class="heading" data-id="heading-24">3. block作为Cocoa API中方法名含有usingBlock的方法参数时</h3>
-<p>例如：遍历数组的block方法，将block作为参数的时候。</p>
-<pre><code class="hljs bash copyable" lang="bash">NSArray *array = @[];
-[array enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
 
-}];
-<span class="copy-code-btn">复制代码</span></code></pre><h3 class="heading" data-id="heading-25">4. block作为GCD API的方法参数时</h3>
-<p>例如：GDC的一次性函数或延迟执行的函数，执行完block操作之后系统才会对block进行release操作。</p>
-<pre><code class="hljs bash copyable" lang="bash">static dispatch_once_t onceToken;
-dispatch_once(&amp;onceToken, ^{
 
-});
-dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
 
-});
-<span class="copy-code-btn">复制代码</span></code></pre><h2 class="heading" data-id="heading-26">block声明写法</h2>
-<p>通过上面对MRC及ARC环境下block的不同类型的分析，总结出不同环境下block属性建议写法。</p>
-<p>MRC下block属性的建议写法</p>
-<p><strong><code>@property (copy, nonatomic) void (^block)(void);</code></strong></p>
-<p>ARC下block属性的建议写法</p>
-<p><strong><code>@property (strong, nonatomic) void (^block)(void);</code></strong>
-<strong><code>@property (copy, nonatomic) void (^block)(void);</code></strong></p>
-<h3 class="heading" data-id="heading-27">底层原理文章专栏</h3>
-<p><a target="_blank" href="https://juejin.im/user/5795c0a48ac247005f2fb14a/posts" rel="">底层原理文章专栏</a></p>
-<hr>
-<p>文中如果有不对的地方欢迎指出。我是xx_cc，一只长大很久但还没有二够的家伙。需要视频一起探讨学习的coder可以加我Q：2336684744</p>
-</div></article><div class="tag-list-box" data-v-69e9ff1f data-v-6e64932e><div class="tag-list-title" data-v-69e9ff1f data-v-6e64932e>关注下面的标签，发现更多相似文章</div><div st:block="tagList" class="tag-list" data-v-69e9ff1f data-v-6e64932e><a href="/tag/iOS" target="_blank" rel="" st:name="tag" class="item" data-v-6e64932e><div data-src="https://user-gold-cdn.xitu.io/1532428449837649233abd9e9cfa8c4104f0ca4210f05.jpg?imageView2/2/w/42/h/42/q/85/interlace/1" class="lazy thumb tag-icon" style="background-image:none;background-size:contain;" data-v-193aeca6 data-v-49571793 data-v-6e64932e></div><div class="tag-title" data-v-6e64932e>iOS</div></a><a href="/tag/C++" target="_blank" rel="" st:name="tag" class="item" data-v-6e64932e><div data-src="https://lc-gold-cdn.xitu.io/664bb393774ec8ebb7cc.png?imageView2/2/w/42/h/42/q/85/interlace/1" class="lazy thumb tag-icon" style="background-image:none;background-size:contain;" data-v-193aeca6 data-v-49571793 data-v-6e64932e></div><div class="tag-title" data-v-6e64932e>C++</div></a><a href="/tag/%E7%A8%80%E5%9C%9F" target="_blank" rel="" st:name="tag" class="item" data-v-6e64932e><div data-src="https://lc-gold-cdn.xitu.io/423640fd2ced2db7bafe.png?imageView2/2/w/42/h/42/q/85/interlace/1" class="lazy thumb tag-icon" style="background-image:none;background-size:contain;" data-v-193aeca6 data-v-49571793 data-v-6e64932e></div><div class="tag-title" data-v-6e64932e>稀土</div></a><a href="/tag/ReactiveCocoa" target="_blank" rel="" st:name="tag" class="item" data-v-6e64932e><div data-src="https://lc-gold-cdn.xitu.io/f3f0a6063db0cf4d320e.png?imageView2/2/w/42/h/42/q/85/interlace/1" class="lazy thumb tag-icon" style="background-image:none;background-size:contain;" data-v-193aeca6 data-v-49571793 data-v-6e64932e></div><div class="tag-title" data-v-6e64932e>ReactiveCocoa</div></a></div></div><div st:block="banner" class="article-banner" data-v-69e9ff1f data-v-6e64932e><a st:name="link" st:state="https://juejin.im/extension/?utm_source=juejin.im&amp;utm_medium=post&amp;utm_campaign=extension_promotion" href="https://juejin.im/extension/?utm_source=juejin.im&amp;utm_medium=post&amp;utm_campaign=extension_promotion" target="_blank" class="banner-title" data-v-69e9ff1f data-v-6e64932e>安装掘金浏览器插件</a><div class="banner-content" data-v-69e9ff1f data-v-6e64932e>打开新标签页发现好内容，掘金、GitHub、Dribbble、ProductHunt 等站点内容轻松获取。快来安装掘金浏览器插件获取高质量内容吧！</div></div><!----><!----><div id="comment-box" class="comment-list-box" data-v-0e60ab02 data-v-6e64932e><div class="title" data-v-0e60ab02>评论</div><div class="comment-form comment-form" data-v-62617426 data-v-0e60ab02><div class="avatar-box" data-v-62617426><div data-src="https://b-gold-cdn.xitu.io/v3/static/img/default-avatar.e30559a.svg" class="lazy avatar avatar" style="background-image:none;" data-v-193aeca6 data-v-36ba04ba data-v-62617426></div></div><div class="form-box" data-v-62617426><div class="input-box" data-v-62617426><div contenteditable="true" spellcheck="false" placeholder="输入评论..." class="rich-input empty" data-v-62617426><br data-v-62617426></div><!----></div><!----></div><input type="file" class="hidden" data-v-62617426></div><!----><div class="fetch-more-comment" data-v-0e60ab02>查看更多 &gt;</div></div></div><!----><!----><div st:block="sidebar" class="sidebar sidebar" data-v-8dbdd04e data-v-6e64932e><div class="sidebar-block author-block shadow" data-v-30091a34 data-v-82a44d16 data-v-8dbdd04e><div class="block-title" data-v-30091a34>关于作者</div><div class="block-body" data-v-30091a34><a href="/post/5b0181e15188254270643e88" target="_blank" rel="" class="user-item item" data-v-82a44d16><div data-src="https://b-gold-cdn.xitu.io/v3/static/img/default-avatar.e30559a.svg" class="lazy avatar avatar" style="background-image:none;" data-v-193aeca6 data-v-36ba04ba data-v-82a44d16></div><div class="info-box" data-v-82a44d16><div class="username" data-v-82a44d16></div><!----></div></a><!----><!----><!----><!----></div></div><!----><!----><!----><!----><div class="sticky-block-box" data-v-8dbdd04e><!----><div class="sidebar-block catalog-block pure" data-v-30091a34 data-v-77a45805 data-v-8dbdd04e><nav class="article-catalog" style="display:none;" data-v-b12c1658 data-v-77a45805><div class="catalog-title" data-v-b12c1658>目录</div><div class="catalog-body" data-v-b12c1658><ul class="catalog-list" style="margin-top:0px;" data-v-b12c1658></ul></div></nav></div></div></div><div class="article-suspended-panel article-suspended-panel" data-v-46b67151 data-v-6e64932e><div badge="106" class="like-btn panel-btn like-adjust with-badge" data-v-46b67151></div><div badge="12" class="comment-btn panel-btn comment-adjust with-badge" data-v-46b67151></div><div class="collect-btn panel-btn" data-v-46b67151><!----></div><div class="share-title" data-v-46b67151>分享</div><div class="weibo-btn share-btn panel-btn" data-v-46b67151></div><div class="qq-btn share-btn panel-btn" data-v-46b67151></div><div class="wechat-btn share-btn panel-btn" data-v-46b67151><img src="" class="wechat-qr-code-img shadow" style="display:none;" data-v-46b67151></div></div><div class="image-viewer-box" data-v-889e9710 data-v-6e64932e><!----></div></div></main></div><!----></div>
-      <div id="jjis" style="display:none;" data-state="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"></div>
 
-      <script type=text/javascript src=https://b-gold-cdn.xitu.io/v3/static/js/runtime.f07c00caaecfb1c9ad2f.js></script><script type=text/javascript src=https://b-gold-cdn.xitu.io/v3/static/js/0.6cd102ee1c526e2a706c.js></script><script type=text/javascript src=https://b-gold-cdn.xitu.io/v3/static/js/1.cfde11a9aa2c6fca77c5.js></script></body></html>
+
+
+
+
+
+
+
+
+</body>
+</html>
