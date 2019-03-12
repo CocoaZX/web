@@ -9,9 +9,12 @@ app.config['SEND_FILE_MAX_AGE_DEFAULT'] = timedelta(seconds=2)
 def typeArchives_mehtod():
     return send_file("static/html/Categories/typeOC.html")
 
+@app.route('/categories/rn')
+def typeOc_mehtod():
+    return send_file("static/html/Categories/typeRN.html")
 
 @app.route('/categories/oc')
-def typeOc_mehtod():
+def typeRN_mehtod():
     return send_file("static/html/Categories/typeOC.html")
 
 @app.route('/categories/temp')
@@ -51,7 +54,10 @@ def navi_mehtod():
     return send_file("static/html/Categories/typeOC.html")
 
 
-
+#RN
+@app.route('/react-native-1')
+def react_native_1():
+    return send_file("static/html/React-Native/React-Native-1.html")
 
 #OC
 @app.route('/objective-c-runtime-1')
