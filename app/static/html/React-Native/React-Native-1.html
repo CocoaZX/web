@@ -169,88 +169,29 @@
 
 
                             <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-
-
                                 <div class="post-block">
-                                    <link itemprop="mainEntityOfPage"
-                                          href="http://zxfcumtcs.github.io/2017/10/08/ReactNativeCommunicationMechanism/">
-
-                                    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="赵雪峰">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/img/author.jpg">
-    </span>
-
-                                    <span hidden itemprop="publisher" itemscope=""
-                                          itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="雪峰的blog">
-    </span>
-
-
                                     <header class="post-header">
-
-
                                         <h1 class="post-title" itemprop="name headline">
                                             ReactNative源码解析——通信机制详解(1/2)</h1>
-
-
                                         <div class="post-meta">
-          <span class="post-time">
 
+          <span class="post-time">
               <span class="post-meta-item-icon">
                 <i class="fa fa-calendar-o"></i>
               </span>
-
                 <span class="post-meta-item-text">发表于</span>
 
               <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-08T19:19:59+08:00">
-                2017-10-08
+                2019-03-08
               </time>
 
-
-
-
+          </span>
+                                            <span
+                                                    class="leancloud_visitors"
+                                                    data-flag-title="ReactNative源码解析——通信机制详解(1/2)">
 
           </span>
 
-
-                                            <span id="/2017/10/08/ReactNativeCommunicationMechanism/"
-                                                  class="leancloud_visitors"
-                                                  data-flag-title="ReactNative源码解析——通信机制详解(1/2)">
-
-             </span>
-
-
-                                            <div class="post-wordcount">
-
-
-                                                <span class="post-meta-divider">|</span>
-
-                                                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-
-                                                <span class="post-meta-item-text">字数统计</span>
-
-                                                <span title="字数统计">
-                  3,836
-                </span>
-
-
-                                                <span class="post-meta-divider">|</span>
-
-
-                                                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-
-                                                <span class="post-meta-item-text">阅读时长</span>
-
-                                                <span title="阅读时长">
-                  17
-                </span>
-
-                                            </div>
 
 
                                         </div>
@@ -278,17 +219,17 @@
                                         </blockquote>
                                         <p>本文讨论的 RN 通信机制是整个 RN
                                             的核心，贯穿始末，涉及<code>Objective-C</code>/<code>Java</code>、<code>C++</code>、<code>JavaScript</code>间的交互。因此，在深入分析前有必要先了解一下
-                                            RN 整体结构以及关键类的类图。<br><img src="/img/RNLanguageComposition.jpeg" alt=""><br>RN
+                                            RN 整体结构以及关键类的类图。<br><img src="/static/images/RNLanguageComposition.jpeg" alt=""><br>RN
                                             最大的优势在于<strong><em>跨平台、热更新</em></strong>。因此，RN
                                             库本身也需要在多个平台(iOS、Android)上运行，从上图可知，在 RN 中 <code>C++</code>与<code>JS</code>部分的实现为多平台共用，在此基础上再分化为各平台实现。其中，iOS
                                             平台特有的实现(<code>Objective-C</code>、<code>C++</code>)主要集中在 React
                                             下，以<code>C++</code>语言实现的共有部分在 ReactCommon 下：<br><img
-                                                    src="/img/ReactReactCommon.png"
+                                                    src="/static/images/ReactReactCommon.png"
                                                     alt=""><br>JS侧与本文关系紧密的内容主要集中在：<br><img
-                                                    src="/img/BatchedBridgePath.jpg"
+                                                    src="/static/images/BatchedBridgePath.jpg"
                                                     alt="">下的<code>BatchedBridge.js</code>、<code>MessageQueue.js</code>以及<code>NativeModules.js</code>中。
                                         </p>
-                                        <p>我们先大概了解几个关键类及其间的关系，对整体结构有个大致印象：<br><img src="/img/RNClassDiagram.png" alt=""><br>如上图：
+                                        <p>我们先大概了解几个关键类及其间的关系，对整体结构有个大致印象：<br><img src="/static/images/RNClassDiagram.png" alt=""><br>如上图：
                                         </p>
                                         <ul>
                                             <li><code>RCTBridge</code>与<code>RCTCxxBridge</code>属于 iOS 平台特有，前者是 RN
@@ -509,12 +450,12 @@
                                             <p>优雅、巧妙地使用宏充满技巧。</p>
                                         </blockquote>
                                         <p>上面介绍的<code>RCT_EXPORT_MODULE</code>以及<code>RCT_EXPORT_METHOD</code>宏属于编译阶段的处理，下面我们从执行角度一步一步进行分析。<br><img
-                                                src="/img/RNTimingDiagram.png" alt=""><br>上图是RN
+                                                src="/static/images/RNTimingDiagram.png" alt=""><br>上图是RN
                                             初始化过程的时序图，我们将沿着图中的步骤逐步分析。
                                         </p>
                                         <h2 id="注册NativeModule"><a href="#注册NativeModule" class="headerlink"
                                                                    title="注册NativeModule"></a>注册NativeModule</h2>
-                                        <p><img src="/img/RCTCxxBrigdeInitModulesWithDispatchGroup.png" alt=""><br>通过上述坐标，最终定位到<code>RCTCxxBridge._initModulesWithDispatchGroup</code>：<br>
+                                        <p><img src="/static/images/RCTCxxBrigdeInitModulesWithDispatchGroup.png" alt=""><br>通过上述坐标，最终定位到<code>RCTCxxBridge._initModulesWithDispatchGroup</code>：<br>
                                             <figure class="highlight mm">
                                                 <table>
                                                     <tr>
@@ -591,7 +532,7 @@
                                         </blockquote>
                                         <h2 id="Instance"><a href="#Instance" class="headerlink" title="Instance"></a>Instance
                                         </h2>
-                                        <p><img src="/img/JSCExecutor.png" alt=""><br>坐标定位到<code>RCTCxxBridge._initializeBridge</code>方法中：<br>
+                                        <p><img src="/static/images/JSCExecutor.png" alt=""><br>坐标定位到<code>RCTCxxBridge._initializeBridge</code>方法中：<br>
                                             <figure class="highlight mm">
                                                 <table>
                                                     <tr>
@@ -645,7 +586,7 @@
                                             </figure>
                                         </p>
                                         <p>此时，有必要介绍与 NativeModule 有关的几个类：<br><img
-                                                src="/img/NativeModuleClassDiagram.png"
+                                                src="/static/images/NativeModuleClassDiagram.png"
                                                 alt=""></p>
                                         <ul>
                                             <li>
@@ -984,7 +925,7 @@
                                             module
                                             导出的 constants, [methodNames], [promiseMethodIds],
                                             [syncMethodIds]]<br>下面是<code>RCTWebSocketModule</code>导出的信息：<br><img
-                                                    src="/img/NativeModuleConfig.jpg" alt=""></p>
+                                                    src="/static/images/NativeModuleConfig.jpg" alt=""></p>
                                         <p>在这过程中<code>RCTModuleData.methods</code>起到关键作用：<br>ModuleRegistry::getConfig-&gt;RCTNativeModule::getMethods-&gt;RCTModuleData.methods<br>
                                             <figure class="highlight mm">
                                                 <table>
@@ -1350,12 +1291,12 @@
                                             </figure>
                                         </p>
                                         <p>沿着调用链后面还有一些细节问题，由于篇幅关系，不再展开，主要如下：<br><img
-                                                src="/img/RCTNativeModuleinvoke.jpg"
+                                                src="/static/images/RCTNativeModuleinvoke.jpg"
                                                 alt=""><br><img
-                                                src="/img/RCTModuleMethodinvokeWithBridge.jpg" alt=""><br>最终在<code>RCTModuleMethod.invokeWithBridge</code>中执行了调用<code>[_invocation
+                                                src="/static/images/RCTModuleMethodinvokeWithBridge.jpg" alt=""><br>最终在<code>RCTModuleMethod.invokeWithBridge</code>中执行了调用<code>[_invocation
                                             invokeWithTarget:module];</code><br>至此，从 JS to Native 的调用结束！</p>
                                         <h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2>
-                                        <p>JS to Native 的调用时序图：<br><img src="/img/JSToNativeCallTimingDiagram.png"
+                                        <p>JS to Native 的调用时序图：<br><img src="/static/images/JSToNativeCallTimingDiagram.png"
                                                                         alt=""><br>整个过程大概分为两个阶段：</p>
                                         <ul>
                                             <li>NativeModules.moduleName — 该过程主要是获取 native module
