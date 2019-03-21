@@ -119,11 +119,11 @@ def swift_7():
 
 @app.route('/swift-8')
 def swift_8():
-    return send_file("static/html/swift/swift-7.html")
+    return send_file("static/html/swift/swift-8.html")
 
 @app.route('/swift-9')
 def swift_9():
-    return send_file("static/html/swift/swift-8.html")
+    return send_file("static/html/swift/swift-9.html")
 
 #docker
 @app.route('/docker')
