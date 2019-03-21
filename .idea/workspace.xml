@@ -2,10 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ae44ea7e-ee76-4140-90e5-021c1a026c96" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/app/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/static/html/Categories/typeOC.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/static/html/Categories/typeOC.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/static/css/main.css" beforeDir="false" afterPath="$PROJECT_DIR$/app/static/css/main.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/static/html/Objective-C/C-OC_tryCatch.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/static/html/Objective-C/C-OC_tryCatch.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/static/html/Objective-C/objective-c-runtime-1.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/static/html/Objective-C/objective-c-runtime-1.html" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -21,10 +20,10 @@
     <fileColor scope="All" color="000000" />
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.49117276">
+    <splitter split-orientation="horizontal" split-proportion="0.22749196">
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file leaf-file-name="__init__.py" pinned="false" current-in-tab="true">
+          <file leaf-file-name="__init__.py" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/app/__init__.py">
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="663">
@@ -85,11 +84,11 @@
               <provider selected="true" editor-type-id="images" />
             </entry>
           </file>
-          <file leaf-file-name="main.css" pinned="false" current-in-tab="false">
+          <file leaf-file-name="main.css" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/app/static/css/main.css">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="12435">
-                  <caret line="829" column="21" selection-start-line="829" selection-start-column="21" selection-end-line="829" selection-end-column="21" />
+                <state relative-caret-position="534">
+                  <caret line="1229" column="28" selection-start-line="1229" selection-start-column="28" selection-end-line="1229" selection-end-column="28" />
                 </state>
               </provider>
             </entry>
@@ -110,9 +109,10 @@
           <file leaf-file-name="C-OC_tryCatch.html" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/app/static/html/Objective-C/C-OC_tryCatch.html">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="226">
-                  <caret line="172" column="74" lean-forward="true" selection-start-line="172" selection-start-column="74" selection-end-line="172" selection-end-column="74" />
+                <state relative-caret-position="364">
+                  <caret line="167" column="104" selection-start-line="167" selection-start-column="104" selection-end-line="167" selection-end-column="104" />
                   <folding>
+                    <element signature="n#style#0;n#h1#0;n#header#0;n#article#0;n#div#0;n#div#0;n#div#0;n#div#0;n#main#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
                     <element signature="n#aside#0;n#main#0;n#div#0;n#body#0;n#html#0;n#!!top" />
                   </folding>
                 </state>
@@ -132,9 +132,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>#运行时存取关联对象</find>
-      <find>h2</find>
-      <find>/root/software</find>
       <find>常用命令</find>
       <find>head</find>
       <find>11</find>
@@ -162,6 +159,9 @@
       <find>&lt;aside id=&quot;sidebar&quot; class=&quot;sidebar&quot;&gt;</find>
       <find>idebar-nav motion-elemen</find>
       <find>&lt;div id=&quot;content&quot; class=&quot;content&quot;&gt;</find>
+      <find>post-title</find>
+      <find>ost-title</find>
+      <find>post-title-h1</find>
     </findStrings>
     <replaceStrings>
       <replace>../../js</replace>
@@ -189,7 +189,6 @@
         <option value="$PROJECT_DIR$/app/static/html/swift/swift-8.html" />
         <option value="$PROJECT_DIR$/app/static/html/SDWebImage/sdwebimage-1.html" />
         <option value="$PROJECT_DIR$/app/static/html/docker/docker.html" />
-        <option value="$PROJECT_DIR$/app/static/css/main.css" />
         <option value="$PROJECT_DIR$/app/static/js/src/post-details.js" />
         <option value="$PROJECT_DIR$/app/static/js/src/motion.js" />
         <option value="$PROJECT_DIR$/app/static/html/Categories/typeReactNative.html" />
@@ -203,8 +202,9 @@
         <option value="$PROJECT_DIR$/app/static/html/Categories/typeSourcecode.html" />
         <option value="$PROJECT_DIR$/app/static/html/Objective-C/objective-c-runtime-1.html" />
         <option value="$PROJECT_DIR$/app/static/html/Categories/typeOC.html" />
-        <option value="$PROJECT_DIR$/app/static/html/Objective-C/C-OC_tryCatch.html" />
         <option value="$PROJECT_DIR$/app/__init__.py" />
+        <option value="$PROJECT_DIR$/app/static/css/main.css" />
+        <option value="$PROJECT_DIR$/app/static/html/Objective-C/C-OC_tryCatch.html" />
       </list>
     </option>
   </component>
@@ -789,13 +789,6 @@
     <entry file="file://$PROJECT_DIR$/app/static/images/sdFlow.jpg">
       <provider selected="true" editor-type-id="images" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/static/css/main.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="12435">
-          <caret line="829" column="21" selection-start-line="829" selection-start-column="21" selection-end-line="829" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/static/html/React-Native/React-Native-1.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="19470">
@@ -824,16 +817,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/static/html/Objective-C/C-OC_tryCatch.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="226">
-          <caret line="172" column="74" lean-forward="true" selection-start-line="172" selection-start-column="74" selection-end-line="172" selection-end-column="74" />
-          <folding>
-            <element signature="n#aside#0;n#main#0;n#div#0;n#body#0;n#html#0;n#!!top" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/static/html/Objective-C/objective-c-runtime-1.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="15">
@@ -857,6 +840,24 @@
           <caret line="124" column="14" lean-forward="true" selection-start-line="124" selection-start-column="14" selection-end-line="124" selection-end-column="14" />
           <folding>
             <element signature="e#0#49#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/static/css/main.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="534">
+          <caret line="1229" column="28" selection-start-line="1229" selection-start-column="28" selection-end-line="1229" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/static/html/Objective-C/C-OC_tryCatch.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="364">
+          <caret line="167" column="104" selection-start-line="167" selection-start-column="104" selection-end-line="167" selection-end-column="104" />
+          <folding>
+            <element signature="n#style#0;n#h1#0;n#header#0;n#article#0;n#div#0;n#div#0;n#div#0;n#div#0;n#main#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#aside#0;n#main#0;n#div#0;n#body#0;n#html#0;n#!!top" />
           </folding>
         </state>
       </provider>

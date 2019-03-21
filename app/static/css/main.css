@@ -1196,7 +1196,8 @@ pre .javascript .function {
 .post-title{
   margin-left: 100px;
 }
-.posts-collapse .post-title{
+
+.posts-collapse .post-title {
   font-size: 16px;
   font-weight: normal;
   line-height: inherit;
@@ -1209,7 +1210,7 @@ pre .javascript .function {
   margin-left: 3px;
   opacity: 0.6;
 }
-.posts-collapse .post-title a {
+.posts-collapse .post-title a{
   color: #666;
   border-bottom: none;
 }
