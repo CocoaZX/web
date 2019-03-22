@@ -189,8 +189,9 @@
                                 </div>
                             </header>
                             <div class="post-body" itemprop="articleBody">
-                                <h2>一、非局部跳转</h2>
-                                <h3>1、简介</h3>
+                                <h2 id="非局部跳转"><a href="#非局部跳转" class="headerlink" title="非局部跳转"></a>非局部跳转</h2>
+
+                                <h3 id="1、简介"><a href="#1、简介" class="headerlink" title="1、简介"></a>1、简介</h3>
                                 <p>
                                     大部分语言的运行控制模型，都是基于栈的。在这种模型中，调用一个函数时，就会将这个函数的参数、返回地址、局部变量等信息入栈；这个函数返回时，对应信息再出栈。正常情况下，函数调用的进栈和出栈都是成对出现的，比如函数的调用顺序是：func1
                                     —> func2 — > func3，那么一定是 func1 先进栈，然后是 func2，最后是 func3；而 func3 调用结束后一定是先返回到 func2
@@ -199,43 +200,30 @@
                                     我们都知道，C 语言中的 goto 语句，可以实现在一个函数内部跳转;与此同时，C 语言还提供了一种能够在函数间跳转、被称为 非局部跳转 (no-local goto)
                                     的机制，这种机制可以允许从一个多层嵌套的函数调用中直接返回。我们先通过下面的栗子来见证它的神奇之处：</p>
 
-                                <figure class='code'>
-                                    <div class="highlight">
-                                        <table>
-                                            <tr>
-                                                <td class="gutter"><pre class="lines"><span class='line'>1</span>
-<span class='line'>2</span>
-<span class='line'>3</span>
-<span class='line'>4</span>
-<span class='line'>5</span>
-<span class='line'>6</span>
-<span class='line'>7</span>
-<span class='line'>8</span>
-<span class='line'>9</span>
-<span class='line'>10</span>
-<span class='line'>11</span>
-<span class='line'>12</span>
-<span class='line'>13</span>
-<span class='line'>14</span>
-<span class='line'>15</span>
-<span class='line'>16</span>
-<span class='line'>17</span>
-<span class='line'>18</span>
-<span class='line'>19</span>
-<span class='line'>20</span>
-<span class='line'>21</span>
-<span class='line'>22</span>
-<span class='line'>23</span>
-<span class='line'>24</span>
-<span class='line'>25</span>
-<span class='line'>26</span>
-<span class='line'>27</span>
-<span class='line'>28</span>
-<span class='line'>29</span>
-<span class='line'>30</span>
-</pre>
-                                                </td>
-                                                <td class='code'><pre><code class=''><span class='line'>#include &lt;stdio.h&gt;
+                                <figure class='highlight objc'>
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><div class="line">1</div><div class="line">2</div><div
+                                                        class="line">3</div><div class="line">4</div><div
+                                                        class="line">5</div><div class="line">6</div><div
+                                                        class="line">7</div><div class="line">8</div><div
+                                                        class="line">9</div><div class="line">10</div><div
+                                                        class="line">11</div><div class="line">12</div><div
+                                                        class="line">13</div><div class="line">14</div><div
+                                                        class="line">15</div><div class="line">16</div><div
+                                                        class="line">17</div><div class="line">18</div><div
+                                                        class="line">19</div><div class="line">20</div><div
+                                                        class="line">21</div><div class="line">22</div><div
+                                                        class="line">23</div><div class="line">24</div><div
+                                                        class="line">25</div><div class="line">26</div><div
+                                                        class="line">27</div><div class="line">28</div><div
+                                                        class="line">29</div><div
+                                                        class="line">30</div></pre>
+                                            </td>
+
+
+                                            <td class='code'><pre><code class=''><span class='line'>#include &lt;stdio.h&gt;
 </span><span class='line'>#include &lt;setjmp.h&gt;
 </span><span class='line'>
 </span><span class='line'>jmp_buf jump_buffer;
@@ -266,40 +254,36 @@
 </span><span class='line'>return 0;
 </span><span class='line'>}
 </span></code></pre>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </div>
+                                            </td>
+                                        </tr>
+                                    </table>
+
                                 </figure>
                                 <p>运行结果如下：</p>
 
-                                <figure class='code'>
-                                    <div class="highlight">
-                                        <table>
-                                            <tr>
-                                                <td class="gutter"><pre class="line-numbers"><span
-                                                        class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre>
-                                                </td>
-                                                <td class='code'><pre><code class=''><span class='line'>first calling set_jmp
+                                <figure class='highlight objc'>
+                                    <table>
+                                        <tr>
+                                            <td class="gutter">
+                                               <pre><div class="line">1</div><div class="line">2</div><div
+                                                       class="line">3</div><div class="line">4</div></pre>
+                                            </td>
+                                            <td class='code'><pre><code class=''><span class='line'>first calling set_jmp
 </span><span class='line'>Before calling func2
 </span><span class='line'>Before calling longjmp
 </span><span class='line'>second calling set_jmp</span></code></pre>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </div>
+                                            </td>
+                                        </tr>
+                                    </table>
+
                                 </figure>
 
 
                                 <p>从日志可以看出，函数的执行过程跳过了 <code>After calling func2</code>、<code>After calling
                                     longjmp</code> 两句日志所在的代码行，在 <code>func2</code> 中执行了 <code>longjmp</code> 方法后函数直接从
                                     <code>func2</code> 跳转回了 <code>main</code> 函数中继续执行，而没经过 <code>func1</code>！</p>
+                                <h3 id="2、实现机制"><a href="#2、实现机制" class="headerlink" title="2、实现机制"></a>2、实现机制</h3>
 
-                                <h3>2、实现机制</h3>
 
                                 <p>非局部跳转功能主要是通过位于 <code>&lt;setjmp.h&gt;</code> 中的 <code>setjmp</code> 和
                                     <code>longjmp</code> 两个函数实现。</p>
@@ -309,7 +293,7 @@
                                 </ul>
 
 
-                                <figure class='code'>
+                                <figure class='highlight objc'>
                                     <div class="highlight">
                                         <table>
                                             <tr>
@@ -336,7 +320,7 @@
                                 </ul>
 
 
-                                <figure class='code'>
+                                <figure class='highlight objc'>
                                     <div class="highlight">
                                         <table>
                                             <tr>
@@ -362,7 +346,8 @@
                                     <code>setjmp</code> 会将其所在的程序点的系统状态信息都保存到 <code>jmp_buf</code> 类型的结构变量 env 中，而调用
                                     <code>longjmp</code> 会将 env 的系统状态信息恢复，以实现非局部跳转的功能。</p>
 
-                                <h3>3、注意事项</h3>
+                                <h3 id="3、注意事项"><a href="#3、注意事项" class="headerlink" title="3、注意事项"></a>3、注意事项</h3>
+
 
                                 <ul>
                                     <li>执行顺序</li>
@@ -379,15 +364,18 @@
 
 
                                 <p><code>longjmp</code> 必须在正确的 <code>setjmp</code> 的作用域范围内。具体来说，在一个函数中调用了
-                                    <code>setjmp</code>，只要该函数没有返回，那么在任何其它地方都可以通过 <code>longjmp</code> 调用来跳转到 <code>setjmp</code>
+                                    <code>setjmp</code>，只要该函数没有返回，那么在任何其它地方都可以通过 <code>longjmp</code> 调用来跳转到
+                                    <code>setjmp</code>
                                     的下一条语句执行。</p>
 
-                                <h2>二、try/catch 异常处理机制</h2>
+
+                                <h2 id="异常处理机制"><a href="#异常处理机制" class="headerlink"
+                                                             title="异常处理机制"></a>try/catch 异常处理机制</h2>
 
                                 <p>在类 C 语言中，非局部跳转的一个重要应用场景就是 <code>异常处理机制</code>。Objective-C 使用 try/catch/finally
                                     来捕获并处理异常，比如下面的代码：</p>
 
-                                <figure class='code'>
+                                <figure class='highlight objc'>
                                     <div class="highlight">
                                         <table>
                                             <tr>
@@ -455,7 +443,7 @@
 
                                 <p>通过 Clang 生成的 C 中间代码，可以看出 try/catch 的原理，上述代码保存成 main.m 文件后通过命令：</p>
 
-                                <figure class='code'>
+                                <figure class='highlight objc'>
                                     <div class="highlight">
                                         <table>
                                             <tr>
@@ -475,7 +463,7 @@
 
                                 <p>剔除无用信息后，可以得到下述代码：</p>
 
-                                <figure class='code'>
+                                <figure class='highlight objc'>
                                     <div class="highlight">
                                         <table>
                                             <tr>
@@ -837,16 +825,78 @@
 
                 <div class="post-spread"></div>
             </div>
-            <div class="comments" id="comments"></div>
-        </div>
-        <div class="sidebar-toggle">
-            <div class="sidebar-toggle-line-wrap">
-                <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
-                <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
-                <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
-            </div>
-        </div>
 
+            <div class="sidebar-toggle">
+                <div class="sidebar-toggle-line-wrap">
+                    <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+                    <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+                    <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+                </div>
+            </div>
+
+            <aside id="sidebar" class="sidebar">
+                <div class="sidebar-inner">
+                    <ul class="sidebar-nav motion-element">
+                        <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+                            文章目录
+                        </li>
+                        <li class="sidebar-nav-overview" data-target="site-overview">
+                            站点概览
+                        </li>
+                    </ul>
+                    <section class="site-overview sidebar-panel ">
+                        <nav class="site-state motion-element">
+                            <div class="site-state-item site-state-posts">
+                                <a href="/archives">
+                                    <span class="site-state-item-count">X</span>
+                                    <span class="site-state-item-name">日志</span>
+                                </a>
+                            </div>
+
+                            <div class="site-state-item site-state-categories">
+                                <span class="site-state-item-count">7</span>
+                                <span class="site-state-item-name">分类</span>
+                            </div>
+                        </nav>
+                    </section>
+
+                    <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+                        <div class="post-toc">
+                            <div class="post-toc-content">
+                                <ol class="nav">
+                                    <li class="nav-item nav-level-2">
+                                        <a class="nav-link" href="#非局部跳转">
+                                        <span class="nav-number">1.</span>
+                                        <span class="nav-text">非局部跳转</span></a>
+                                        <ol class="nav-child">
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#1、简介"><span
+                                                    class="nav-number">1.1.</span> <span
+                                                    class="nav-text">简介</span></a></li>
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#2、实现机制"><span
+                                                    class="nav-number">1.2.</span> <span
+                                                    class="nav-text">实现机制</span></a></li>
+                                            <li class="nav-item nav-level-3"><a class="nav-link" href="#3、注意事项"><span
+                                                    class="nav-number">1.3.</span> <span
+                                                    class="nav-text">注意事项</span></a></li>
+                                        </ol>
+                                    </li>
+
+                                    <li class="nav-item nav-level-2">
+                                        <a class="nav-link" href="#异常处理机制">
+                                        <span class="nav-number">2.</span>
+                                        <span class="nav-text">try/catch 异常处理机制</span></a>
+                                    </li>
+
+                                </ol>
+                            </div>
+
+                        </div>
+                    </section>
+
+
+                </div>
+            </aside>
+        </div>
     </main>
 
     <footer id="footer" class="footer">
