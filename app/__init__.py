@@ -59,6 +59,10 @@ def navi_mehtod():
 def react_native_1():
     return send_file("static/html/React-Native/React-Native-1.html")
 
+@app.route('/react-native-2')
+def react_native_2():
+    return send_file("static/html/React-Native/React-Native-2.html")
+
 #OC
 @app.route('/tryCatch')
 def tryCatch():
