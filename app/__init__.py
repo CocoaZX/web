@@ -10,11 +10,11 @@ def typeArchives_mehtod():
     return send_file("static/html/Categories/typeOC.html")
 
 @app.route('/categories/rn')
-def typeOc_mehtod():
+def typeRN_mehtod():
     return send_file("static/html/Categories/typeRN.html")
 
 @app.route('/categories/oc')
-def typeRN_mehtod():
+def typeOC_mehtod():
     return send_file("static/html/Categories/typeOC.html")
 
 @app.route('/categories/temp')
@@ -35,6 +35,12 @@ def typeGithub_mehtod():
 def typeSwift_mehtod():
     return send_file("static/html/Categories/typeSwift.html")
 
+@app.route('/categories/cocoa')
+def typeCocoa_mehtod():
+    return typeOC_mehtod();
+
+
+
 
 @app.route('/categories/sourcecode')
 def typeSourceCode_mehtod():
@@ -48,10 +54,6 @@ def typeSomething_mehtod():
 @app.route('/base')
 def base_mehtod():
     return send_file("static/html/404.html")
-
-@app.route('/')
-def navi_mehtod():
-    return send_file("static/html/Categories/typeOC.html")
 
 
 #RN
@@ -140,6 +142,10 @@ def sdweb_1():
     return send_file("static/html/SDWebImage/sdwebimage-1.html")
 
 
+@app.route('/')
+def navi_mehtod():
+    return typeRN_mehtod();
+
 
 # @app.errorhandler(404)
 # def page_not_found(e):
@@ -149,6 +155,6 @@ def sdweb_1():
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8080)
+    app.run(host='0.0.0.0', port=80)
 
 
